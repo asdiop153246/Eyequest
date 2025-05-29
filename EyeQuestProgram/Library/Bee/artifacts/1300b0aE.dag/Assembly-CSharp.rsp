@@ -405,6 +405,7 @@
 "Assets/Script/BlinkDetectionScript.cs"
 "Assets/Script/EyeDetectionZone.cs"
 "Assets/Script/FpsCounter.cs"
+"Assets/Script/GameManager.cs"
 "Assets/Script/GetEyeLocalPositionScript.cs"
 "Assets/Script/GetPointID.cs"
 "Assets/Script/MonsterHealth.cs"
