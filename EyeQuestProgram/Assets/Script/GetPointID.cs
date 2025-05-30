@@ -57,8 +57,8 @@ public class GetPointID : MonoBehaviour
   {
     if (_centerPoint != null)
     {
-      //Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
-      //Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
+      Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
+      Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
       if (_centerPoint.transform.position.x <= -2.5 || _centerPoint.transform.position.x >= 2.5 || _centerPoint.transform.position.y <= -2.5 || _centerPoint.transform.position.y >= 2.5)
       {
         Debug.LogWarning("Your face is not Center");

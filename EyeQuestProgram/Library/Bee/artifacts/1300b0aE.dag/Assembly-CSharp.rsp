@@ -403,6 +403,7 @@
 "Assets/MediaPipeUnity/Tutorial/Hello World/HelloWorld.cs"
 "Assets/MediaPipeUnity/Tutorial/Tasks/FaceLandmarkerRunner.cs"
 "Assets/Script/BlinkDetectionScript.cs"
+"Assets/Script/EnemyAI.cs"
 "Assets/Script/EyeDetectionZone.cs"
 "Assets/Script/FpsCounter.cs"
 "Assets/Script/GameManager.cs"
@@ -410,6 +411,8 @@
 "Assets/Script/GetPointID.cs"
 "Assets/Script/MonsterHealth.cs"
 "Assets/Script/OpenDetection.cs"
+"Assets/Script/Player.cs"
+"Assets/Script/ShiftTurnScript.cs"
 "Assets/Scripts/UnityPurchasing/generated/GooglePlayTangle.cs"
 "Assets/TutorialInfo/Scripts/Readme.cs"
 -langversion:9.0

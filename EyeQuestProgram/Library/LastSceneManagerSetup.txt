@@ -1,5 +1,6 @@
 sceneSetups:
-- path: Assets/Scenes/Scene1.unity
+- path: Assets/MediaPipeUnity/Samples/Scenes/Face Landmark Detection/Face Landmark
+    Detection.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

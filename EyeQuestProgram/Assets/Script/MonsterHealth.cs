@@ -38,7 +38,7 @@ public class MonsterHealth : MonoBehaviour
         transform.LookAt(cam.transform);
         transform.Rotate(0, 180, 0);
     }
-    void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if (isDead) return;
 
