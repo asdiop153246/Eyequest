@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject selectedTarget;
     public int numberOfMonsters = 3;
     
-    private List<GameObject> spawnedMonsters = new List<GameObject>();
+    public List<GameObject> spawnedMonsters = new List<GameObject>();
     [Header("Player Settings")]
     public List<GameObject> players;
     public bool isReadyToAttack = false; // Flag to check if player is ready to attack
@@ -19,12 +19,30 @@ public class GameManager : MonoBehaviour
     public int currentTurnIndex = 0;
     public TextMeshProUGUI turnText;
 
+    public GameObject _EndgamePanel;
     void Start()
     {
         SpawnMonsters();
         StartTurn();
     }
 
+    public void startGame()
+    {
+        // Reset game state
+        currentTurnIndex = 0;
+        spawnedMonsters.Clear();
+        isReadyToAttack = false;
+
+        // Clear previous monsters and players
+        foreach (GameObject monster in GameObject.FindGameObjectsWithTag("Monster"))
+        {
+            Destroy(monster);
+        }
+
+        // Reinitialize players and monsters
+        SpawnMonsters();
+        StartTurn();
+    }
     void SpawnMonsters()
     {
         for (int i = 0; i < numberOfMonsters; i++)
@@ -47,42 +65,64 @@ public class GameManager : MonoBehaviour
     }
     void StartTurn()
     {
+        // Remove null references just in case
+        spawnedMonsters.RemoveAll(m => m == null);
+
         if (turnText != null)
         {
             if (currentTurnIndex == 0)
             {
                 turnText.text = "Player's Turn";
+                players[0].GetComponent<Player>().takeTurn();
                 StartCoroutine(AnimateTurnText());
             }
             else
             {
-                GameObject currentMonster = spawnedMonsters[currentTurnIndex - 1];
+                if (spawnedMonsters.Count == 0)
+                {
+                    Debug.Log("No monsters left, ending game.");
+                    _EndgamePanel.SetActive(true);
+                    return;
+                }
+
+                // Ensure valid index
+                int monsterIndex = currentTurnIndex - 1;
+                if (monsterIndex >= spawnedMonsters.Count)
+                {
+                    NextTurn(); // Skip to next
+                    return;
+                }
+
+                GameObject currentMonster = spawnedMonsters[monsterIndex];
+
+                if (currentMonster == null)
+                {
+                    Debug.LogWarning("Monster reference was null. Skipping turn.");
+                    spawnedMonsters.RemoveAt(monsterIndex);
+                    NextTurn(); // Skip
+                    return;
+                }
+
                 turnText.text = $"{currentMonster.name}'s Turn";
                 StartCoroutine(AnimateTurnText());
+
                 EnemyAI ai = currentMonster.GetComponent<EnemyAI>();
-                if (ai != null)
-                {
-                    ai.TakeTurn();
-                }
+                ai?.TakeTurn();
             }
-
-
         }
         else
         {
-            Debug.LogWarning("Turn Text UI is not assigned, skipping turn display.");
+            Debug.LogWarning("Turn Text UI is not assigned.");
         }
-
-        if (spawnedMonsters.Count == 0)
-        {
-            Debug.Log("No monsters available.");
-            return;
-        }
-
-        // For Test
-        //Invoke(nameof(NextTurn), 2f);
     }
 
+    public void RemoveMonster(GameObject monster)
+    {
+        if (spawnedMonsters.Contains(monster))
+        {
+            spawnedMonsters.Remove(monster);
+        }
+    }
     private IEnumerator AnimateTurnText()
     {
         if (turnText != null)
@@ -94,19 +134,26 @@ public class GameManager : MonoBehaviour
     }
     public void NextTurn()
     {
-        //Debug.Log("Total Turn = " + (spawnedMonsters.Count + 1) + ", Current Turn Index = " + currentTurnIndex);
-        int totalTurns = spawnedMonsters.Count + 1; 
+        spawnedMonsters.RemoveAll(monster => monster == null);
+
+        int totalTurns = spawnedMonsters.Count + 1;
+
+        if (totalTurns == 1) // Only player left
+        {
+            Debug.Log("All monsters defeated.");
+            _EndgamePanel.SetActive(true);
+            return;
+        }
+
         currentTurnIndex = (currentTurnIndex + 1) % totalTurns;
         FindObjectOfType<ShiftTurnScript>()?.ShiftTurnUI();
+
         StartTurn();
     }
     public void SelectTarget(GameObject target)
     {
         selectedTarget = target;
         Debug.Log($"Selected target: {target.name}");
-
-        // Optionally highlight target visually here
-        // e.g., change material color or enable outline
         isReadyToAttack = true; // Set flag to indicate player is ready to attack
         // Optional: Show "Attack" button after selection
     }
