@@ -6,19 +6,12 @@ public class BlinkDetectionScript : MonoBehaviour
   public GameObject _Toppoint;
   public GameObject _Bottompoint;
   public GameObject _blinkText;
-  private Player _player;
-  public int _blinkCount;
+
   private float blinkTimer = 0f;
-  private float holdBlinkThreshold = 1f;
+  private float holdBlinkThreshold = 2f;
   // Start is called once before the first execution of Update after the MonoBehaviour is created
   void Start()
   {
-    _player = FindObjectOfType<Player>();
-    if (_player == null)
-    {
-      Debug.LogError("Player not found in the scene.");
-      return;
-    }
     PointAnnotation[] points = GetComponentsInChildren<PointAnnotation>();
     foreach (var point in points)
     {
@@ -56,35 +49,18 @@ public class BlinkDetectionScript : MonoBehaviour
 
     if (_Toppoint != null && _Bottompoint != null && _blinkText != null)
     {
-      if (_player.isChoosingBlink == false)
-      {
-        _blinkText.SetActive(false);
-        return; // Exit if player is not choosing blink
-      }
       Vector3 topLocalPosition = _Toppoint.transform.localPosition;
       Vector3 bottomLocalPosition = _Bottompoint.transform.localPosition;
       float distance = Vector3.Distance(topLocalPosition, bottomLocalPosition);
 
-      bool isBlinking = distance < 13.5f;
-
-      if (isBlinking)
+      if (distance < 13.5f)
       {
         blinkTimer += Time.deltaTime;
+
         _blinkText.SetActive(true);
-
-        if (!wasBlinking)
-        {
-          _blinkCount++;
-          Debug.Log("Blink Count: " + _blinkCount);
-        }
-
         if (blinkTimer >= holdBlinkThreshold)
         {
           _blinkText.GetComponent<TextMeshProUGUI>().text = "Hold Blink";
-          _player.isImmune = true;
-          _player.isChoosingBlink = false;
-          _player.Attack(7);
-        Debug.Log("Blink Detected! Player is now immune.");
         }
         else
         {
@@ -96,15 +72,6 @@ public class BlinkDetectionScript : MonoBehaviour
         blinkTimer = 0f;
         _blinkText.SetActive(false);
       }
-
-      wasBlinking = isBlinking;
-      if (_blinkCount >= 5)
-      {
-
-        _blinkCount = 0; // Reset count after detection
-      }
     }
   }
-  private bool wasBlinking = false;
-
 }

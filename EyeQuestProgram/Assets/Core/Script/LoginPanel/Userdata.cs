@@ -98,8 +98,6 @@ public class Userdata : MonoBehaviour
 
     public RewardResponse _RewardData;
 
-    public RewardResponse _RedeemHistoryData;
-
     [Serializable]
     public class RewardResponse
     {
@@ -202,4 +200,137 @@ public class Userdata : MonoBehaviour
         public int order_list;
         public string pay_type;
     }
+
+    public RewardResponse_OK _RewardResponse_OK;
+
+    [System.Serializable]
+    public class RewardResponse_OK
+    {
+        public string status;
+        public RewardData data;
+    }
+
+    [Serializable]
+    public class RewardData
+    {
+        public RewardDetail reward_detail;
+        public int used_point;
+        public int current_vision_point;
+    }
+
+    [Serializable]
+    public class RewardDetail
+    {
+        public int wellplace_redeem_transaction_id;
+        public string unique_key;
+        public string product_code;
+        public string product_qrcode;
+        public string product_barcode;
+        public string wellplace_show_code;
+        public int wellplace_product_id;
+        public string name;
+        public int wellplace_brand_id;
+        public int wellplace_category_id;
+        public string product_image;
+        public string description;
+        public string condition;
+        public string promotion;
+        public int point;
+        public int price;
+        public int cost;
+        public string code_prefix;
+        public int code_length;
+        public int code_qty;
+        public int limit_time;
+        public int time_left;
+        public string start_date;
+        public string end_date;
+        public string app_link;
+        public string created_at;
+        public string updated_at;
+        public string wellplace_brand_image;
+    }
+
+    public RedeemResponse _RedeemResponse;
+
+    [Serializable]
+    public class RedeemResponse
+    {
+        public string status;
+        public int code;
+        public List<RedeemItem> data;
+    }
+
+    [Serializable]
+    public class RedeemItem
+    {
+        public int wellplace_redeem_transaction_id;
+        public string unique_key;
+        public string product_code;
+        public string product_qrcode;
+        public string product_barcode;
+        public string wellplace_show_code;
+        public int wellplace_product_id;
+        public string name;
+        public int wellplace_brand_id;
+        public int wellplace_category_id;
+        public string product_image;
+        public string description;
+        public string condition;
+        public string promotion;
+        public int point;
+        public int price;
+        public int cost;
+        public string code_prefix;
+        public int code_length;
+        public int code_qty;
+        public int limit_time;
+        public int time_left;
+        public string start_date;
+        public string end_date;
+        public string created_at;
+        public string updated_at;
+        public string wellplace_brand_image;
+        public int type_code;
+        public string product_redirect;
+        public string app_link;
+    }
+
+
+
+
+    [System.Serializable]
+    public class LeaderboardEntry
+    {
+        public string playerName;
+        public int playerScore;
+    }
+
+    [System.Serializable]
+    public class LevelData
+    {
+        public int level_id;
+        public int score;
+        public int stars;
+        public bool isUnlock;
+        public List<LeaderboardEntry> Leaderboard;
+    }
+
+    [System.Serializable]
+    public class WorldData
+    {
+        public int id;
+        public string name;
+        public int sumStars;
+        public bool isUnlock;
+        public List<LevelData> level;
+    }
+
+    [System.Serializable]
+    public class GameWorldData
+    {
+        public List<WorldData> world;
+    }
+
+    public GameWorldData _WorldData;
 }
