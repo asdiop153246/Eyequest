@@ -12,6 +12,7 @@ public class EyeDetectionZone : MonoBehaviour
   //private bool hasTriggered = false;
   private void Start()
   {
+    eyeStayTimer = 0f;
     if (_nextBox != null)
     {
       _nextBox.SetActive(false); // Ensure the next box is initially inactive

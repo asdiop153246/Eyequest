@@ -8,6 +8,7 @@ public class EnemyAI : MonoBehaviour
     protected float attackPower;
     protected GameManager gameManager;
     public TextMeshProUGUI ActionText;
+    public GameObject _Highlight;
 
     protected virtual void Start()
     {

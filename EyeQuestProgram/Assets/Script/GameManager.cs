@@ -155,6 +155,19 @@ public class GameManager : MonoBehaviour
         selectedTarget = target;
         Debug.Log($"Selected target: {target.name}");
         isReadyToAttack = true; // Set flag to indicate player is ready to attack
+        foreach (GameObject monster in spawnedMonsters)
+        {
+            if (monster != null && monster != selectedTarget)
+            {
+                monster.GetComponent<EnemyAI>()._Highlight.SetActive(false); // Hide highlight for other monsters
+            }
+            else if (monster != null && monster == selectedTarget)
+            {
+                monster.GetComponent<EnemyAI>()._Highlight.SetActive(true); // Show highlight for selected monster
+            }
+        }
+
+
         // Optional: Show "Attack" button after selection
     }
     public List<GameObject> GetMonsters()
