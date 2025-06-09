@@ -54,8 +54,6 @@ public class Minigame_2_core : MonoBehaviour
         _isStart = true;
     }
 
-    public GameObject _AnimationBanner;
-
     public GameObject _Log;
     public GameObject _BinkEffect;
     public Transform _BinkEffectPos;
