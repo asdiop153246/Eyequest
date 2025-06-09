@@ -1,54 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
+// Base class
 public class EnemyAI : MonoBehaviour
 {
-    private float attackPower;
-    private GameManager gameManager;
+    protected float attackPower;
+    protected GameManager gameManager;
+    public TextMeshProUGUI ActionText;
+    public GameObject _Highlight;
 
-    void Start()
+    protected virtual void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        ActionText = GameObject.Find("SkillCastText").GetComponent<TextMeshProUGUI>();
     }
 
-    // Call this when it's the enemy's turn
-    public void TakeTurn()
+    public virtual void TakeTurn()
     {
         Debug.Log($"{gameObject.name} is thinking...");
-
-        // Simulate thinking delay
-        Invoke(nameof(PerformAction), 3.5f);
+        Invoke(nameof(PerformAction), 3f);
     }
 
-    void PerformAction()
+    protected virtual void PerformAction()
     {
-        // Example: Find a random player to attack
         GameObject target = gameManager.GetRandomPlayer();
-
         if (target != null)
         {
-            attackPower = Random.Range(50, 100); // Random attack power for demonstration
+            attackPower = 100f;
             Debug.Log($"{gameObject.name} attacks {target.name} for {attackPower} damage.");
+            ActionText.text = $"{gameObject.name} used Normal Attack!";
             Player player = target.GetComponent<Player>();
             if (player != null)
                 player.TakeDamage(attackPower);
         }
 
-        // End turn after delay
         Invoke(nameof(EndTurn), 1.5f);
     }
 
-    void EndTurn()
+    protected void EndTurn()
     {
+        ActionText.text = "";
         gameManager.NextTurn();
     }
 
     void OnMouseDown()
     {
-        if (gameManager != null && gameManager.currentTurnIndex == 0) // Only allow on player turn
+        if (gameManager != null && gameManager.currentTurnIndex == 0)
         {
             gameManager.SelectTarget(this.gameObject);
         }
     }
 }
+

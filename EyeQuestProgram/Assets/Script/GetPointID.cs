@@ -5,14 +5,16 @@ using TMPro;
 public class GetPointID : MonoBehaviour
 {
   public GameObject _centerPoint;
-  public bool _isCenterPoint = false;
+  public bool _isCenterPoint = true;
   public GameObject _DetectionZone;
   public GameObject _centerText;
   public GameObject _CenterNoseAlignment;
+
+  
   private void Start()
   {
     Debug.Log("Start Searching for CenterPoint");
-    
+
     if (_CenterNoseAlignment == null)
     {
       _CenterNoseAlignment = GameObject.Find("CenterNoseAlignment");
@@ -40,7 +42,7 @@ public class GetPointID : MonoBehaviour
       if (point != null && point._id == 4)
       {
         _centerPoint = point.gameObject;
-        _centerPoint.GetComponent<PointAnnotation>().SetRadius(1f);
+        _centerPoint.gameObject.name = "CenterPoint";
         Debug.Log("CenterPoint found: " + _centerPoint.name);
       }
     }
@@ -55,11 +57,18 @@ public class GetPointID : MonoBehaviour
   }
   private void Update()
   {
-    if (_centerPoint != null)
+      float centerX = _centerPoint.transform.position.x;
+      float centerY = _centerPoint.transform.position.y;
+      
+      float idealX = -2.737237f;
+      float idealY = 6.705392f;
+      float toleranceX = 0.3f;
+      float toleranceY = 0.3f;
+    if (_centerPoint != null && _DetectionZone != null)
     {
       Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
       Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
-      if (_centerPoint.transform.position.x <= -2.5 || _centerPoint.transform.position.x >= 2.5 || _centerPoint.transform.position.y <= -2.5 || _centerPoint.transform.position.y >= 2.5)
+      if (Mathf.Abs(centerX - idealX) > toleranceX || Mathf.Abs(centerY - idealY) > toleranceY)
       {
         Debug.LogWarning("Your face is not Center");
         _isCenterPoint = false;
@@ -76,6 +85,13 @@ public class GetPointID : MonoBehaviour
         _centerText.SetActive(false);
         _CenterNoseAlignment.SetActive(false);
       }
+
+
+
+      // Vector3 centerPos = _centerPoint.transform.position;
+      // Vector3 detectionZonePos = _DetectionZone.transform.position;
+
+      // _DetectionZone.transform.position = new Vector3(centerPos.x, centerPos.y, detectionZonePos.z);
     }
   }
 }
