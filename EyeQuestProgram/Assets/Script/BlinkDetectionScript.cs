@@ -81,7 +81,7 @@ public class BlinkDetectionScript : MonoBehaviour
         if (blinkTimer >= holdBlinkThreshold)
         {
           _blinkText.GetComponent<TextMeshProUGUI>().text = "Hold Blink";
-          _player.isImmune = true;
+          _player.stats.isImmune = true;
           _player.isChoosingBlink = false;
           _player.Attack(7);
         Debug.Log("Blink Detected! Player is now immune.");

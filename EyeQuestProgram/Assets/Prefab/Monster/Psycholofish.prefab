@@ -714,8 +714,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987b52ec30c1f4745ae1bdcc30d3da87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statProfile: {fileID: 11400000, guid: 77a3ce51c789fbc448d606241241d8b7, type: 2}
+  totalStatPoints: 10
   ActionText: {fileID: 0}
   _Highlight: {fileID: 1518442477787995773}
+  baseStats:
+    Strength: 0
+    Luck: 0
+    Tenacity: 0
+    maxHealth: 0
+    Damage: 0
+    CriticalChance: 0
+    CriticalPower: 0
+    DamageReduction: 0
 --- !u!1001 &1182144991666578179
 PrefabInstance:
   m_ObjectHideFlags: 0

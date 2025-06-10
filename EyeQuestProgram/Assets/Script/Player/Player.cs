@@ -3,43 +3,53 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 [System.Serializable]
 public class Skill
 {
     public string name;
     public float additionalAttackPower;
-    public float criticalMultiplier;
-    public float chanceToCrit;
 
-    public Skill(string name, float additionalAttackPower, float criticalMultiplier, float chanceToCrit)
+    public Skill(string name, float additionalAttackPower)
     {
         this.name = name;
         this.additionalAttackPower = additionalAttackPower;
-        this.criticalMultiplier = criticalMultiplier;
-        this.chanceToCrit = chanceToCrit;
     }
+}
+[System.Serializable]
+public class PlayerStats
+{
+    public int level = 1;
+    [Header("Health Settings")]
+    public float maxHealth;
+    public float currentHealth;
+
+    [Header("Attack & Critical")]
+    public float baseAttackPower = 0f;
+    public float baseCriticalChance = 0f;
+
+    [Header("Attributes")]
+    public float strength;
+    public float luck;
+    public float tenacity;   
+
+    [Header("Immune Settings")]
+    public bool isImmune = false;
 }
 public class Player : MonoBehaviour
 {
     [Header("Player Settings")]
     public Image healthBar; // Assign in Inspector
     public TextMeshProUGUI healthText; // Assign in Inspector
-    [Header("Combat Settings")]
-    public float health = 1000f;
-    public float maxHealth = 1000f;
-    public float baseAttackPower = 0f;
-    public float baseCriticalChance = 15f;
-    public float baseCriticalPower = 1.5f;
-    public float evasionChance = 10f;
-    public bool isImmune = false;
-    public bool isChoosingBlink = false;
+    public PlayerStats stats = new PlayerStats();
     [Header("Game Manager")]
     private GameManager gameManager;
 
     [Header("Skill Settings")]
     public List<Skill> skills = new List<Skill>();
     public TextMeshProUGUI skillText; // Assign in Inspector
+    public bool isChoosingBlink = false;
 
     [Header("Webcam Settings")]
     public GameObject _webcamObject; // Assign the webcam object in Inspector
@@ -48,27 +58,52 @@ public class Player : MonoBehaviour
     void Start()
     {
 
-        skills.Add(new Skill("Infinity Attack", 50f, 1.5f, 15f));
-        skills.Add(new Skill("Focus Beam", 30f, 2.0f, 10f));
-        skills.Add(new Skill("Vertical Attack", 40f, 2.5f, 25f));
-        skills.Add(new Skill("Horizontal Attack", 40, 1.5f, 15f));
-        skills.Add(new Skill("X Strike", 100f, 2.0f, 10f));
-        skills.Add(new Skill("Cyclone", 70f, 2.5f, 25f));
-        skills.Add(new Skill("Blinkshot", 20f, 1.25f, 10f));
-        skills.Add(new Skill("Shield", 0f, 1f, 1f));
+        skills.Add(new Skill("Infinity Attack", 0));
+        skills.Add(new Skill("Focus Beam", 0));
+        skills.Add(new Skill("Vertical Attack", 0));
+        skills.Add(new Skill("Horizontal Attack", 0));
+        skills.Add(new Skill("X Strike", 0));
+        skills.Add(new Skill("Cyclone", 0));
+        skills.Add(new Skill("Blinkshot", 0));
+        skills.Add(new Skill("Shield", 0f));
 
 
 
         gameManager = FindObjectOfType<GameManager>();
+        if (_webcamObject != null)
+        {
+            _webcamObject.SetActive(false); // Disable the webcam object at start
+        }
+        ApplyStats();
         if (healthBar != null)
         {
             healthBar.fillAmount = 1f; // Full health at start
         }
         if (healthText != null)
         {
-            healthText.text = $"{health}/{maxHealth}"; // Display initial health
-            health = maxHealth; // Initialize health
+            healthText.text = $"{(int)stats.currentHealth}/{(int)stats.maxHealth}"; // Display initial health
+            stats.currentHealth = stats.maxHealth; // Initialize health
         }
+    }
+    void ApplyStats()
+    {
+        if (gameManager == null)
+        {
+            Debug.LogWarning("GameManager is not assigned or found in the scene.");
+            return;
+        }
+        stats.strength = stats.level + 2 + (gameManager.StrengthItemModifier);
+        stats.luck = stats.level + 2 + (gameManager.LuckItemModifier);
+        stats.tenacity = stats.level + 2 + (gameManager.TenacityItemModifier);
+
+        stats.maxHealth = MathF.Round(((stats.tenacity + gameManager.TenacityItemModifier) * 6f) + ((stats.strength + gameManager.StrengthItemModifier) * 1.5f));
+        stats.currentHealth = stats.maxHealth;
+
+        stats.baseAttackPower = MathF.Round(((stats.strength + gameManager.StrengthItemModifier) * 2f) + (stats.luck * 0.5f));
+
+        stats.baseCriticalChance = 0.022f * (stats.luck + gameManager.LuckItemModifier) / (1+(0.22f * 0.7f) * stats.luck + gameManager.LuckItemModifier); ; 
+
+        UpdateHealthBar();
     }
 
     public void takeTurn()
@@ -79,11 +114,11 @@ public class Player : MonoBehaviour
             return;
         }
 
-        
+
         if (gameManager.currentTurnIndex == 0)
         {
             Debug.Log($"{gameObject.name} is taking a turn.");
-            isImmune = false;
+            stats.isImmune = false;
         }
         else
         {
@@ -124,20 +159,16 @@ public class Player : MonoBehaviour
             return;
         }
 
-        Skill selectedSkill = skills[skillIndex];
-        float actualAttackPower = baseAttackPower + selectedSkill.additionalAttackPower;
+        //Skill selectedSkill = skills[skillIndex];
+        float actualAttackPower = stats.baseAttackPower; //+ selectedSkill.additionalAttackPower;
         bool isCritical = false;
 
-        // Critical chance logic
-        if (Random.Range(0f, 100f) < selectedSkill.chanceToCrit)
+        // Calculate critical hit
+        if (UnityEngine.Random.value < stats.baseCriticalChance)
         {
-            actualAttackPower *= selectedSkill.criticalMultiplier;
             isCritical = true;
-            Debug.Log($"{gameObject.name} used {selectedSkill.name} - CRITICAL HIT!");
-        }
-        else
-        {
-            Debug.Log($"{gameObject.name} used {selectedSkill.name}");
+            actualAttackPower *= 2f; // Double the attack power for critical hits
+            Debug.Log($"{gameObject.name} landed a critical hit!");
         }
 
         DealDamage(gameManager.selectedTarget, actualAttackPower, isCritical,skillIndex);
@@ -164,17 +195,14 @@ public class Player : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        if (isImmune)
-        {
-            Debug.Log($"{gameObject.name} is immune to damage.");
-            return;
-        }
-        health -= damage;
-        Debug.Log($"{gameObject.name} takes {damage} damage. Remaining health: {health}");
-        if (health <= 0)
+        if (stats.isImmune) return;
+        stats.currentHealth = Mathf.Max(0f, stats.currentHealth - damage);
+
+        if (stats.currentHealth <= 0)
         {
             Die();
         }
+
         UpdateHealthBar();
     }
     void Die()
@@ -191,12 +219,12 @@ public class Player : MonoBehaviour
     }
     void UpdateHealthBar()
     {
-        if (health < 0) health = 0; // Ensure health doesn't go below 0
-        if (health > maxHealth) health = maxHealth; // Ensure health doesn't exceed maxHealth
+        if (stats.currentHealth < 0) stats.currentHealth = 0; // Ensure health doesn't go below 0
+        if (stats.currentHealth > stats.maxHealth) stats.currentHealth = stats.maxHealth; // Ensure health doesn't exceed maxHealth
         if (healthBar != null)
         {
-            healthBar.fillAmount = health / maxHealth; 
-            healthText.text = $"{health}/{maxHealth}"; 
+            healthBar.fillAmount = stats.currentHealth / stats.maxHealth; 
+            healthText.text = $"{stats.currentHealth}/{stats.maxHealth}"; 
         }
 
     }

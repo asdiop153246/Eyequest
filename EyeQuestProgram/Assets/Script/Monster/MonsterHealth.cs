@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 public class MonsterHealth : MonoBehaviour
 {
     [Header("Monster Health")]
@@ -49,6 +50,7 @@ public class MonsterHealth : MonoBehaviour
             Die();
         }
         UpdateHealthBar();
+        
     }
 void Die()
 {
