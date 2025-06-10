@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-
+        
         if (gameManager.currentTurnIndex == 0)
         {
             Debug.Log($"{gameObject.name} is taking a turn.");
@@ -140,10 +140,10 @@ public class Player : MonoBehaviour
             Debug.Log($"{gameObject.name} used {selectedSkill.name}");
         }
 
-        DealDamage(gameManager.selectedTarget, actualAttackPower, isCritical, skillIndex);
+        DealDamage(gameManager.selectedTarget, actualAttackPower, isCritical,skillIndex);
     }
 
-    private void DealDamage(GameObject target, float damageAmount, bool wasCritical, int skillIndex)
+    private void DealDamage(GameObject target, float damageAmount, bool wasCritical,int skillIndex)
     {
         if (target == null)
         {
@@ -195,11 +195,9 @@ public class Player : MonoBehaviour
         if (health > maxHealth) health = maxHealth; // Ensure health doesn't exceed maxHealth
         if (healthBar != null)
         {
-            healthBar.fillAmount = health / maxHealth;
-            healthText.text = $"{health}/{maxHealth}";
+            healthBar.fillAmount = health / maxHealth; 
+            healthText.text = $"{health}/{maxHealth}"; 
         }
-
-
 
     }
 }

@@ -6,7 +6,7 @@ using TMPro;
 public class MonsterHealth : MonoBehaviour
 {
     [Header("Monster Health")]
-    public float maxHealth = 400f;
+    public float maxHealth; // Set the maximum health for the monster
     public float currentHealth;
     public bool isDead = false;
 
@@ -17,6 +17,7 @@ public class MonsterHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth = this.transform.parent.GetComponent<EnemyAI>().CurrentStats.maxHealth;
         cam = Camera.main;
         currentHealth = maxHealth;
         if (healthBarUI != null)

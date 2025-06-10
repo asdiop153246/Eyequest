@@ -29,8 +29,8 @@ public class EyeDetectionZone : MonoBehaviour
       {
         //hasTriggered = true;
         //Debug.Log("Detect the Specific Eye");
-        this.gameObject.SetActive(false);
         eyeStayTimer = 0f;
+        this.gameObject.SetActive(false);
         onEyeDetected.Invoke();
         if (_nextBox != null)
         {
