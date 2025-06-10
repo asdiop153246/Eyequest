@@ -103,7 +103,6 @@ public class Player : MonoBehaviour
         {
             isChoosingBlink = true;
             Debug.Log($"{gameObject.name} is choosing to blink.");
-            // Implement blink logic here, e.g., show UI for blink options
         }
         else
         {
@@ -152,9 +151,11 @@ public class Player : MonoBehaviour
             return;
         }
         MonsterHealth monster = target.GetComponentInChildren<MonsterHealth>();
+        Animator monAnim = target.GetComponentInChildren<Animator>();
         if (monster != null)
         {
             monster.TakeDamage(damageAmount);
+            monAnim.SetTrigger("_hit");
             Debug.Log($"{gameObject.name} attacks {target.name} for {damageAmount} damage.");
         }
         skillText.text = skills[skillIndex].name + " used! " + (wasCritical ? "Critical Hit!" : "");
@@ -198,7 +199,5 @@ public class Player : MonoBehaviour
             healthText.text = $"{health}/{maxHealth}"; 
         }
 
-            
-        
     }
 }

@@ -5,15 +5,36 @@ using TMPro;
 // Base class
 public class EnemyAI : MonoBehaviour
 {
-    protected float attackPower;
+    [SerializeField] private Statsprofile statProfile;
+    [SerializeField] private float totalStatPoints = 10f;
     protected GameManager gameManager;
     public TextMeshProUGUI ActionText;
     public GameObject _Highlight;
+    [System.Serializable]
+    public class Stats
+    {
+        public float Strength;
+        public float Luck;
+        public float Tenacity;
+        public float maxHealth;
+        public float Damage;
+        public float CriticalChance;
+        public float CriticalPower;
+        public float DamageReduction;
+
+    }
+    [SerializeField] private Stats baseStats;
+    public Stats CurrentStats => baseStats;
+
 
     protected virtual void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
         ActionText = GameObject.Find("SkillCastText").GetComponent<TextMeshProUGUI>();
+        if (statProfile != null && statProfile.IsValid())
+        {
+            ApplyStatProfile(statProfile, totalStatPoints);
+        }
     }
 
     public virtual void TakeTurn()
@@ -27,12 +48,14 @@ public class EnemyAI : MonoBehaviour
         GameObject target = gameManager.GetRandomPlayer();
         if (target != null)
         {
-            attackPower = 100f;
-            Debug.Log($"{gameObject.name} attacks {target.name} for {attackPower} damage.");
+            Debug.Log($"{gameObject.name} attacks {target.name} for {CurrentStats.Damage} damage.");
             ActionText.text = $"{gameObject.name} used Normal Attack!";
             Player player = target.GetComponent<Player>();
             if (player != null)
-                player.TakeDamage(attackPower);
+            {
+                GetComponentInChildren<Animator>()?.SetTrigger("_attack");
+                player.TakeDamage(CurrentStats.Damage);
+            }
         }
 
         Invoke(nameof(EndTurn), 1.5f);
@@ -50,6 +73,18 @@ public class EnemyAI : MonoBehaviour
         {
             gameManager.SelectTarget(this.gameObject);
         }
+    }
+    protected void ApplyStatProfile(Statsprofile profile, float totalPoints)
+    {
+        baseStats.Strength = totalPoints * profile.StrengthPercent;
+        baseStats.Luck = totalPoints * profile.LuckPercent;
+        baseStats.Tenacity = totalPoints * profile.TenacityPercent;
+
+        // Derived stats
+        baseStats.Damage = baseStats.Strength * 2f;
+        baseStats.CriticalChance = baseStats.Luck * 0.3f;
+        baseStats.CriticalPower = baseStats.Strength * 1.5f;
+        baseStats.DamageReduction = baseStats.Tenacity * 0.5f;
     }
 }
 

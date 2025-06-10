@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     [Header("Turn Management")]
     public int currentTurnIndex = 0;
     public TextMeshProUGUI turnText;
+    [Header("World Settings")]
+    public float worldIndex;
+    public float stageIndex;
 
     public GameObject _EndgamePanel;
     void Start()

@@ -57,7 +57,7 @@ Material:
     - _CastShadows: 1
     - _Cull: 1
     - _DstBlend: 10
-    - _Fade_Distance: 40
+    - _Fade_Distance: 75
     - _Outline_Color: 0
     - _Outline_Distance: 75
     - _Outline_Thickness: 0.002

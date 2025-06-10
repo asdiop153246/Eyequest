@@ -429,6 +429,7 @@
 "Assets/Script/Monster/BunnyShoot.cs"
 "Assets/Script/Monster/EnemyAI.cs"
 "Assets/Script/Monster/MonsterHealth.cs"
+"Assets/Script/Monster/Statsprofile.cs"
 "Assets/Script/OpenDetection.cs"
 "Assets/Script/Player.cs"
 "Assets/Script/ShiftTurnScript.cs"
