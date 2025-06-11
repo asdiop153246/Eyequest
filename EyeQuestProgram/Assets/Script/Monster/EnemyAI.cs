@@ -11,6 +11,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] protected GameManager gameManager;
     public TextMeshProUGUI ActionText;
     public GameObject _Highlight;
+    public int _MonsterID;
     [System.Serializable]
     public class Stats
     {

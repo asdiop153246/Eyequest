@@ -365,9 +365,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statProfile: {fileID: 11400000, guid: 37cd23e4ecbd90b4c9cb507ff90665ce, type: 2}
-  totalStatPoints: 10
+  gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 2445774036914242285}
+  _MonsterID: 8
   baseStats:
     Strength: 0
     Luck: 0

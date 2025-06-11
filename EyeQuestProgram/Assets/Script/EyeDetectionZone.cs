@@ -10,13 +10,15 @@ public class EyeDetectionZone : MonoBehaviour
   public float requiredStayTime = 2f;
   private bool isEyeInside = false;
   //private bool hasTriggered = false;
-  private void Start()
+  private void OnEnable()
   {
-    eyeStayTimer = 0f;
-    if (_nextBox != null)
-    {
-      _nextBox.SetActive(false); // Ensure the next box is initially inactive
-    }
+      isEyeInside = false;
+      eyeStayTimer = 0f;
+
+      if (_nextBox != null)
+      {
+          _nextBox.SetActive(false); // Ensure the next box starts inactive
+      }
   }
   // Update is called once per frame
   private void Update()
@@ -27,9 +29,7 @@ public class EyeDetectionZone : MonoBehaviour
 
       if (eyeStayTimer >= requiredStayTime)
       {
-        //hasTriggered = true;
         //Debug.Log("Detect the Specific Eye");
-        eyeStayTimer = 0f;
         this.gameObject.SetActive(false);
         onEyeDetected.Invoke();
         if (_nextBox != null)

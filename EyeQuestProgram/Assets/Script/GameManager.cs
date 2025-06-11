@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public GameObject[] monsterPrefabs; // Assign different monster types in Inspector
     public Transform[] spawnPoints;     // Predefined spawn positions
     public GameObject selectedTarget;
-    public int numberOfMonsters = 3;
+    public int numberOfMonsters;
 
     public List<GameObject> spawnedMonsters = new List<GameObject>();
     [Header("Player Settings")]
@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
 
             GameObject monster = Instantiate(prefab, spawnPoints[i].position, Quaternion.identity);
             monster.transform.Rotate(0, 180, 0);
-            monster.name = prefab.name + $" ({currentTier})";
+            monster.name = prefab.name;
 
             EnemyAI ai = monster.GetComponent<EnemyAI>();
             if (ai != null)

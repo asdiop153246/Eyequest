@@ -50,9 +50,12 @@ public class Player : MonoBehaviour
     public List<Skill> skills = new List<Skill>();
     public TextMeshProUGUI skillText; // Assign in Inspector
     public bool isChoosingBlink = false;
+    public bool isChoosingShield = false;
 
     [Header("Webcam Settings")]
     public GameObject _webcamObject; // Assign the webcam object in Inspector
+    public GameObject _ShieldGuideObject; // Assign the blink guide object in Inspector
+    public GameObject _blinkGuideObject; // Assign the blink guide object in Inspector
 
 
     void Start()
@@ -144,10 +147,28 @@ public class Player : MonoBehaviour
             Debug.Log($"{gameObject.name} cannot choose to blink right now. It's not the player's turn.");
         }
     }
+        public void ChooseShield()
+    {
+        if (gameManager == null)
+        {
+            Debug.LogWarning("GameManager is not assigned or found in the scene.");
+            return;
+        }
+
+        if (gameManager.currentTurnIndex == 0)
+        {
+            isChoosingShield = true;
+            Debug.Log($"{gameObject.name} is choosing to Shield.");
+        }
+        else
+        {
+            Debug.Log($"{gameObject.name} cannot choose to Shield right now. It's not the player's turn.");
+        }
+    }
     // Call this method when it's the player's turn
     public void Attack(int skillIndex)
     {
-        if (gameManager == null || gameManager.selectedTarget == null)
+        if (gameManager == null || gameManager.selectedTarget == null && skillIndex != 7)
         {
             Debug.LogWarning("Cannot attack: GameManager or selected target is null.");
             return;
@@ -170,8 +191,18 @@ public class Player : MonoBehaviour
             actualAttackPower *= 2f; // Double the attack power for critical hits
             Debug.Log($"{gameObject.name} landed a critical hit!");
         }
+        if (skillIndex == 7) // Assuming skillIndex 7 is for "Shield"
+        {
+            _ShieldGuideObject.SetActive(false);
+            DealDamage(gameManager.players[0], 0, false, skillIndex);
 
-        DealDamage(gameManager.selectedTarget, actualAttackPower, isCritical,skillIndex);
+        }
+        else if (skillIndex == 6) // Assuming skillIndex 6 is for "Blinkshot"
+        {
+            _blinkGuideObject.SetActive(false);
+        }
+
+        DealDamage(gameManager.selectedTarget, actualAttackPower, isCritical, skillIndex);
     }
 
     private void DealDamage(GameObject target, float damageAmount, bool wasCritical,int skillIndex)
@@ -183,7 +214,7 @@ public class Player : MonoBehaviour
         }
         MonsterHealth monster = target.GetComponentInChildren<MonsterHealth>();
         Animator monAnim = target.GetComponentInChildren<Animator>();
-        if (monster != null)
+        if (monster != null && damageAmount > 0)
         {
             monster.TakeDamage(damageAmount);
             monAnim.SetTrigger("_hit");
