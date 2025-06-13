@@ -1,6 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Minigame_core_4 : MonoBehaviour
 {
@@ -49,10 +50,40 @@ public class Minigame_core_4 : MonoBehaviour
         _BinkBarPanel.SetActive(true);
         _MainBanner.SetActive(false);
         _EyeUI[0].SetActive(true);
+        _EyeUI[2].SetActive(true);
         _TimmerIcon.SetActive(true);
         _Timmer = 60;
         _isStart = true;
-       // SetNextSpawnTime();
+        GetComponent<AudioSource>().Play();
+        StartCoroutine(RandomAEUOI());
+    }
+
+    public float minDelay = 3f;     // เวลาขั้นต่ำก่อนจะเกิด AEUOI
+    public float maxDelay = 7f;     // เวลาสูงสุดก่อนจะเกิด AEUOI
+
+    public bool _isStop;
+
+    public float waitTime;
+    IEnumerator RandomAEUOI()
+    {
+        waitTime = Random.Range(minDelay, maxDelay);
+        _isStop = false;
+        _EyeUI[0].SetActive(true);
+        _EyeUI[1].SetActive(false);
+        _EyeUI[2].SetActive(true);
+        _EyeUI[3].SetActive(false);
+        GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(waitTime);
+        _isStop = true;
+        _EyeUI[0].SetActive(false);
+        _EyeUI[1].SetActive(true);
+        _EyeUI[2].SetActive(false);
+        _EyeUI[3].SetActive(true);
+        waitTime = Random.Range(minDelay, maxDelay);
+        GetComponent<AudioSource>().Pause();
+        yield return new WaitForSeconds(waitTime);
+
+        StartCoroutine(RandomAEUOI());
     }
 
     public void FixedUpdate()
@@ -65,10 +96,53 @@ public class Minigame_core_4 : MonoBehaviour
             if (_Timmer <= 0)
             {
                 _isStart = false;
-
+                StopAllCoroutines();
+                GetComponent<AudioSource>().Pause();
                 StartCoroutine(_EndGame_ShowSomeThing());
             }
+
+            if (_isStop)
+            {
+                if (_isHide)
+                {
+                    _ScoreCounter++;
+                    _ScoreCounterUI.text = _ScoreCounter + "";
+                }
+                else
+                {
+                    _ScoreCounter--;
+
+                    if (_ScoreCounter <= 0)
+                    {
+                        _ScoreCounter = 0;
+                    }
+                    _ScoreCounterUI.text = _ScoreCounter + "";
+                }
+
+            }
+            else
+            {
+                if (_isHide)
+                {
+                    _ScoreCounter--;
+
+                    if (_ScoreCounter <= 0)
+                    {
+                        _ScoreCounter = 0;
+                    }
+                    _ScoreCounterUI.text = _ScoreCounter + "";
+                }
+                else
+                {
+                    _ScoreCounter++;
+                    _ScoreCounterUI.text = _ScoreCounter + "";
+                }
+            }
         }
+
+        
+        
+            
 
     }
 
@@ -78,10 +152,10 @@ public class Minigame_core_4 : MonoBehaviour
     public void _DoneVision()
     {
         StartCoroutine(_DoneProcessing());
-        GameObject A = Instantiate(_BinkEffect, _BinkEffectPos);
-        A.transform.localScale = Vector3.one;
-        A.transform.localPosition = Vector3.zero;
-        Destroy(A, 2f);
+        //GameObject A = Instantiate(_BinkEffect, _BinkEffectPos);
+        //A.transform.localScale = Vector3.one;
+        //A.transform.localPosition = Vector3.zero;
+        //Destroy(A, 2f);
     }
 
     IEnumerator _DoneProcessing()
@@ -89,7 +163,7 @@ public class Minigame_core_4 : MonoBehaviour
         //_Log.GetComponent<TMPro.TextMeshProUGUI>().text = "Show Hit Effect";
         _ScoreCounter++;
         _ScoreCounterUI.text =  _ScoreCounter + "";
-        _ScoreCounterUI.gameObject.GetComponent<Animation>().Play("ScorePopper");
+       // _ScoreCounterUI.gameObject.GetComponent<Animation>().Play("ScorePopper");
         yield return new WaitForSeconds(0);
     }
 
@@ -139,5 +213,14 @@ public class Minigame_core_4 : MonoBehaviour
                 break;
         }
 
+    }
+
+    public bool _isBlink;
+
+    public bool _isHide;
+
+    public void _isBlinkEnable()
+    {
+        _isBlink = true;
     }
 }

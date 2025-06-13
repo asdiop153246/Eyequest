@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,8 +49,9 @@ public class Minigame_2_core : MonoBehaviour
         _BinkBarPanel.SetActive(true);
         _MainBanner.SetActive(false);
         _EyeUI[0].SetActive(true);
+        _EyeUI[1].SetActive(true);
         _TimmerIcon.SetActive(true);
-        _Timmer = 10;
+        _Timmer = 60;
         _isStart = true;
     }
 
@@ -61,6 +62,7 @@ public class Minigame_2_core : MonoBehaviour
     public void _DoneVision()
     {
         StartCoroutine(_DoneProcessing());
+        _isBlinkEnable();
         GameObject A = Instantiate(_BinkEffect, _BinkEffectPos);
         A.transform.localScale = Vector3.one;
         A.transform.localPosition = Vector3.zero;
@@ -111,6 +113,7 @@ public class Minigame_2_core : MonoBehaviour
         _BinkBarPanel.SetActive(false);
         _MainBanner.SetActive(false);
         _EyeUI[0].SetActive(false);
+        _EyeUI[1].SetActive(false);
         _TimeUp.SetActive(true);
         yield return new WaitForSeconds(1);
         _TimeUp.SetActive(false);
@@ -149,5 +152,12 @@ public class Minigame_2_core : MonoBehaviour
                 break;
         }
         
+    }
+
+    public bool _isBlink;
+
+    public void _isBlinkEnable()
+    {
+        _isBlink = true;
     }
 }

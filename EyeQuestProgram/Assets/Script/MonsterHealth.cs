@@ -50,12 +50,18 @@ public class MonsterHealth : MonoBehaviour
         }
         UpdateHealthBar();
     }
-    void Die()
+void Die()
+{
+    isDead = true;
+
+    GameManager gm = FindObjectOfType<GameManager>();
+    if (gm != null)
     {
-        isDead = true;
-        // Handle death logic here, e.g., play animation, drop loot, etc.
-        Destroy(transform.parent.gameObject); // Destroy the monster GameObject
+        gm.RemoveMonster(transform.parent.gameObject); // Notify GameManager before destroying
     }
+
+    Destroy(transform.parent.gameObject);
+}
 
     void UpdateHealthBar()
     {

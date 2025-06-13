@@ -93,25 +93,17 @@ public class Player : MonoBehaviour
 
     public void ChooseBlink()
     {
-        if (gameManager == null)
-        {
-            Debug.LogWarning("GameManager is not assigned or found in the scene.");
-            return;
-        }
-
-        if (gameManager.currentTurnIndex == 0)
-        {
-            isChoosingBlink = true;
-            Debug.Log($"{gameObject.name} is choosing to blink.");
-        }
-        else
-        {
-            Debug.Log($"{gameObject.name} cannot choose to blink right now. It's not the player's turn.");
-        }
+        isChoosingBlink = true;
+       
     }
+
+    public GameObject _MinigameCore;
     // Call this method when it's the player's turn
     public void Attack(int skillIndex)
     {
+
+        _MinigameCore.GetComponent<Minigame_1_core>()._DoneVision();
+
         if (gameManager == null || gameManager.selectedTarget == null)
         {
             Debug.LogWarning("Cannot attack: GameManager or selected target is null.");

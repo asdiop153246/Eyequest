@@ -22,6 +22,7 @@ public class Minigame_1_core : MonoBehaviour
     public bool _isStart;
 
     public List<GameObject> _EyeUI;
+    public List<GameObject> _EyeUI_2;
     public void _GameStarter()
     {
         StartCoroutine(_ReadaySetGo());
@@ -30,6 +31,8 @@ public class Minigame_1_core : MonoBehaviour
     public GameObject _ScorePanel;
     public GameObject _VideoPanel;
     public GameObject _TimmerIcon;
+
+    public GameObject _CurrentMonster;
 
     IEnumerator _ReadaySetGo()
     {
@@ -51,7 +54,7 @@ public class Minigame_1_core : MonoBehaviour
         _TimmerIcon.SetActive(true);
         _MainBanner.SetActive(false);
         _CreateMonster();
-        _Timmer = 15;
+        _Timmer = 60;
         _isStart = true;
     }
     public void _CreateMonster()
@@ -66,6 +69,7 @@ public class Minigame_1_core : MonoBehaviour
         {
             int randomIndex = Random.Range(0, _Monster.Count);
             _Monster[randomIndex].SetActive(true);
+            _CurrentMonster = _Monster[randomIndex];
         }
 
         foreach (GameObject obj in _EyeUI)
@@ -73,16 +77,25 @@ public class Minigame_1_core : MonoBehaviour
             obj.SetActive(false);
         }
 
+        foreach (GameObject obj in _EyeUI_2)
+        {
+            obj.SetActive(false);
+        }
+
         // Pick a random object from the list
-        if (_EyeUI.Count > 0)
+        if (_Core._Core.Count > 0)
         {
             int randomIndex = Random.Range(0, _EyeUI.Count);
-            _EyeUI[randomIndex].SetActive(true);
-
+            _Core._Core[randomIndex].onAction.Invoke();
+            _EyeUI[randomIndex].gameObject.SetActive(true);
+            _EyeUI_2[randomIndex].gameObject.SetActive(true);
+            _EyeUI[randomIndex].transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = _Core._Core[randomIndex]._SkillName;
             // Add Skill Processing Here
             // Show Camera
         }
     }
+
+    public Minigame_SkillController _Core;
 
     public GameObject _Log;
     public GameObject _HitEffect;
@@ -95,6 +108,11 @@ public class Minigame_1_core : MonoBehaviour
         {
             obj.SetActive(false);
         }
+
+        foreach (GameObject obj in _EyeUI_2)
+        {
+            obj.SetActive(false);
+        }
     }
 
     IEnumerator _DoneProcessing()
@@ -102,9 +120,10 @@ public class Minigame_1_core : MonoBehaviour
         _Log.GetComponent<TMPro.TextMeshProUGUI>().text = "Show Hit Effect";
         _HitEffect.SetActive(true);
         _SlashEffect.SetActive(true);
+        _CurrentMonster.transform.GetChild(0).gameObject.GetComponent<Animator>().SetTrigger("_hit");
         // Play Animation
         // Play Hit Effect
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         _Log.GetComponent<TMPro.TextMeshProUGUI>().text = "Run Dead Animation";
         // Play Animation
         foreach (GameObject obj in _Monster)
@@ -116,9 +135,13 @@ public class Minigame_1_core : MonoBehaviour
         _HitEffect.SetActive(false);
         _SlashEffect.SetActive(false);
         _Log.GetComponent<TMPro.TextMeshProUGUI>().text = "Next Monster";
+
+        _Core.GetComponent<Minigame_SkillController>()._HideAllObject();
+
         _CreateMonster();
 
         _ScoreCounter++;
+  
     }
 
     public GameObject _EndGameBanner;
@@ -166,6 +189,11 @@ public class Minigame_1_core : MonoBehaviour
             obj.SetActive(false);
         }
 
+        foreach (GameObject obj in _EyeUI_2)
+        {
+            obj.SetActive(false);
+        }
+
         if (_Reward.Count > 0)
         {
             int randomIndex = Random.Range(0, _Reward.Count);
@@ -188,5 +216,12 @@ public class Minigame_1_core : MonoBehaviour
                 break;
         }
 
+    }
+
+    public bool _isBlink;
+
+    public void _isBlinkEnable()
+    {
+        _isBlink = true;
     }
 }

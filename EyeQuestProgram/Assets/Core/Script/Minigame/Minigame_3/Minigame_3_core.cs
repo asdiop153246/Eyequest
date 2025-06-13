@@ -49,6 +49,7 @@ public class Minigame_3_core : MonoBehaviour
         _BinkBarPanel.SetActive(true);
         _MainBanner.SetActive(false);
         _EyeUI[0].SetActive(true);
+        _EyeUI[1].SetActive(true);
         _TimmerIcon.SetActive(true);
         _Timmer = 60;
         _isStart = true;
@@ -150,7 +151,7 @@ public class Minigame_3_core : MonoBehaviour
         Debug.Log($"Distance: {distance:F2} -> Result: {result}");
 
         StartCoroutine(_RemoveAddDestory(_PINStore[0]));
-       
+        
     }
 
     IEnumerator _RemoveAddDestory(GameObject _x)
@@ -158,26 +159,10 @@ public class Minigame_3_core : MonoBehaviour
         _PINStore.Remove(_x);
         yield return new WaitForSeconds(0.2f);
         Destroy(_x.gameObject);
+        _isBlinkEnable();
+
     }
 
-
-    public void _DoneVision()
-    {
-        StartCoroutine(_DoneProcessing());
-        GameObject A = Instantiate(_BinkEffect, _BinkEffectPos);
-        A.transform.localScale = Vector3.one;
-        A.transform.localPosition = Vector3.zero;
-        Destroy(A, 2f);
-    }
-
-    IEnumerator _DoneProcessing()
-    {
-        //_Log.GetComponent<TMPro.TextMeshProUGUI>().text = "Show Hit Effect";
-        _ScoreCounter++;
-        _ScoreCounterUI.text = "SCORE : " + _ScoreCounter + "";
-        _ScoreCounterUI.gameObject.GetComponent<Animation>().Play("ScorePopper");
-        yield return new WaitForSeconds(0);
-    }
 
     public GameObject _TimeUp;
 
@@ -191,6 +176,7 @@ public class Minigame_3_core : MonoBehaviour
         _BinkBarPanel.SetActive(false);
         _MainBanner.SetActive(false);
         _EyeUI[0].SetActive(false);
+        _EyeUI[1].SetActive(false);
         _TimeUp.SetActive(true);
         yield return new WaitForSeconds(1);
         _TimeUp.SetActive(false);
@@ -224,5 +210,12 @@ public class Minigame_3_core : MonoBehaviour
                 break;
         }
 
+    }
+
+    public bool _isBlink;
+
+    public void _isBlinkEnable()
+    {
+        _isBlink = true;
     }
 }
