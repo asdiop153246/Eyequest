@@ -75,3 +75,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # End of https://www.toptal.com/developers/gitignore/api/unity
+/EyeQuestProgram/Library
+EyeQuestProgram/Library/Bee/artifacts/1300b0aE.dag/Assembly-CSharp.rsp
+EyeQuestProgram/Library/Bee/1300b0aE.dag.json
+EyeQuestProgram/Library/APIUpdater/ConfigurationCache/UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll.44E8FD6B5EDF12AF2648ADF524EAC41C37E7A25F1021E8E77D6EFFD51DB0497A.apiupaterconfigs
+EyeQuestProgram/Library/APIUpdater/ConfigurationCache/Unity.TestTools.CodeCoverage.Editor.OpenCover.Mono.Reflection.ref.dll.B4E215A3B9CC707E9C60FA4BD829B3377215C75E873A9B17597F75E84577689C.apiupaterconfigs
