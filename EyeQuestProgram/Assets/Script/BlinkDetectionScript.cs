@@ -9,7 +9,7 @@ public class BlinkDetectionScript : MonoBehaviour
   private Player _player;
   public int _blinkCount;
   private float blinkTimer = 0f;
-  private float holdBlinkThreshold = 1f;
+  private float holdBlinkThreshold = 2f;
   // Start is called once before the first execution of Update after the MonoBehaviour is created
   void Start()
   {
@@ -56,7 +56,7 @@ public class BlinkDetectionScript : MonoBehaviour
 
     if (_Toppoint != null && _Bottompoint != null && _blinkText != null)
     {
-      if (_player.isChoosingBlink == false)
+      if (_player.isChoosingBlink == false && _player.isChoosingShield == false)
       {
         _blinkText.SetActive(false);
         return; // Exit if player is not choosing blink
@@ -72,23 +72,20 @@ public class BlinkDetectionScript : MonoBehaviour
         blinkTimer += Time.deltaTime;
         _blinkText.SetActive(true);
 
-        if (!wasBlinking)
+        if (!wasBlinking && _player.isChoosingBlink == true)
         {
           _blinkCount++;
           Debug.Log("Blink Count: " + _blinkCount);
         }
-
-        if (blinkTimer >= holdBlinkThreshold)
+        if (blinkTimer >= holdBlinkThreshold && _player.isChoosingShield == true)
         {
           _blinkText.GetComponent<TextMeshProUGUI>().text = "Hold Blink";
-          _player.isImmune = true;
+          _player.stats.isImmune = true;
           _player.isChoosingBlink = false;
+          _player.isChoosingShield = false;
+          blinkTimer = 0f; // Reset timer after detection
           _player.Attack(7);
         Debug.Log("Blink Detected! Player is now immune.");
-        }
-        else
-        {
-          _blinkText.GetComponent<TextMeshProUGUI>().text = "Blink";
         }
       }
       else
@@ -98,9 +95,11 @@ public class BlinkDetectionScript : MonoBehaviour
       }
 
       wasBlinking = isBlinking;
-      if (_blinkCount >= 5)
+      if (_blinkCount >= 5 & _player.isChoosingShield == false)
       {
-
+        _player.Attack(6);
+        _player.isChoosingBlink = false;
+        _player.isChoosingShield = false;
         _blinkCount = 0; // Reset count after detection
       }
     }

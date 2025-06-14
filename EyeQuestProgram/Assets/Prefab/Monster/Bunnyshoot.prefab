@@ -884,8 +884,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 987b52ec30c1f4745ae1bdcc30d3da87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statProfile: {fileID: 11400000, guid: 25edb7e02d739d74a800416a55930026, type: 2}
+  gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 1518442477787995773}
+  _MonsterID: 2
+  baseStats:
+    Strength: 0
+    Luck: 0
+    Tenacity: 0
+    maxHealth: 0
+    Damage: 0
+    CriticalChance: 0
+    CriticalPower: 0
+    DamageReduction: 0
 --- !u!1 &8777697385302794848
 GameObject:
   m_ObjectHideFlags: 0

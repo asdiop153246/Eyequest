@@ -8,6 +8,7 @@ public class Statsprofile : ScriptableObject
 
     [Range(0, 1)] public float LuckPercent;
     [Range(0, 1)] public float TenacityPercent;
+    public float statsPoints;
 
     public bool IsValid()
     {
