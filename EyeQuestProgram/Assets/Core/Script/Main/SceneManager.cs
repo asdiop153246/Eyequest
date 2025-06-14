@@ -26,6 +26,11 @@ public class SceneManager : MonoBehaviour
     public Sprite[] _WorldMap;
     public Image _MapBg;
     public Image[] _ImgWord;
+
+    public GameObject[] _WorldIcon;
+
+    public int _CurrentWorld_Id;
+
     public void _MoveLeft()
     {
         _CurrentWorldId++;
@@ -40,23 +45,54 @@ public class SceneManager : MonoBehaviour
                 _ImgWord[0].sprite = _Island[0];
                 _ImgWord[1].sprite = _Island[1];
                 _ImgWord[2].sprite = _Island[2];
-                Debug.Log("Current word :" + _CurrentWorldId);
+                
+
+                _CurrentWorld_Id = 0;
+                _WorldIcon[0].SetActive(false);
+                Debug.Log("Current word :" + _CurrentWorld_Id);
                 break;
             case 1:
                 _ImgWord[0].sprite = _Island[2];
                 _ImgWord[1].sprite = _Island[1];
                 _ImgWord[2].sprite = _Island[0];
-                Debug.Log("Current word :" + _CurrentWorldId);
+                _CurrentWorld_Id = 2;
+                Debug.Log("Current word :" + _CurrentWorld_Id + Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock);
+
+                if (Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock)
+                {
+                    _WorldIcon[0].SetActive(false);
+                }
+                else
+                {
+                    _WorldIcon[0].SetActive(true);
+                }
+
+                
+
                 break;
             case 2:
                 _ImgWord[0].sprite = _Island[1];
                 _ImgWord[1].sprite = _Island[1];
                 _ImgWord[2].sprite = _Island[0];
-                Debug.Log("Current word :" + _CurrentWorldId);
+
+                _CurrentWorld_Id = 1;
+                Debug.Log("Current word :" + _CurrentWorld_Id + Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock);
+
+                if (Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock)
+                {
+                    _WorldIcon[0].SetActive(false);
+                }
+                else
+                {
+                    _WorldIcon[0].SetActive(true);
+                }
+
+                
+
                 break;
         }
 
-        StartCoroutine(_ChangeMap(_CurrentWorldId));
+        StartCoroutine(_ChangeMap(_CurrentWorld_Id));
 
         _MovableUI.GetComponent<Animation>().clip = _LeftMove;
         _MovableUI.GetComponent<Animation>().Play();
@@ -94,8 +130,8 @@ public class SceneManager : MonoBehaviour
                 break;
         }
 
-        
 
+        GetComponent<WordLoader>().UpdateLevel(_CurrentWorldId);
 
     }
 
@@ -113,23 +149,51 @@ public class SceneManager : MonoBehaviour
                 _ImgWord[0].sprite = _Island[2];
                 _ImgWord[1].sprite = _Island[1];
                 _ImgWord[2].sprite = _Island[0];
-                Debug.Log("Current word :" + _CurrentWorldId);
+                _CurrentWorld_Id = 0;
+                Debug.Log("Current word :" + _CurrentWorld_Id);
+                _WorldIcon[2].SetActive(false);
                 break;
             case 1:
                 _ImgWord[0].sprite = _Island[0];
                 _ImgWord[1].sprite = _Island[1];
                 _ImgWord[2].sprite = _Island[2];
-                Debug.Log("Current word :" + _CurrentWorldId);
+                _CurrentWorld_Id = 2;
+                //Debug.Log("Current word :" + _CurrentWorld_Id);
+
+                Debug.Log("Current word :" + _CurrentWorld_Id + Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock);
+
+                if (Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock)
+                {
+                    _WorldIcon[2].SetActive(false);
+                }
+                else
+                {
+                    _WorldIcon[2].SetActive(true);
+                }
                 break;
             case 2:
                 _ImgWord[0].sprite = _Island[2];
                 _ImgWord[1].sprite = _Island[0];
                 _ImgWord[2].sprite = _Island[1];
-                Debug.Log("Current word :" + _CurrentWorldId);
+
+                _CurrentWorld_Id = 1;
+                //Debug.Log("Current word :" + _CurrentWorld_Id);
+
+                Debug.Log("Current word :" + _CurrentWorld_Id + Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock);
+
+                if (Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock)
+                {
+                    _WorldIcon[2].SetActive(false);
+                }
+                else
+                {
+                    _WorldIcon[2].SetActive(true);
+                }
+
                 break;
         }
 
-        StartCoroutine(_ChangeMap(_CurrentWorldId));
+        StartCoroutine(_ChangeMap(_CurrentWorld_Id));
 
         _MovableUI.GetComponent<Animation>().clip = _RightMove;
         _MovableUI.GetComponent<Animation>().Play();

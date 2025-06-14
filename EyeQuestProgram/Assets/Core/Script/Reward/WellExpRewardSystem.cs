@@ -29,6 +29,14 @@ public class WellExpRewardSystem : MonoBehaviour
         {
             _UpdateCategory();
         };
+
+        Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_RedeemReward_OK += () =>
+        {
+            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._UpdateCurrencyValue());
+            _RedeemThisRewardOK();
+        };
+
+
     }
 
     public void OnDisable()
@@ -37,6 +45,7 @@ public class WellExpRewardSystem : MonoBehaviour
         Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetRewardList_Category_OK -= Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetRewardList_Category_OK;
         Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetBand_OK -= Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetBand_OK;
         Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetRewardHistory_OK -= Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetRewardHistory_OK;
+        Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_RedeemReward_OK -= Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_RedeemReward_OK;
     }
 
     public void _Loaddata(int _CadId)
@@ -108,9 +117,9 @@ public class WellExpRewardSystem : MonoBehaviour
     public TMPro.TextMeshProUGUI _Des;
     public TMPro.TextMeshProUGUI _Point;
 
-    public TMPro.TextMeshProUGUI _Confirm_Point;
-    public TMPro.TextMeshProUGUI _Confirm_Conditon;
-    public Image _Confirm_Product_Image;
+    //public TMPro.TextMeshProUGUI _Confirm_Point;
+    //public TMPro.TextMeshProUGUI _Confirm_Conditon;
+    //public Image _Confirm_Product_Image;
 
     public int _ProductId;
     public void _OpenPopUp(int _CurrentId)
@@ -121,8 +130,8 @@ public class WellExpRewardSystem : MonoBehaviour
         _Des.text = Userdata.Instance._RewardData.data[_CurrentId].description;
         _Point.text = Userdata.Instance._RewardData.data[_CurrentId].point.ToString();
 
-        _Confirm_Point.text = Userdata.Instance._RewardData.data[_CurrentId].point.ToString();
-        _Confirm_Conditon.text = Userdata.Instance._RewardData.data[_CurrentId].condition;
+        //_Confirm_Point.text = Userdata.Instance._RewardData.data[_CurrentId].point.ToString();
+        //_Confirm_Conditon.text = Userdata.Instance._RewardData.data[_CurrentId].condition;
 
         StartCoroutine(DownloadImage_Confirm(Userdata.Instance._RewardData.data[_CurrentId].product_image));
         StartCoroutine(DownloadImage(Userdata.Instance._RewardData.data[_CurrentId].product_image));
@@ -158,7 +167,7 @@ public class WellExpRewardSystem : MonoBehaviour
         {
             Texture2D downloadedTexture = DownloadHandlerTexture.GetContent(request);
             Sprite sprite = Sprite.Create(downloadedTexture, new Rect(0, 0, downloadedTexture.width, downloadedTexture.height), new Vector2(0.5f, 0.5f));
-            _Confirm_Product_Image.sprite = sprite;
+            //_Confirm_Product_Image.sprite = sprite;
         }
     }
 
@@ -184,12 +193,12 @@ public class WellExpRewardSystem : MonoBehaviour
 
         Debug.Log("UPDATE HISTORY");
 
-        foreach (Userdata.ProductData x in Userdata.Instance._RedeemHistoryData.data)
+        foreach (Userdata.RedeemItem x in Userdata.Instance._RedeemResponse.data)
         {
             GameObject _RewardPack = Instantiate(_ProductIcon, _ChildBox_History);
             _RewardPack.GetComponent<RewardBtm>()._CoreReward = this.gameObject;
             _RewardPack.GetComponent<RewardBtm>().imageUrl = x.product_image;
-            _RewardPack.GetComponent<RewardBtm>()._BandName = x.brands_name;
+            _RewardPack.GetComponent<RewardBtm>()._BandName = "";
             _RewardPack.GetComponent<RewardBtm>()._id = _RewardCounter;
             _RewardPack.GetComponent<RewardBtm>()._Value.text = x.point.ToString();
             _RewardPack.GetComponent<RewardBtm>()._Type = RewardBtm._RewardBtm.RewardHistory;
@@ -199,9 +208,47 @@ public class WellExpRewardSystem : MonoBehaviour
         }
     }
 
+    public GameObject _RedeemPanel;
+
+    public TMPro.TextMeshProUGUI _RedeemName;
+    public TMPro.TextMeshProUGUI _Code;
+    public TMPro.TextMeshProUGUI _EndData;
+    public TMPro.TextMeshProUGUI _Condiotion;
+
+    public QRCodeEncodeController _Encoder;
+
+    public void OpenRedeemPopUP(int _ProductId)
+    {
+        _RedeemPanel.SetActive(true);
+        _RedeemName.text = Userdata.Instance._RedeemResponse.data[_ProductId].name;
+        _Code.text = Userdata.Instance._RedeemResponse.data[_ProductId].product_barcode;
+        _Encoder.GetComponent<QRCodeEncodeController>().Encode(Userdata.Instance._RedeemResponse.data[_ProductId].product_qrcode,QRCodeEncodeController.CodeMode.QR_CODE);
+        _Encoder.GetComponent<QRCodeEncodeController>()._EncodeBarCode(Userdata.Instance._RedeemResponse.data[_ProductId].product_barcode, QRCodeEncodeController.CodeMode.CODE_128);
+        _EndData.text = Userdata.Instance._RedeemResponse.data[_ProductId].end_date;
+        _Condiotion.text = Userdata.Instance._RedeemResponse.data[_ProductId].condition;
+    }
+
     public void _RedeemThisReward()
     {
+        if(Userdata.Instance._User.data.currency.vision_point <= Userdata.Instance._RewardData.data[_ProductId].point)
+        {
+            Debug.Log("Not");
+        }
+        else
+        {
+            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._Redeem_Reward(Userdata.Instance._RewardData.data[_ProductId].id));
+        }
+        
+    }
 
+    public GameObject _ConfirmRewardPopUp;
+    public GameObject _RewardPopUp;
+
+    public void _RedeemThisRewardOK()
+    {
+        _LoadProductHistory();
+        _ConfirmRewardPopUp.SetActive(false);
+        _RewardPopUp.SetActive(false);
     }
 
 }
