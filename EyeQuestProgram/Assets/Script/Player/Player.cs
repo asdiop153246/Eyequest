@@ -153,9 +153,13 @@ public class Player : MonoBehaviour
         }
     }
     // Call this method when it's the player's turn
-    public void Attack(int skillIndex)
-    {
-        if (gameManager == null || gameManager.selectedTarget == null && skillIndex != 7)
+    // public void Attack(int skillIndex)
+    // {
+    //     if (gameManager == null || gameManager.selectedTarget == null && skillIndex != 7)
+    //     {
+
+    //     }
+    // }
 
     public GameObject _MinigameCore;
     // Call this method when it's the player's turn
