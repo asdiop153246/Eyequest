@@ -59,7 +59,7 @@ public class RewardBtm : MonoBehaviour
         }
         else if(_Type == _RewardBtm.RewardHistory)
         {
-           // RewardHistory
+            _CoreReward.GetComponent<WellExpRewardSystem>().OpenRedeemPopUP(_id);
         }       
         
     }

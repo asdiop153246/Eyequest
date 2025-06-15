@@ -25,6 +25,21 @@ public class LoginManager : MonoBehaviour
     public GameObject _LoginFailed;
     public GameObject _WaitingPanel;
 
+    public void OnEnable()
+    {
+        Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetWorldData_OK += () =>
+        {
+            _WaitingPanel.SetActive(false);
+            _LoginOK.SetActive(true);
+            Application.LoadLevel(1);
+        };
+    }
+
+    public void OnDisable()
+    {
+        Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetWorldData_OK -= Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetWorldData_OK;
+    }
+
     public void _GetEmail()
     {
         _Temp_UserEmail = _EmailPanel.text;
@@ -172,11 +187,17 @@ public class LoginManager : MonoBehaviour
             }
             else
             {
-                _LoginOK.SetActive(true);
-                yield return new WaitForSeconds(2f);
-                Application.LoadLevel(1);
+
+                _WaitingPanel.SetActive(true);
+                StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._GetWorldData());
+                
             }
         }
+    }
+
+    public void _NextSence()
+    {
+
     }
 
     public void _FastLogin()
