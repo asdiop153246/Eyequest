@@ -11,6 +11,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] protected GameManager gameManager;
     public TextMeshProUGUI ActionText;
     public GameObject _Highlight;
+    public Transform bulletSpawnPoint;
     public int _MonsterID;
     [System.Serializable]
     public class Stats
@@ -56,11 +57,40 @@ public class EnemyAI : MonoBehaviour
             if (player != null)
             {
                 GetComponentInChildren<Animator>()?.SetTrigger("_attack");
-                player.TakeDamage(CurrentStats.Damage);
+                StartCoroutine(delayBullet());
+                //player.TakeDamage(CurrentStats.Damage);
             }
         }
 
+        
+    }
+    IEnumerator delayBullet()
+    {
+        yield return new WaitForSeconds(1.2f);
+        ShootAtPlayer(gameManager.GetRandomPlayer());
+        yield return new WaitForSeconds(1.5f);
         Invoke(nameof(EndTurn), 1.5f);
+    }
+    public void ShootAtPlayer(GameObject player)
+    {
+        GameObject bulletObj = BulletPool.Instance.GetBullet();
+
+        if (bulletSpawnPoint != null)
+        {
+            bulletObj.transform.position = bulletSpawnPoint.position;
+            bulletObj.transform.rotation = bulletSpawnPoint.rotation;
+        }
+        else
+        {
+            bulletObj.transform.position = transform.position;
+            bulletObj.transform.rotation = Quaternion.identity;
+        }
+
+        bulletObj.SetActive(true);
+
+        BulletEnemy bullet = bulletObj.GetComponent<BulletEnemy>();
+        bullet.damage = CurrentStats.Damage;
+        bullet.SetTarget(player.transform);
     }
 
     protected void EndTurn()
@@ -100,10 +130,10 @@ public class EnemyAI : MonoBehaviour
         switch (tier)
         {
             case GameManager.EnemyTier.Miniboss:
-                finalMultiplier *= 1.5f;
+                finalMultiplier = 8;
                 break;
             case GameManager.EnemyTier.Boss:
-                finalMultiplier *= 2.5f;
+                finalMultiplier = 16;
                 break;
         }
 

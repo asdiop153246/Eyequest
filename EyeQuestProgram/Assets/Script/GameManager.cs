@@ -6,43 +6,65 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [Header("Monster Settings")]
-    public GameObject[] monsterPrefabs; // Assign different monster types in Inspector
-    public Transform[] spawnPoints;     // Predefined spawn positions
+    public GameObject[] monsterPrefabs;
+    public Transform[] spawnPoints;
     public GameObject selectedTarget;
     public int numberOfMonsters;
 
     public List<GameObject> spawnedMonsters = new List<GameObject>();
     [Header("Player Settings")]
     public List<GameObject> players;
-    public int StrengthItemModifier = 0; // Modifier for strength items
-    public int LuckItemModifier = 0; // Modifier for luck items
-    public int TenacityItemModifier = 0; // Modifier for tenacity items
-    public bool isReadyToAttack = false; // Flag to check if player is ready to attack
+    // Modifier from Player's Items
+    public int StrengthItemModifier = 0;
+    public int LuckItemModifier = 0;
+    public int TenacityItemModifier = 0;
+    public bool isReadyToAttack = false;
     [Header("Turn Management")]
     public int currentTurnIndex = 0;
     public TextMeshProUGUI turnText;
     [Header("World Settings")]
-    public float worldIndex;
-    public float stageIndex;
+    public int worldIndex;
+    public int stageIndex;
     public float statsModifier;
     public enum EnemyTier { Normal, Miniboss, Boss }
+
+    public TextMeshProUGUI PrepareText;
 
     public GameObject _EndgamePanel;
     void Start()
     {
         CalculateStatsModifier();
-        SpawnMonsters();
-        StartTurn();
+        StartCoroutine(DelaybeforeStartGame());
+
     }
     public EnemyTier GetTierForCurrentStage()
     {
+        // For simplicity, Wait for input from MenuManager to set worldIndex and stageIndex 
+        // รอหน้าเมนูส่งข้อมูลทีหลัง
         if (stageIndex >= 9) return EnemyTier.Boss;
         if (stageIndex >= 8) return EnemyTier.Miniboss;
         return EnemyTier.Normal;
     }
+    IEnumerator DelaybeforeStartGame()
+    {
+        PrepareText.gameObject.SetActive(true);
+        PrepareText.text = $"World {worldIndex} - Stage {stageIndex}";
+        yield return new WaitForSeconds(2f);
+        PrepareText.text = "Monsters are gathering...";
+        yield return new WaitForSeconds(2f);
+        SpawnMonsters();
+        yield return new WaitForSeconds(1f);
+        PrepareText.text = "Prepare for Battle!";
+        yield return new WaitForSeconds(2f);
+        PrepareText.text = "Get Ready!";
+        yield return new WaitForSeconds(2f);
+        PrepareText.text = "Fight!";
+        yield return new WaitForSeconds(1f);
+        StartTurn();
+        PrepareText.gameObject.SetActive(false);
+    }
     void CalculateStatsModifier()
     {
-        // Example calculation for statsModifier based on world and stage indices
         statsModifier = (worldIndex * 1.4f) + (stageIndex * 0.08f);
         Debug.Log($"Stats Modifier: {statsModifier}");
     }
@@ -69,10 +91,12 @@ public class GameManager : MonoBehaviour
         EnemyTier currentTier = GetTierForCurrentStage();
         numberOfMonsters = GetAmountofMonsterForCurrentStage();
 
+        // Determine which monster prefabs are allowed based on stageIndex
+        int maxPrefabIndex = GetMaxMonsterIndexForStage(stageIndex);
 
         for (int i = 0; i < numberOfMonsters; i++)
         {
-            int prefabIndex = Random.Range(0, monsterPrefabs.Length);
+            int prefabIndex = Random.Range(0, maxPrefabIndex + 1);
             GameObject prefab = monsterPrefabs[prefabIndex];
 
             GameObject monster = Instantiate(prefab, spawnPoints[i].position, Quaternion.identity);
@@ -82,17 +106,38 @@ public class GameManager : MonoBehaviour
             EnemyAI ai = monster.GetComponent<EnemyAI>();
             if (ai != null)
             {
-                ai.ApplyTierModifier(currentTier, statsModifier);
+                if (currentTier == EnemyTier.Boss)
+                {
+                    EnemyTier tier = (i == 0) ? EnemyTier.Boss : EnemyTier.Normal;
+                    ai.ApplyTierModifier(tier, statsModifier);
+                    monster.name = $"{prefab.name} (Boss)";
+                }
+                else if (currentTier == EnemyTier.Miniboss)
+                {
+                    ai.ApplyTierModifier(EnemyTier.Miniboss, statsModifier);
+                    monster.name = $"{prefab.name} (Miniboss)";
+                }
+                else
+                {
+                    ai.ApplyTierModifier(EnemyTier.Normal, statsModifier);
+                }
             }
 
             spawnedMonsters.Add(monster);
         }
     }
+    int GetMaxMonsterIndexForStage(int stage)
+    {
+
+        if (stage <= 2) return 0;
+        else if (stage <= 5) return 1;
+        else return Mathf.Min(2, monsterPrefabs.Length - 1);
+    }
     public int GetAmountofMonsterForCurrentStage()
     {
         if (stageIndex <= 2) return 1; // Early stages
         else if (stageIndex <= 5) return 2; // Mid stages
-        else if (stageIndex <= 8) return 3; // Late stages
+        else if (stageIndex <= 8) return 2; // MiniBoss stages
         else if (stageIndex == 9) return 1; // Boss stage
 
         return 1;
@@ -104,6 +149,7 @@ public class GameManager : MonoBehaviour
     }
     void StartTurn()
     {
+
         // Remove null references just in case
         spawnedMonsters.RemoveAll(m => m == null);
 
@@ -212,5 +258,67 @@ public class GameManager : MonoBehaviour
     public List<GameObject> GetMonsters()
     {
         return spawnedMonsters;
+    }
+
+
+    public void NextStage()
+    {
+        stageIndex++;
+
+        // Optional: Reset worldIndex if you want to loop or increase it based on stage
+        // if (stageIndex > 9)
+        // {
+        //     worldIndex++;
+        //     stageIndex = 1;
+        // }
+
+        // Reset turn index and flags
+        currentTurnIndex = 0;
+        isReadyToAttack = false;
+
+        // Destroy all monsters in scene
+        foreach (GameObject monster in GameObject.FindGameObjectsWithTag("Monster"))
+        {
+            Destroy(monster);
+        }
+        spawnedMonsters.Clear();
+
+        foreach (var player in players)
+        {
+            if (player != null)
+            {
+                player.GetComponent<Player>().ResetForNewStage();
+            }
+        }
+
+        CalculateStatsModifier();
+        StartCoroutine(DelaybeforeStartGame());
+    }
+    public void ReturntoMenu()
+    {
+        // Reset all game state variables
+        currentTurnIndex = 0;
+        spawnedMonsters.Clear();
+        isReadyToAttack = false;
+        worldIndex = 0;
+        stageIndex = 0;
+        statsModifier = 1.0f; // Reset to default
+
+        // Clear all monsters and players in the scene
+        foreach (GameObject monster in GameObject.FindGameObjectsWithTag("Monster"))
+        {
+            Destroy(monster);
+        }
+
+        // Optionally, reset player states if needed
+        foreach (var player in players)
+        {
+            if (player != null)
+            {
+                player.GetComponent<Player>().ResetForNewStage();
+            }
+        }
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
     }
 }

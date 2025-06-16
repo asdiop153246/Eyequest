@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 8755165677939581238}
   m_Layer: 0
   m_Name: Squidbomber
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -368,6 +368,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 2445774036914242285}
+  bulletSpawnPoint: {fileID: 0}
   _MonsterID: 8
   baseStats:
     Strength: 0

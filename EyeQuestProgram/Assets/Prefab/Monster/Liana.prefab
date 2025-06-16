@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 3898966662546259172}
   m_Layer: 0
   m_Name: Liana
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -432,6 +432,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 8880718756124121464}
+  bulletSpawnPoint: {fileID: 0}
   _MonsterID: 6
   baseStats:
     Strength: 0
