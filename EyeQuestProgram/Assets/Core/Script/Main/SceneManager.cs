@@ -115,23 +115,27 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[1].SetActive(false);
                 _LevelMap[2].SetActive(false);
                 _WorldName.text = "Word - 1";
+                Userdata.Instance._CurrentWorld = 0;
                 break;
             case 1:
                 _LevelMap[0].SetActive(false);
                 _LevelMap[1].SetActive(false);
                 _LevelMap[2].SetActive(true);
                 _WorldName.text = "Word - 3";
+                Userdata.Instance._CurrentWorld = 2;
                 break;
             case 2:
                 _LevelMap[0].SetActive(false);
                 _LevelMap[1].SetActive(true);
                 _LevelMap[2].SetActive(false);
                 _WorldName.text = "Word - 2";
+                Userdata.Instance._CurrentWorld = 1;
                 break;
         }
 
-
+        
         GetComponent<WordLoader>().UpdateLevel(_CurrentWorldId);
+        
 
     }
 

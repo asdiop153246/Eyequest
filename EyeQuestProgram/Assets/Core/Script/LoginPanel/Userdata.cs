@@ -333,4 +333,7 @@ public class Userdata : MonoBehaviour
     }
 
     public GameWorldData _WorldData;
+
+    public int _CurrentWorld;
+    public int _CurrentStage;
 }
