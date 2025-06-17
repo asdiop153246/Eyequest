@@ -7084,6 +7084,7 @@ MonoBehaviour:
   _webcamObject: {fileID: 7348556799119088645}
   _ShieldGuideObject: {fileID: 714708523}
   _blinkGuideObject: {fileID: 201403190}
+  _MinigameCore: {fileID: 0}
 --- !u!1 &38583638189552618
 GameObject:
   m_ObjectHideFlags: 0

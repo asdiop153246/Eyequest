@@ -90,10 +90,13 @@ public class Minigame_1_core : MonoBehaviour
             _EyeUI[randomIndex].gameObject.SetActive(true);
             _EyeUI_2[randomIndex].gameObject.SetActive(true);
             _EyeUI[randomIndex].transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = _Core._Core[randomIndex]._SkillName;
+            _CurrentSkillName = _Core._Core[randomIndex]._SkillName;
             // Add Skill Processing Here
             // Show Camera
         }
     }
+
+    public string _CurrentSkillName;
 
     public Minigame_SkillController _Core;
 
@@ -103,6 +106,33 @@ public class Minigame_1_core : MonoBehaviour
     public void _DoneVision()
     {
         StartCoroutine(_DoneProcessing());
+
+        // Quest Here
+        switch (_CurrentSkillName)
+        {
+            case "Infinity":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(4);
+                break;
+
+            case "Vertical":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(1);
+                break;
+            case "Horizontal":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(2);
+                break;
+            case "XStrike":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(3);
+                break;
+            case "Cyclone":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(1);
+                break;
+            case "Blinkshot":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(0);
+                break;
+            case "Shield":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(5);
+                break;
+        }
 
         foreach (GameObject obj in _EyeUI)
         {
@@ -121,6 +151,37 @@ public class Minigame_1_core : MonoBehaviour
         _HitEffect.SetActive(true);
         _SlashEffect.SetActive(true);
         _CurrentMonster.transform.GetChild(0).gameObject.GetComponent<Animator>().SetTrigger("_hit");
+
+        switch (_CurrentMonster.name)
+        {
+            case "Amanita":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(6);
+                break;
+            case "Bumblebee":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(10);
+                break;
+            case "Bunnyshoot":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(14);
+                break;
+            case "DragonWitch":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(11);
+                break;
+            case "FisherBear":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(9);
+                break;
+            case "InsectBoy":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(8);
+                break;
+            case "Liana":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(7);
+                break;
+            case "Psycholofish":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(13);
+                break;
+            case "Squidbomber":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(12);
+                break;
+        }
         // Play Animation
         // Play Hit Effect
         yield return new WaitForSeconds(1f);

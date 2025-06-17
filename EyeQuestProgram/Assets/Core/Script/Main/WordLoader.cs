@@ -49,6 +49,8 @@ public class WordLoader : MonoBehaviour
                 if (_id == 0)
                 {
                     _CurrentWorld = 0;
+                    Userdata.Instance._CurrentWorld = _CurrentWorld;
+                    
 
                     _World_1[i]._LevelPin.GetComponent<Button>().interactable = true;
 
@@ -82,6 +84,7 @@ public class WordLoader : MonoBehaviour
                 else if(_id == 1)
                 {
                     _CurrentWorld = 1;
+                    Userdata.Instance._CurrentWorld = _CurrentWorld;
 
                     _World_2[i]._LevelPin.GetComponent<Button>().interactable = true;
 
@@ -112,9 +115,10 @@ public class WordLoader : MonoBehaviour
                         _World_2[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
                 }
-                else if (_id == 1)
+                else if (_id == 2)
                 {
-                    _CurrentWorld = 1;
+                    _CurrentWorld = 2;
+                    Userdata.Instance._CurrentWorld = _CurrentWorld;
 
                     _World_3[i]._LevelPin.GetComponent<Button>().interactable = true;
 
@@ -199,7 +203,9 @@ public TMPro.TextMeshProUGUI _LevelName;
     public int _CurrentLevel;
     public void _OpenLevelPopUp(int _id)
     {
+        
         _CurrentLevel = _id;
+        Userdata.Instance._CurrentStage = _CurrentLevel;
         _LevelSelection.SetActive(true);
 
 
