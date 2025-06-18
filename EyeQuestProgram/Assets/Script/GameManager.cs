@@ -184,7 +184,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("No monsters left, ending game.");
                     _EndgamePanel.SetActive(true);
-                    CalculateEndGameRewards();
+                    Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(10000, CalculateEndGameRewards());
                     return;
                 }
 
@@ -218,9 +218,11 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Turn Text UI is not assigned.");
         }
     }
-    public void CalculateEndGameRewards()
+    int starcount;
+    public int CalculateEndGameRewards()
     {
-        if (Stars.Length < 3) return;
+        
+        if (Stars.Length < 3) return 0;
         foreach (GameObject star in Stars)
         {
             star.SetActive(false);
@@ -233,17 +235,34 @@ public class GameManager : MonoBehaviour
         if (spawnedMonsters.Count == 0)
         {
             Stars[0].SetActive(true);
+            starcount += 1;
         }
         else
         {
             Stars[0].SetActive(false);
         }
 
-        
-        Stars[1].SetActive(healthPercent >= 0.3f);
+        if(healthPercent >= 0.3f)
+        {
+            Stars[1].SetActive(true);
+        }
+        else
+        {
+            Stars[1].SetActive(false);
+        }
 
-        
-        Stars[2].SetActive(healthPercent >= 0.5f);
+        if (healthPercent >= 0.5f)
+        {
+            Stars[2].SetActive(true);
+        }
+        else
+        {
+            Stars[2].SetActive(false);
+        }
+
+        //Stars[2].SetActive(healthPercent >= 0.5f);
+
+        return starcount;
     }
     public void RemoveMonster(GameObject monster)
     {
