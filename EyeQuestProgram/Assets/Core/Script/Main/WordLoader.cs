@@ -197,7 +197,7 @@ public class WordLoader : MonoBehaviour
         {
             if (Userdata.Instance._WorldData.world[_id].level[i].isUnlock)
             {
-                if (Userdata.Instance._WorldData.world[_id].level[i].stars == 0)
+                if (Userdata.Instance._WorldData.world[_id].level[i].stars != 0)
                 {
                     if (_id == 0)
                     {

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 public class ApiCaller : MonoBehaviour
 {
-    public string _Url = "http://54.179.28.112:8080";
+    public string _Url = "http://3.0.20.44:8080";
 
     public delegate void GeneralDelegate();
 
@@ -708,7 +708,7 @@ public class ApiCaller : MonoBehaviour
     {
         using (UnityWebRequest www = UnityWebRequest.Get(_Url + "/api/game/world"))
         {
-            Debug.Log("Call _GetWorldData");
+            Debug.Log(_Url + "/api/game/world");
             www.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
             www.SetRequestHeader("Accept", "application/json");
             www.SetRequestHeader("Content-Type", "application/json");

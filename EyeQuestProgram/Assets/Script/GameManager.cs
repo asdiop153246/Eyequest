@@ -28,6 +28,11 @@ public class GameManager : MonoBehaviour
     public int stageIndex;
     public float statsModifier;
     public GameObject _skillUI;
+    public GameObject _TurnBar;
+    public GameObject _HpBar;
+    public List<GameObject> _PotionIcon;
+
+    public GameObject _Player;
     public enum EnemyTier { Normal, Miniboss, Boss }
 
     public TextMeshProUGUI PrepareText;
@@ -46,8 +51,45 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+
             worldIndex = _userdata._CurrentWorld;
             stageIndex = _userdata._CurrentStage;
+
+            _PotionIcon[0].SetActive(false);
+            _PotionIcon[1].SetActive(false);
+            _PotionIcon[2].SetActive(false);
+            _PotionIcon[3].SetActive(false);
+
+            if (_userdata._isUsePotion_A)
+            {
+                _PotionIcon[0].SetActive(true);
+            }
+
+            if (_userdata._isUsePotion_B)
+            {
+                _PotionIcon[1].SetActive(true);
+            }
+
+            if (_userdata._isUsePotion_C)
+            {
+                _PotionIcon[2].SetActive(true);
+            }
+
+            if (_userdata._isUsePotion_D)
+            {
+                _PotionIcon[3].SetActive(true);
+            }
+
+
+            if (stageIndex == 0)
+            {
+                stageIndex = 1;
+            }
+
+            if (worldIndex == 0)
+            {
+                worldIndex = 1;
+            }
             Debug.Log($"World Index: {worldIndex}, Stage Index: {stageIndex}");
         }
         Player player = players[0].GetComponent<Player>();
@@ -56,16 +98,31 @@ public class GameManager : MonoBehaviour
         StartCoroutine(DelaybeforeStartGame());
 
     }
+
+    public bool _isAlreadySelectionSkill;
     void Update()
     {
-        if (selectedTarget == null)
+        if (!_isAlreadySelectionSkill)
         {
-            _skillUI.SetActive(false);
+            if (selectedTarget == null)
+            {
+                _skillUI.SetActive(false);
+            }
+            else
+            {
+                _skillUI.SetActive(true);
+            }
         }
         else
         {
-            _skillUI.SetActive(true);
+            _skillUI.SetActive(false);
         }
+       
+    }
+
+    public void _SelectionSkill()
+    {
+        _isAlreadySelectionSkill = true;
     }
     public EnemyTier GetTierForCurrentStage()
     {
@@ -77,21 +134,43 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator DelaybeforeStartGame()
     {
-        PrepareText.gameObject.SetActive(true);
+        _HpBar.SetActive(false);
+        _TurnBar.SetActive(false);
+        PrepareText.transform.parent.gameObject.SetActive(true);
         PrepareText.text = $"World {worldIndex} - Stage {stageIndex}";
-        yield return new WaitForSeconds(2f);
-        PrepareText.text = "Monsters are gathering...";
-        yield return new WaitForSeconds(2f);
-        SpawnMonsters();
         yield return new WaitForSeconds(1f);
+        PrepareText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        PrepareText.gameObject.SetActive(true);
+        PrepareText.text = "Monsters are gathering...";
+        yield return new WaitForSeconds(1f);
+        PrepareText.gameObject.SetActive(false);
+        PrepareText.transform.parent.gameObject.SetActive(false);
+        SpawnMonsters();
+        yield return new WaitForSeconds(0.5f);
+        _TurnBar.SetActive(true);
+        StartCoroutine(GetComponent<ShiftTurnScript>()._DelayCreateShifting());
+        
+        yield return new WaitForSeconds(1f);
+        PrepareText.transform.parent.gameObject.SetActive(true);
+        PrepareText.gameObject.SetActive(true);
         PrepareText.text = "Prepare for Battle!";
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+        PrepareText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        PrepareText.gameObject.SetActive(true);
         PrepareText.text = "Get Ready!";
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+        PrepareText.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.1f);
+        PrepareText.gameObject.SetActive(true);
         PrepareText.text = "Fight!";
         yield return new WaitForSeconds(1f);
-        StartTurn();
         PrepareText.gameObject.SetActive(false);
+        PrepareText.transform.parent.gameObject.SetActive(false);
+        _HpBar.SetActive(true);
+        StartTurn();
+        
     }
     void CalculateStatsModifier()
     {
@@ -197,7 +276,9 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("No monsters left, ending game.");
                     _EndgamePanel.SetActive(true);
-                    Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(10000, CalculateEndGameRewards());
+                    StartCoroutine(_CalulateReward());
+                    Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), CalculateEndGameRewards());
+                    StartCoroutine(_UpdateLeaderBoard());
                     return;
                 }
 
@@ -230,6 +311,64 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning("Turn Text UI is not assigned.");
         }
+    }
+
+    public TMPro.TextMeshProUGUI _ScoreUI;
+    public int _CurrentScore;
+    int CalculateScore()
+    {
+        bool levelCleared;
+        Player player = players[0].GetComponent<Player>();
+        if (spawnedMonsters.Count == 0)
+        {
+            levelCleared = true;
+        }
+        else
+        {
+            levelCleared = false;
+        }
+
+
+        if (!levelCleared)
+            return 0;
+
+        float clampedHealth = Mathf.Clamp(((float)player.stats.currentHealth / player.stats.maxHealth), 0f, 100f);
+
+        int baseScore = 5000; // คะแนนจากการผ่านฉาก
+        int hpScore = Mathf.RoundToInt((clampedHealth / 100f) * 5000f); // คะแนนจากพลังชีวิต
+        _ScoreUI.text = (baseScore + hpScore) + "";
+        _CurrentScore = (baseScore + hpScore);
+        return baseScore + hpScore; // รวมเป็นคะแนนสุดท้าย
+    }
+
+    public List<GameObject> _RewardIcon;
+    IEnumerator _CalulateReward()
+    {
+        _RewardIcon[0].SetActive(false);
+        _RewardIcon[1].SetActive(false);
+        _RewardIcon[2].SetActive(false);
+        int _Vision = 0;
+        int _Gem = 0;
+        int _Gold = 0;
+
+        yield return new WaitForSeconds(1f);
+        _RewardIcon[0].SetActive(true);
+        _RewardIcon[0].transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Random.Range(10, 100)+"";
+        Userdata.Instance._User.data.currency.gold += _Gold;
+        StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 0));
+
+        yield return new WaitForSeconds(1f);
+        _RewardIcon[1].SetActive(true);
+        _RewardIcon[1].transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Random.Range(10, 100) + "";
+        Userdata.Instance._User.data.currency.vision_point += _Vision;
+        StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 2));
+
+        yield return new WaitForSeconds(1f);
+        /*_RewardIcon[2].SetActive(true);
+        _RewardIcon[2].transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Random.Range(10, 100) + "";
+        Userdata.Instance._User.data.currency.gem += _Gem;
+        StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 1));*/
+
     }
     int starcount;
     public int CalculateEndGameRewards()
@@ -277,6 +416,102 @@ public class GameManager : MonoBehaviour
 
         return starcount;
     }
+
+    public List<GameObject> _UserName;
+    public List<GameObject> _Score;
+    IEnumerator _UpdateLeaderBoard()
+    {
+        _UserName[0].SetActive(true);
+        _Score[0].SetActive(true);
+
+        _UserName[1].SetActive(true);
+        _Score[1].SetActive(true);
+
+        _UserName[2].SetActive(true);
+        _Score[2].SetActive(true);
+
+        var leaderboard = Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].Leaderboard;
+
+        // เตรียม List ชั่วคราว
+        List<string> tempNames = new List<string>();
+        List<int> tempScores = new List<int>();
+
+        // โหลดชื่อและคะแนนเก่าจาก Leaderboard (ถ้ามี)
+        for (int i = 0; i < leaderboard.Count; i++)
+        {
+            tempNames.Add(leaderboard[i].playerName);
+            tempScores.Add(leaderboard[i].playerScore);
+        }
+
+        // หา index ที่ควรแทรก
+        int insertIndex = -1;
+        for (int i = 0; i < tempScores.Count; i++)
+        {
+            if (_CurrentScore > tempScores[i])
+            {
+                insertIndex = i;
+                break;
+            }
+        }
+
+        // ถ้าไม่มีคะแนนใครเลย หรือคะแนนน้อยกว่าทุกคน → เพิ่มท้าย
+        if (insertIndex == -1)
+        {
+            tempNames.Add(Userdata.Instance._User.data.user.name);
+            tempScores.Add(_CurrentScore);
+        }
+        else
+        {
+            // แทรกคะแนนใหม่ในตำแหน่งที่เหมาะสม
+            tempNames.Insert(insertIndex, Userdata.Instance._User.data.user.name);
+            tempScores.Insert(insertIndex, _CurrentScore);
+        }
+
+        // ตัดให้เหลือไม่เกิน 3 คน
+        while (tempNames.Count > 3)
+        {
+            tempNames.RemoveAt(tempNames.Count - 1);
+            tempScores.RemoveAt(tempScores.Count - 1);
+        }
+
+        // อัปเดตกลับไปยัง Leaderboard
+        for (int i = 0; i < tempNames.Count; i++)
+        {
+            if (i >= leaderboard.Count)
+            {
+                Userdata.LeaderboardEntry _temp = new Userdata.LeaderboardEntry();
+                _temp.playerName = Userdata.Instance._User.data.user.name;
+                _temp.playerScore = _CurrentScore;
+
+                leaderboard.Add(_temp);
+            }
+            else
+            {
+                leaderboard[i].playerName = tempNames[i];
+                leaderboard[i].playerScore = tempScores[i];
+            }
+        }
+
+        // แสดงผลบน UI
+        for (int i = 0; i < 3; i++)
+        {
+            _UserName[i].SetActive(false);
+            _Score[i].SetActive(false);
+
+            if (i < tempNames.Count)
+            {
+                _UserName[i].SetActive(true);
+                _Score[i].SetActive(true);
+
+                _UserName[i].GetComponent<TMPro.TextMeshProUGUI>().text = tempNames[i];
+                _Score[i].GetComponent<TMPro.TextMeshProUGUI>().text = tempScores[i].ToString();
+            }
+
+            yield return new WaitForSeconds(1f);
+
+        }
+
+    }
     public void RemoveMonster(GameObject monster)
     {
         if (spawnedMonsters.Contains(monster))
@@ -288,9 +523,9 @@ public class GameManager : MonoBehaviour
     {
         if (turnText != null)
         {
-            turnText.gameObject.SetActive(true);
+            turnText.transform.parent.gameObject.SetActive(true);
             yield return new WaitForSeconds(3f);
-            turnText.gameObject.SetActive(false);
+            turnText.transform.parent.gameObject.SetActive(false);
         }
     }
     public void NextTurn()
@@ -303,6 +538,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("All monsters defeated.");
             _EndgamePanel.SetActive(true);
+            StartCoroutine(_CalulateReward());
+            Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), CalculateEndGameRewards());
+            StartCoroutine(_UpdateLeaderBoard());
             return;
         }
 

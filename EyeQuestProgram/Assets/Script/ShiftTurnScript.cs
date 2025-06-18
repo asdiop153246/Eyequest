@@ -19,6 +19,13 @@ public class ShiftTurnScript : MonoBehaviour
     }
     void Start()
     {
+        //StartCoroutine(_DelayCreateShifting());
+    }
+
+    public IEnumerator _DelayCreateShifting()
+    {
+        yield return new WaitForSeconds(0f);
+
         if (gameManager.spawnedMonsters.Count >= 0)
         {
             Debug.LogWarning("No monsters spawned. Please ensure monsters are spawned before shifting turns.");
@@ -35,7 +42,7 @@ public class ShiftTurnScript : MonoBehaviour
                     Debug.LogWarning("Image component missing or sprite index out of range.");
                 }
             }
-            return;
+            yield return new WaitForSeconds(0);
         }
     }
     public void ShiftTurnUI()
