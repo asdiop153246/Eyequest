@@ -41,7 +41,7 @@ public class WordLoader : MonoBehaviour
 
     public void UpdateLevel(int _id)
     {
-
+        // CURRENT LEVEL UNLOCK
         for (int i = 0; i < Userdata.Instance._WorldData.world[_id].level.Count; i++)
         {
             if (Userdata.Instance._WorldData.world[_id].level[i].isUnlock)
@@ -185,6 +185,8 @@ public class WordLoader : MonoBehaviour
                 }
             }
         }
+
+        // Unlock NEXT LEVEL
 
         Debug.Log("Check");
     }
