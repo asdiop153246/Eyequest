@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public Transform[] spawnPoints;
     public GameObject selectedTarget;
     public int numberOfMonsters;
+    
 
     public List<GameObject> spawnedMonsters = new List<GameObject>();
     [Header("Player Settings")]
@@ -26,6 +27,7 @@ public class GameManager : MonoBehaviour
     public int worldIndex;
     public int stageIndex;
     public float statsModifier;
+    public GameObject[] _skillUI;
     public enum EnemyTier { Normal, Miniboss, Boss }
 
     public TextMeshProUGUI PrepareText;
@@ -53,6 +55,23 @@ public class GameManager : MonoBehaviour
         CalculateStatsModifier();
         StartCoroutine(DelaybeforeStartGame());
 
+    }
+    void Update()
+    {
+        if (selectedTarget == null)
+        {
+            foreach (GameObject Ui in _skillUI)
+            {
+                Ui.SetActive(false); // Hide skill UI if no target is selected
+            }
+        }
+        else
+        {
+            foreach (GameObject Ui in _skillUI)
+            {
+                Ui.SetActive(true); // Show skill UI if a target is selected
+            }
+        }
     }
     public EnemyTier GetTierForCurrentStage()
     {

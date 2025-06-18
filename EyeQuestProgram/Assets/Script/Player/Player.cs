@@ -54,11 +54,12 @@ public class Player : MonoBehaviour
     public bool isChoosingBlink = false;
     public bool isChoosingShield = false;
 
+    public GameObject _gethitEffect;
+
     [Header("Webcam Settings")]
     public GameObject _webcamObject; // Assign the webcam object in Inspector
     public GameObject _ShieldGuideObject; // Assign the blink guide object in Inspector
     public GameObject _blinkGuideObject; // Assign the blink guide object in Inspector
-
 
     void Start()
     {
@@ -102,6 +103,7 @@ public class Player : MonoBehaviour
         _ShieldGuideObject.SetActive(false);
         _blinkGuideObject.SetActive(false);
     }
+
     public void ApplyStats()
     {
         Debug.Log("Applying player stats...");
@@ -132,8 +134,6 @@ public class Player : MonoBehaviour
             Debug.LogWarning("GameManager is not assigned or found in the scene.");
             return;
         }
-
-
         if (gameManager.currentTurnIndex == 0)
         {
             Debug.Log($"{gameObject.name} is taking a turn.");
@@ -255,13 +255,22 @@ public class Player : MonoBehaviour
     {
         if (stats.isImmune) return;
         stats.currentHealth = Mathf.Max(0f, stats.currentHealth - damage);
-
+        StartCoroutine(ShowGetHitEffect());
         if (stats.currentHealth <= 0)
         {
             Die();
         }
 
         UpdateHealthBar();
+    }
+    IEnumerator ShowGetHitEffect()
+    {
+        if (_gethitEffect != null)
+        {
+            _gethitEffect.SetActive(true);
+            yield return new WaitForSeconds(0.7f); // Show effect for 0.5 seconds
+            _gethitEffect.SetActive(false);
+        }
     }
     void Die()
     {

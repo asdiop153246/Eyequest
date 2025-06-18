@@ -35,7 +35,7 @@ public class GetPointID : MonoBehaviour
 
     }
 
-    Mediapipe.Unity.PointAnnotation[] points = GetComponentsInChildren<Mediapipe.Unity.PointAnnotation>();
+    PointAnnotation[] points = GetComponentsInChildren<PointAnnotation>();
 
     foreach (var point in points)
     {
@@ -60,7 +60,7 @@ public class GetPointID : MonoBehaviour
     if (_centerPoint == null)
     {
       Debug.LogWarning("CenterPoint with ID 4 not found.");
-      Mediapipe.Unity.PointAnnotation[] points = GetComponentsInChildren<Mediapipe.Unity.PointAnnotation>();
+      PointAnnotation[] points = GetComponentsInChildren<PointAnnotation>();
       foreach (var point in points)
       {
         if (point != null && point._id == 4)
@@ -86,7 +86,7 @@ public class GetPointID : MonoBehaviour
       {
         //Debug.LogWarning("Your face is not Center");
         _isCenterPoint = false;
-        _centerPoint.GetComponent<Mediapipe.Unity.PointAnnotation>().SetRadius(1f);
+        _centerPoint.GetComponent<PointAnnotation>().SetRadius(1f);
         _DetectionZone.SetActive(_isCenterPoint);
         _centerText.SetActive(true);
         _CenterNoseAlignment.SetActive(true);
@@ -94,7 +94,7 @@ public class GetPointID : MonoBehaviour
       else
       {
         _isCenterPoint = true;
-        _centerPoint.GetComponent<Mediapipe.Unity.PointAnnotation>().SetRadius(0f);
+        _centerPoint.GetComponent<PointAnnotation>().SetRadius(0f);
         _DetectionZone.SetActive(_isCenterPoint);
         _centerText.SetActive(false);
         _CenterNoseAlignment.SetActive(false);
