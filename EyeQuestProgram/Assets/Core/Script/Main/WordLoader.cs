@@ -41,13 +41,16 @@ public class WordLoader : MonoBehaviour
 
     public void UpdateLevel(int _id)
     {
-
+        // CURRENT LEVEL UNLOCK
         for (int i = 0; i < Userdata.Instance._WorldData.world[_id].level.Count; i++)
         {
             if (Userdata.Instance._WorldData.world[_id].level[i].isUnlock)
             {
                 if (_id == 0)
                 {
+
+                    Debug.Log("CHECK STAR : " + Userdata.Instance._WorldData.world[_id].level[i].stars);
+
                     _CurrentWorld = 0;
                     Userdata.Instance._CurrentWorld = _CurrentWorld;
                     
@@ -150,6 +153,8 @@ public class WordLoader : MonoBehaviour
                     }
                 }
 
+                
+
             }
             else
             {
@@ -186,7 +191,34 @@ public class WordLoader : MonoBehaviour
             }
         }
 
-        Debug.Log("Check");
+        // Unlock NEXT LEVEL
+
+        for (int i = 0; i < Userdata.Instance._WorldData.world[_id].level.Count; i++)
+        {
+            if (Userdata.Instance._WorldData.world[_id].level[i].isUnlock)
+            {
+                if (Userdata.Instance._WorldData.world[_id].level[i].stars == 0)
+                {
+                    if (_id == 0)
+                    {
+                        _World_1[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
+                        _World_1[i + 1]._LevelPin.sprite = _PinImage[0];
+
+                        Debug.Log("UNLOCK : " + _World_1[i + 1]._LevelPin.GetComponent<Button>().interactable);
+                    }
+                    else if (_id == 1)
+                    {
+                        _World_2[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
+                        _World_2[i + 1]._LevelPin.sprite = _PinImage[0];
+                    }
+                    else if (_id == 2)
+                    {
+                        _World_3[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
+                        _World_3[i + 1]._LevelPin.sprite = _PinImage[0];
+                    }
+                }
+            }
+        }
     }
 
 

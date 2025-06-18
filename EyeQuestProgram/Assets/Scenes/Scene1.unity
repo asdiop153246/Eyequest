@@ -4149,7 +4149,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &753990525
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7495,7 +7495,10 @@ MonoBehaviour:
   statsModifier: 0
   PrepareText: {fileID: 812486705}
   _EndgamePanel: {fileID: 823830988}
-  Stars: []
+  Stars:
+  - {fileID: 1880944252}
+  - {fileID: 2011509982}
+  - {fileID: 753990524}
   _userdata: {fileID: 0}
 --- !u!4 &1484418858
 Transform:
@@ -8394,7 +8397,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1880944253
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8678,7 +8681,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2011509983
 RectTransform:
   m_ObjectHideFlags: 0
