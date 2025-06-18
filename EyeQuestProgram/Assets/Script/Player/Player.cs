@@ -43,8 +43,10 @@ public class Player : MonoBehaviour
     public Image healthBar; // Assign in Inspector
     public TextMeshProUGUI healthText; // Assign in Inspector
     public PlayerStats stats = new PlayerStats();
+    private Animator animator;
     [Header("Game Manager")]
     private GameManager gameManager;
+    public GameObject _turnEffect;
 
     [Header("Skill Settings")]
     public List<Skill> skills = new List<Skill>();
@@ -71,12 +73,13 @@ public class Player : MonoBehaviour
         skills.Add(new Skill("Shield", 0f));
 
 
-
+        animator = GetComponent<Animator>();
         gameManager = FindObjectOfType<GameManager>();
         if (_webcamObject != null)
         {
             _webcamObject.SetActive(false); // Disable the webcam object at start
         }
+        
         ApplyStats();
         if (healthBar != null)
         {
@@ -88,8 +91,21 @@ public class Player : MonoBehaviour
             stats.currentHealth = stats.maxHealth; // Initialize health
         }
     }
-    void ApplyStats()
+    
+    public void ResetForNewStage()
     {
+        stats.currentHealth = stats.maxHealth; // Reset health for new stage
+        UpdateHealthBar();
+        isChoosingBlink = false;
+        isChoosingShield = false;
+        _webcamObject.SetActive(false); // Disable the webcam object at start of new stage
+        _ShieldGuideObject.SetActive(false);
+        _blinkGuideObject.SetActive(false);
+    }
+    public void ApplyStats()
+    {
+        Debug.Log("Applying player stats...");
+        stats.level = gameManager.stageIndex; // Initialize player level from GameManager
         if (gameManager == null)
         {
             Debug.LogWarning("GameManager is not assigned or found in the scene.");
@@ -104,7 +120,7 @@ public class Player : MonoBehaviour
 
         stats.baseAttackPower = MathF.Round(((stats.strength + gameManager.StrengthItemModifier) * 2f) + (stats.luck * 0.5f));
 
-        stats.baseCriticalChance = 0.022f * (stats.luck + gameManager.LuckItemModifier) / (1+(0.22f * 0.7f) * stats.luck + gameManager.LuckItemModifier); ; 
+        stats.baseCriticalChance = 0.022f * (stats.luck + gameManager.LuckItemModifier) / (1 + (0.22f * 0.7f) * stats.luck + gameManager.LuckItemModifier); ;
 
         UpdateHealthBar();
     }
@@ -122,6 +138,8 @@ public class Player : MonoBehaviour
         {
             Debug.Log($"{gameObject.name} is taking a turn.");
             stats.isImmune = false;
+            _turnEffect.SetActive(true); // Activate the turn effect
+
         }
         else
         {
@@ -132,9 +150,9 @@ public class Player : MonoBehaviour
     public void ChooseBlink()
     {
         isChoosingBlink = true;
-       
+
     }
-        public void ChooseShield()
+    public void ChooseShield()
     {
         if (gameManager == null)
         {
@@ -152,21 +170,16 @@ public class Player : MonoBehaviour
             Debug.Log($"{gameObject.name} cannot choose to Shield right now. It's not the player's turn.");
         }
     }
-    // Call this method when it's the player's turn
-    // public void Attack(int skillIndex)
-    // {
-    //     if (gameManager == null || gameManager.selectedTarget == null && skillIndex != 7)
-    //     {
-
-    //     }
-    // }
 
     public GameObject _MinigameCore;
     // Call this method when it's the player's turn
     public void Attack(int skillIndex)
     {
 
-        _MinigameCore.GetComponent<Minigame_1_core>()._DoneVision();
+        if (_MinigameCore != null)
+        {
+            _MinigameCore.GetComponent<Minigame_1_core>()._DoneVision();
+        }
 
         if (gameManager == null || gameManager.selectedTarget == null)
         {
@@ -191,21 +204,35 @@ public class Player : MonoBehaviour
             actualAttackPower *= 2f; // Double the attack power for critical hits
             Debug.Log($"{gameObject.name} landed a critical hit!");
         }
+        if (animator != null)
+        {
+            animator.SetTrigger("_attack");
+        }
         if (skillIndex == 7) // Assuming skillIndex 7 is for "Shield"
         {
             _ShieldGuideObject.SetActive(false);
-            DealDamage(gameManager.players[0], 0, false, skillIndex);
-
+            StartCoroutine(DelayedDamage(2f, gameManager.selectedTarget, 0, false, skillIndex));
         }
         else if (skillIndex == 6) // Assuming skillIndex 6 is for "Blinkshot"
         {
             _blinkGuideObject.SetActive(false);
+            StartCoroutine(DelayedDamage(2f, gameManager.selectedTarget, actualAttackPower, isCritical, skillIndex));
+        }
+        else
+        {
+            StartCoroutine(DelayedDamage(2f, gameManager.selectedTarget, actualAttackPower, isCritical, skillIndex));
         }
 
-        DealDamage(gameManager.selectedTarget, actualAttackPower, isCritical, skillIndex);
+
+    }
+    private IEnumerator DelayedDamage(float delay, GameObject target, float damage, bool wasCritical, int skillIndex)
+    {
+        yield return new WaitForSeconds(delay);
+
+        DealDamage(target, damage, wasCritical, skillIndex);
     }
 
-    private void DealDamage(GameObject target, float damageAmount, bool wasCritical,int skillIndex)
+    private void DealDamage(GameObject target, float damageAmount, bool wasCritical, int skillIndex)
     {
         if (target == null)
         {
@@ -222,7 +249,7 @@ public class Player : MonoBehaviour
         }
         skillText.text = skills[skillIndex].name + " used! " + (wasCritical ? "Critical Hit!" : "");
         // Optionally check if it's your turn (gameManager can expose currentTurnPlayer)
-        Invoke(nameof(EndAttack), 2f);
+        Invoke(nameof(EndAttack), 3f);
     }
     public void TakeDamage(float damage)
     {
@@ -246,6 +273,7 @@ public class Player : MonoBehaviour
     {
         skillText.text = "";
         _webcamObject.SetActive(false); // Disable the webcam object after attack
+        _turnEffect.SetActive(false); // Deactivate the turn effect
         gameManager.NextTurn();
     }
     void UpdateHealthBar()
@@ -254,9 +282,10 @@ public class Player : MonoBehaviour
         if (stats.currentHealth > stats.maxHealth) stats.currentHealth = stats.maxHealth; // Ensure health doesn't exceed maxHealth
         if (healthBar != null)
         {
-            healthBar.fillAmount = stats.currentHealth / stats.maxHealth; 
-            healthText.text = $"{stats.currentHealth}/{stats.maxHealth}"; 
+            healthBar.fillAmount = stats.currentHealth / stats.maxHealth;
+            healthText.text = $"{stats.currentHealth}/{stats.maxHealth}";
         }
 
     }
 }
+

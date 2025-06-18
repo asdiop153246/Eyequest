@@ -631,7 +631,7 @@ GameObject:
   - component: {fileID: 7038905716072812071}
   m_Layer: 0
   m_Name: Psycholofish
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -718,6 +718,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 1518442477787995773}
+  bulletSpawnPoint: {fileID: 0}
   _MonsterID: 7
   baseStats:
     Strength: 0
