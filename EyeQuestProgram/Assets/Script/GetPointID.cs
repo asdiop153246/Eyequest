@@ -74,14 +74,14 @@ public class GetPointID : MonoBehaviour
       float centerX = _centerPoint.transform.position.x;
       float centerY = _centerPoint.transform.position.y;
       
-      float idealX = -3.68611f;
-      float idealY = 6.705392f;
+      float idealX = -2.672843f;
+      float idealY = 5.905392f;
       float toleranceX = 0.5f;
-      float toleranceY = 0.3f;
+      float toleranceY = 0.5f;
     if (_centerPoint != null && _DetectionZone != null)
     {
-      //Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
-      //Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
+      Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
+      Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
       if (Mathf.Abs(centerX - idealX) > toleranceX || Mathf.Abs(centerY - idealY) > toleranceY)
       {
         //Debug.LogWarning("Your face is not Center");
