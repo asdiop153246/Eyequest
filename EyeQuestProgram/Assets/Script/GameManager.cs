@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     public int worldIndex;
     public int stageIndex;
     public float statsModifier;
-    public GameObject[] _skillUI;
+    public GameObject _skillUI;
     public enum EnemyTier { Normal, Miniboss, Boss }
 
     public TextMeshProUGUI PrepareText;
@@ -60,17 +60,11 @@ public class GameManager : MonoBehaviour
     {
         if (selectedTarget == null)
         {
-            foreach (GameObject Ui in _skillUI)
-            {
-                Ui.SetActive(false); // Hide skill UI if no target is selected
-            }
+            _skillUI.SetActive(false);
         }
         else
         {
-            foreach (GameObject Ui in _skillUI)
-            {
-                Ui.SetActive(true); // Show skill UI if a target is selected
-            }
+            _skillUI.SetActive(true);
         }
     }
     public EnemyTier GetTierForCurrentStage()

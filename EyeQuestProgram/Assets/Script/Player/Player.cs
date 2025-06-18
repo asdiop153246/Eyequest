@@ -92,7 +92,13 @@ public class Player : MonoBehaviour
             stats.currentHealth = stats.maxHealth; // Initialize health
         }
     }
-    
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            DealDamage(gameManager.selectedTarget, 100f, false, 0); // Test Damage
+        }
+    }
     public void ResetForNewStage()
     {
         stats.currentHealth = stats.maxHealth; // Reset health for new stage
