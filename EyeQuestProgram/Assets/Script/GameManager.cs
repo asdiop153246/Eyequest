@@ -31,8 +31,25 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI PrepareText;
 
     public GameObject _EndgamePanel;
+    [Header("Reward Settings")]
+    public GameObject[] Stars;
+    public Userdata _userdata;
     void Start()
     {
+        _userdata = FindObjectOfType<Userdata>();
+        if (_userdata == null)
+        {
+            Debug.LogError("Userdata not found in the scene.");
+
+        }
+        else
+        {
+            worldIndex = _userdata._CurrentWorld;
+            stageIndex = _userdata._CurrentStage;
+            Debug.Log($"World Index: {worldIndex}, Stage Index: {stageIndex}");
+        }
+        Player player = players[0].GetComponent<Player>();
+        player.ApplyStats();
         CalculateStatsModifier();
         StartCoroutine(DelaybeforeStartGame());
 
@@ -167,6 +184,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("No monsters left, ending game.");
                     _EndgamePanel.SetActive(true);
+                    CalculateEndGameRewards();
                     return;
                 }
 
@@ -200,7 +218,33 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Turn Text UI is not assigned.");
         }
     }
+    public void CalculateEndGameRewards()
+    {
+        if (Stars.Length < 3) return;
+        foreach (GameObject star in Stars)
+        {
+            star.SetActive(false);
+        }
 
+        Player player = players[0].GetComponent<Player>();
+        float healthPercent = (float)player.stats.currentHealth / player.stats.maxHealth;
+
+        
+        if (spawnedMonsters.Count == 0)
+        {
+            Stars[0].SetActive(true);
+        }
+        else
+        {
+            Stars[0].SetActive(false);
+        }
+
+        
+        Stars[1].SetActive(healthPercent >= 0.3f);
+
+        
+        Stars[2].SetActive(healthPercent >= 0.5f);
+    }
     public void RemoveMonster(GameObject monster)
     {
         if (spawnedMonsters.Contains(monster))
@@ -290,7 +334,9 @@ public class GameManager : MonoBehaviour
                 player.GetComponent<Player>().ResetForNewStage();
             }
         }
-
+        _EndgamePanel.SetActive(false);
+        Player _player = players[0].GetComponent<Player>();
+        _player.ApplyStats();
         CalculateStatsModifier();
         StartCoroutine(DelaybeforeStartGame());
     }

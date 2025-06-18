@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
         {
             _webcamObject.SetActive(false); // Disable the webcam object at start
         }
+        
         ApplyStats();
         if (healthBar != null)
         {
@@ -101,8 +102,10 @@ public class Player : MonoBehaviour
         _ShieldGuideObject.SetActive(false);
         _blinkGuideObject.SetActive(false);
     }
-    void ApplyStats()
+    public void ApplyStats()
     {
+        Debug.Log("Applying player stats...");
+        stats.level = gameManager.stageIndex; // Initialize player level from GameManager
         if (gameManager == null)
         {
             Debug.LogWarning("GameManager is not assigned or found in the scene.");

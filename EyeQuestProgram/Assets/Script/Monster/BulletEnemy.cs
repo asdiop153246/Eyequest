@@ -28,7 +28,7 @@ public class BulletEnemy : MonoBehaviour
         if (Vector3.Distance(transform.position, target.position) < 0.2f)
         {
             // Handle hit (optional)
-            target.GetComponent<Animator>()?.SetTrigger("_hit");
+            target.GetComponent<Animator>()?.SetTrigger("_gethit");
             target.GetComponent<Player>()?.TakeDamage(damage);
             DisableBullet();
         }

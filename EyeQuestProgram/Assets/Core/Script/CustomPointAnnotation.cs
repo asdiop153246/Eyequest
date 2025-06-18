@@ -16,7 +16,7 @@ namespace Mediapipe.Unity
   using Color = UnityEngine.Color;
 #pragma warning restore IDE0065
 
-  public class PointAnnotation : HierarchicalAnnotation
+  public class CustomPointAnnotation : HierarchicalAnnotation
   {
     [SerializeField] private Color _color = Color.green;
     [SerializeField] private float _radius = 15.0f;
