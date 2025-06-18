@@ -158,16 +158,22 @@ public class QuestCaller : MonoBehaviour
                 {
                     _Gold += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Currency;
                     _GoldReward.SetActive(true);
+                    Userdata.Instance._User.data.currency.gold += _Gold;
+                    StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 0));
                 }
                 else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Type == QuestCore._RewardType.Vision)
                 {
                     _Vision += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Currency;
                     _VisionReward.SetActive(true);
+                    Userdata.Instance._User.data.currency.vision_point += _Vision;
+                    StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 2));
                 }
                 else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Type == QuestCore._RewardType.Gem)
                 {
                     _Gem += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Currency;
                     _GemReward.SetActive(true);
+                    Userdata.Instance._User.data.currency.gem += _Gem;
+                    StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 1));
                 }
 
                 Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isDone = true;

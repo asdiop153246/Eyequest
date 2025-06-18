@@ -154,6 +154,7 @@ public class LoginManager : MonoBehaviour
         string json = JsonUtility.ToJson(data);
         Debug.Log(json);
         var request = new UnityWebRequest(_URL + "/api/login", "POST");
+        Debug.Log(_URL + "/api/login");
         //request.SetRequestHeader("Authorization", Userdata.instance._Userdata.data.account.access_token);
 
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);

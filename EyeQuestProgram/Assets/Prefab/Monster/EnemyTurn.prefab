@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4832299732541644802}
   - component: {fileID: 9074348491326543283}
   - component: {fileID: 4941630002445108974}
+  - component: {fileID: 855477677719745230}
   m_Layer: 5
   m_Name: EnemyTurn
   m_TagString: Untagged
@@ -32,10 +33,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 406.2412, y: 406.4397}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9074348491326543283
 CanvasRenderer:
@@ -65,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a5dab01423bfe604d9543d75bba6a5aa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0bc45e5a900350545a710074da4d7c2a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -75,3 +76,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!111 &855477677719745230
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2808741457865679216}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: dfe296a0dd80efc49a1af31d977d1f7d, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: dfe296a0dd80efc49a1af31d977d1f7d, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0

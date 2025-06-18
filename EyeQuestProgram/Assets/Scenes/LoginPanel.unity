@@ -13264,7 +13264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1ee527b5a763045b2ae58fd8c9496d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _URL: http://54.179.28.112:8080
+  _URL: http://3.0.20.44:8080
   _LoginPanel: {fileID: 91736468}
   _EmailPanel: {fileID: 752425331}
   _ForgotPassword_Email_Panel: {fileID: 1904999390}
@@ -16365,6 +16365,7 @@ GameObject:
   - component: {fileID: 1977230590}
   - component: {fileID: 1977230592}
   - component: {fileID: 1977230593}
+  - component: {fileID: 1977230594}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -16475,6 +16476,10 @@ MonoBehaviour:
     world: []
   _CurrentWorld: 0
   _CurrentStage: 0
+  _isUsePotion_A: 0
+  _isUsePotion_B: 0
+  _isUsePotion_C: 0
+  _isUsePotion_D: 0
 --- !u!4 &1977230591
 Transform:
   m_ObjectHideFlags: 0
@@ -16502,7 +16507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a5db9a469417943bb41b3cdd279238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Url: http://54.179.28.112:8080
+  _Url: http://3.0.20.44:8080
   DiscardItem:
     value: 
 --- !u!114 &1977230593
@@ -16712,6 +16717,18 @@ MonoBehaviour:
     _QuestDescription_TH: "\u0E2D\u0E22\u0E48\u0E32\u0E42\u0E14\u0E19\u0E2A\u0E30\u0E01\u0E14\u0E08\u0E34\u0E15!"
     _Type: 1
     _Currency: 50
+--- !u!114 &1977230594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1977230589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1461e2c67a7914e9006c39b811a898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1997114477
 GameObject:
   m_ObjectHideFlags: 0

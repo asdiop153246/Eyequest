@@ -40,30 +40,47 @@ public class MonsterHealth : MonoBehaviour
         transform.LookAt(cam.transform);
         transform.Rotate(0, 180, 0);
     }
+
+    public GameObject _HitEffect;
+    public GameObject _Root;
     public void TakeDamage(float damage)
     {
         if (isDead) return;
 
+        GameObject x = Instantiate(_HitEffect, _Root.transform.position, Quaternion.identity);
+        Destroy(x, 2f);
+
         currentHealth -= damage;
+
         if (currentHealth <= 0)
         {
-            Die();
+            StartCoroutine(_Die());
         }
+
         UpdateHealthBar();
-        
-    }
-void Die()
-{
-    isDead = true;
 
-    GameManager gm = FindObjectOfType<GameManager>();
-    if (gm != null)
+    }
+
+    public GameObject _DieEffect;
+    
+    IEnumerator _Die()
     {
-        gm.RemoveMonster(transform.parent.gameObject); // Notify GameManager before destroying
-    }
+        
+        isDead = true;
 
-    Destroy(transform.parent.gameObject);
-}
+        yield return new WaitForSeconds(2f);
+        GameObject x = Instantiate(_DieEffect, _Root.transform.position, Quaternion.identity);
+        Destroy(x, 2f);
+        yield return new WaitForSeconds(0f);
+
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+        {
+            gm.RemoveMonster(transform.parent.gameObject); // Notify GameManager before destroying
+        }
+
+        Destroy(transform.parent.gameObject);
+    }
 
     void UpdateHealthBar()
     {

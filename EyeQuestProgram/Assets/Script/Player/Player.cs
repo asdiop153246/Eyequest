@@ -179,8 +179,12 @@ public class Player : MonoBehaviour
 
     public GameObject _MinigameCore;
     // Call this method when it's the player's turn
+    public GameObject _GameManagerCore;
+    
     public void Attack(int skillIndex)
     {
+
+        
 
         if (_MinigameCore != null)
         {
@@ -229,7 +233,13 @@ public class Player : MonoBehaviour
             StartCoroutine(DelayedDamage(2f, gameManager.selectedTarget, actualAttackPower, isCritical, skillIndex));
         }
 
+        StartCoroutine(_DelayCooldown());
+    }
 
+    IEnumerator _DelayCooldown()
+    {
+        yield return new WaitForSeconds(2f);
+        _GameManagerCore.GetComponent<GameManager>()._isAlreadySelectionSkill = false;
     }
     private IEnumerator DelayedDamage(float delay, GameObject target, float damage, bool wasCritical, int skillIndex)
     {
@@ -300,7 +310,6 @@ public class Player : MonoBehaviour
             healthBar.fillAmount = stats.currentHealth / stats.maxHealth;
             healthText.text = $"{stats.currentHealth}/{stats.maxHealth}";
         }
-
     }
 }
 
