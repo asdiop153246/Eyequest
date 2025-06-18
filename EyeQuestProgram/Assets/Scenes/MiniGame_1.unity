@@ -9686,6 +9686,7 @@ MonoBehaviour:
   _VideoPanel: {fileID: 7348556798579489711}
   _TimmerIcon: {fileID: 1859915751}
   _CurrentMonster: {fileID: 0}
+  _CurrentSkillName: 
   _Core: {fileID: 5657264763972740435}
   _Log: {fileID: 1782990502}
   _HitEffect: {fileID: 1906645253}
