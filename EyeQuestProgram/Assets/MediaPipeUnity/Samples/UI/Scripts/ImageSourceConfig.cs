@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine.UI;
 
@@ -18,10 +19,10 @@ namespace Mediapipe.Unity.Sample.UI
     private const string _ResolutionPath = "Scroll View/Viewport/Contents/Resolution/Dropdown";
     private const string _IsHorizontallyFlippedPath = "Scroll View/Viewport/Contents/IsHorizontallyFlipped/Toggle";
 
-    private Dropdown _sourceTypeInput;
-    private Dropdown _sourceInput;
-    private Dropdown _resolutionInput;
-    private Toggle _isHorizontallyFlippedInput;
+    public Dropdown _sourceTypeInput;
+    public Dropdown _sourceInput;
+    public Dropdown _resolutionInput;
+    public Toggle _isHorizontallyFlippedInput;
 
     private bool _isChanged;
 
@@ -33,6 +34,7 @@ namespace Mediapipe.Unity.Sample.UI
     public override void Exit()
     {
       GetModal().CloseAndResume(_isChanged);
+      //this.gameObject.SetActive(false);
     }
 
     private void InitializeContents()
@@ -62,13 +64,14 @@ namespace Mediapipe.Unity.Sample.UI
 
       _sourceTypeInput.onValueChanged.AddListener(delegate
       {
+        UnityEngine.Debug.Log($"Switching ImageSourceType to: {(ImageSourceType)_sourceTypeInput.value}");
         ImageSourceProvider.Switch((ImageSourceType)_sourceTypeInput.value);
         _isChanged = true;
         InitializeContents();
       });
     }
 
-    private void InitializeSource()
+    public void InitializeSource()
     {
       _sourceInput = gameObject.transform.Find(_SourcePath).gameObject.GetComponent<Dropdown>();
       _sourceInput.ClearOptions();
@@ -87,15 +90,17 @@ namespace Mediapipe.Unity.Sample.UI
       _sourceInput.AddOptions(options);
 
       var currentSourceName = imageSource.sourceName;
-      var defaultValue = options.FindIndex(option => option == currentSourceName);
+      var defaultValue = 1;//options.FindIndex(option => option == currentSourceName);
 
       if (defaultValue >= 0)
       {
         _sourceInput.value = defaultValue;
+        imageSource.SelectSource(_sourceInput.value);
       }
 
       _sourceInput.onValueChanged.AddListener(delegate
       {
+        UnityEngine.Debug.Log($"Switching ImageSource to: {imageSource.sourceCandidateNames[_sourceInput.value]}");
         imageSource.SelectSource(_sourceInput.value);
         _isChanged = true;
         //InitializeResolution();

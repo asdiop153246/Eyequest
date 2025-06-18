@@ -132,7 +132,10 @@ namespace Mediapipe.Unity
 
       if (availableSources != null && availableSources.Length > 0)
       {
-        webCamDevice = availableSources[0];
+        // Prefer index 1 if it exists, else fallback to 0
+        int defaultIndex = availableSources.Length > 1 ? 1 : 0;
+        webCamDevice = availableSources[defaultIndex];
+        Debug.Log($"Defaulting to camera at index {defaultIndex}: {webCamDevice?.name}");
       }
     }
 

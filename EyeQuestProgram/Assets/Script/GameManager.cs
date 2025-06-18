@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.Android;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GameManager : MonoBehaviour
     public Transform[] spawnPoints;
     public GameObject selectedTarget;
     public int numberOfMonsters;
-    
+
 
     public List<GameObject> spawnedMonsters = new List<GameObject>();
     [Header("Player Settings")]
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
     public Userdata _userdata;
     void Start()
     {
+        //CheckAndRequestCameraPermission();
         _userdata = FindObjectOfType<Userdata>();
         if (_userdata == null)
         {
@@ -234,7 +236,7 @@ public class GameManager : MonoBehaviour
     int starcount;
     public int CalculateEndGameRewards()
     {
-        
+
         if (Stars.Length < 3) return 0;
         foreach (GameObject star in Stars)
         {
@@ -244,7 +246,7 @@ public class GameManager : MonoBehaviour
         Player player = players[0].GetComponent<Player>();
         float healthPercent = (float)player.stats.currentHealth / player.stats.maxHealth;
 
-        
+
         if (spawnedMonsters.Count == 0)
         {
             Stars[0].SetActive(true);
@@ -255,7 +257,7 @@ public class GameManager : MonoBehaviour
             Stars[0].SetActive(false);
         }
 
-        if(healthPercent >= 0.3f)
+        if (healthPercent >= 0.3f)
         {
             Stars[1].SetActive(true);
         }
@@ -398,5 +400,52 @@ public class GameManager : MonoBehaviour
         }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+    }
+    
+
+        void CheckAndRequestCameraPermission()
+    {
+        if (Permission.HasUserAuthorizedPermission(Permission.Camera))
+        {
+            Debug.Log("Camera permission already granted.");
+            OnCameraPermissionGranted();
+        }
+        else
+        {
+            Debug.Log("Camera permission NOT granted. Requesting now...");
+            Permission.RequestUserPermission(Permission.Camera);
+            // We will wait for user's response, so listen for callback
+        }
+    }
+
+    // This method is called automatically by Unity when user responds to permission request
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus)
+        {
+            // When app regains focus, check permission status again
+            if (Permission.HasUserAuthorizedPermission(Permission.Camera))
+            {
+                Debug.Log("Camera permission granted after request.");
+                OnCameraPermissionGranted();
+            }
+            else
+            {
+                Debug.LogWarning("Camera permission denied.");
+                OnCameraPermissionDenied();
+            }
+        }
+    }
+
+    void OnCameraPermissionGranted()
+    {
+        // Put your code here for what to do if camera permission is available
+        Debug.Log("You can now safely access the camera.");
+    }
+
+    void OnCameraPermissionDenied()
+    {
+        // Put your code here for what to do if user denied permission
+        Debug.LogWarning("Camera permission denied - app may not work correctly.");
     }
 }

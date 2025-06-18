@@ -74,9 +74,9 @@ public class GetPointID : MonoBehaviour
       float centerX = _centerPoint.transform.position.x;
       float centerY = _centerPoint.transform.position.y;
       
-      float idealX = -2.737237f;
+      float idealX = -3.68611f;
       float idealY = 6.705392f;
-      float toleranceX = 0.3f;
+      float toleranceX = 0.5f;
       float toleranceY = 0.3f;
     if (_centerPoint != null && _DetectionZone != null)
     {
