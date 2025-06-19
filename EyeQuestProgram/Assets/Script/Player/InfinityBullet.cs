@@ -56,9 +56,11 @@ public class InfinityBullet : MonoBehaviour
     void HitTarget()
     {
         MonsterHealth monster = target.GetComponentInChildren<MonsterHealth>();
+        Animator monsterAnim = target.GetComponentInChildren<Animator>();
         if (target.GetComponentInChildren<MonsterHealth>())
         {
             monster.TakeDamage(damage);
+            monsterAnim.SetTrigger("_hit");
         }
 
         attacker.skillText.text = attacker.skills[skillIndex].name + " used! " + (wasCritical ? "Critical Hit!" : "");
