@@ -22,6 +22,7 @@ public class InventorySystem : MonoBehaviour
         public string _ItemName;
         public string _ItemDes;
         public Sprite _ItemIcon;
+        public Sprite _StoreIcon;
         public _itemType _Type;
         public int _price;
     }
@@ -229,5 +230,24 @@ public class InventorySystem : MonoBehaviour
     public void _Removeware()
     {
         StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._RemoveItem(_CurrentRemoveItemId, _typeId, _CurrentOnUI_Type));
+    }
+
+    public void _UsePotion(int _id)
+    {
+        switch (_id)
+        {
+            case 0:
+                Userdata.Instance._isUsePotion_A = true;
+                break;
+            case 1:
+                Userdata.Instance._isUsePotion_B = true;
+                break;
+            case 2:
+                Userdata.Instance._isUsePotion_C = true;
+                break;
+            case 3:
+                Userdata.Instance._isUsePotion_D = true;
+                break;
+        }
     }
 }

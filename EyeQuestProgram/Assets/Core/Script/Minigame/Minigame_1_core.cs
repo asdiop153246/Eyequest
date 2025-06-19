@@ -145,9 +145,12 @@ public class Minigame_1_core : MonoBehaviour
         }
     }
 
+    public Animator _Player;
+
     IEnumerator _DoneProcessing()
     {
         _Log.GetComponent<TMPro.TextMeshProUGUI>().text = "Show Hit Effect";
+        _Player.GetComponent<Animator>().SetTrigger("_attack");
         _HitEffect.SetActive(true);
         _SlashEffect.SetActive(true);
         _CurrentMonster.transform.GetChild(0).gameObject.GetComponent<Animator>().SetTrigger("_hit");

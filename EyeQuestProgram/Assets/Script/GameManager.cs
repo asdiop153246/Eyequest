@@ -65,22 +65,32 @@ public class GameManager : MonoBehaviour
             if (_userdata._isUsePotion_A)
             {
                 _PotionIcon[0].SetActive(true);
+                Userdata.Instance._User.data.booster.booster1 -= 1;
             }
 
             if (_userdata._isUsePotion_B)
             {
                 _PotionIcon[1].SetActive(true);
+                Userdata.Instance._User.data.booster.booster2 -= 1;
             }
 
             if (_userdata._isUsePotion_C)
             {
                 _PotionIcon[2].SetActive(true);
+                Userdata.Instance._User.data.booster.booster3 -= 1;
             }
 
             if (_userdata._isUsePotion_D)
             {
                 _PotionIcon[3].SetActive(true);
+                Userdata.Instance._User.data.booster.booster4 -= 1;
             }
+
+            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._BuyBooster(
+           Userdata.Instance._User.data.booster.booster1,
+           Userdata.Instance._User.data.booster.booster2,
+           Userdata.Instance._User.data.booster.booster3,
+           Userdata.Instance._User.data.booster.booster4));
 
 
             if (stageIndex == 0)
@@ -440,54 +450,80 @@ public class GameManager : MonoBehaviour
         List<string> tempNames = new List<string>();
         List<int> tempScores = new List<int>();
 
-        // โหลดชื่อและคะแนนเก่าจาก Leaderboard (ถ้ามี)
+        bool foundSameName = false;
+
         for (int i = 0; i < leaderboard.Count; i++)
         {
-            tempNames.Add(leaderboard[i].playerName);
-            tempScores.Add(leaderboard[i].playerScore);
-        }
+            string name = leaderboard[i].playerName;
+            int score = leaderboard[i].playerScore;
 
-        // หา index ที่ควรแทรก
-        int insertIndex = -1;
-        for (int i = 0; i < tempScores.Count; i++)
-        {
-            if (_CurrentScore > tempScores[i])
+            // ถ้าชื่อซ้ำ
+            if (name == Userdata.Instance._User.data.user.name)
             {
-                insertIndex = i;
-                break;
+                foundSameName = true;
+
+                // ถ้าคะแนนใหม่มากกว่า → ใช้คะแนนใหม่
+                if (_CurrentScore > score)
+                {
+                    tempNames.Add(Userdata.Instance._User.data.user.name);
+                    tempScores.Add(_CurrentScore);
+                }
+                else
+                {
+                    tempNames.Add(name);
+                    tempScores.Add(score);
+                }
+            }
+            else
+            {
+                // ชื่อไม่ซ้ำ → เก็บไว้เหมือนเดิม
+                tempNames.Add(name);
+                tempScores.Add(score);
             }
         }
 
-        // ถ้าไม่มีคะแนนใครเลย หรือคะแนนน้อยกว่าทุกคน → เพิ่มท้าย
-        if (insertIndex == -1)
+        // ถ้ายังไม่เคยมีชื่อผู้เล่นนี้เลย → แทรกเข้าให้เหมาะสม
+        if (!foundSameName)
         {
-            tempNames.Add(Userdata.Instance._User.data.user.name);
-            tempScores.Add(_CurrentScore);
-        }
-        else
-        {
-            // แทรกคะแนนใหม่ในตำแหน่งที่เหมาะสม
-            tempNames.Insert(insertIndex, Userdata.Instance._User.data.user.name);
-            tempScores.Insert(insertIndex, _CurrentScore);
+            int insertIndex = -1;
+            for (int i = 0; i < tempScores.Count; i++)
+            {
+                if (_CurrentScore > tempScores[i])
+                {
+                    insertIndex = i;
+                    break;
+                }
+            }
+
+            if (insertIndex == -1)
+            {
+                tempNames.Add(Userdata.Instance._User.data.user.name);
+                tempScores.Add(_CurrentScore);
+            }
+            else
+            {
+                tempNames.Insert(insertIndex, Userdata.Instance._User.data.user.name);
+                tempScores.Insert(insertIndex, _CurrentScore);
+            }
         }
 
-        // ตัดให้เหลือไม่เกิน 3 คน
+        // จำกัดให้เหลือแค่ 3 อันดับ
         while (tempNames.Count > 3)
         {
             tempNames.RemoveAt(tempNames.Count - 1);
             tempScores.RemoveAt(tempScores.Count - 1);
         }
 
-        // อัปเดตกลับไปยัง Leaderboard
+        // เขียนกลับไปยัง Leaderboard
         for (int i = 0; i < tempNames.Count; i++)
         {
             if (i >= leaderboard.Count)
             {
-                Userdata.LeaderboardEntry _temp = new Userdata.LeaderboardEntry();
-                _temp.playerName = Userdata.Instance._User.data.user.name;
-                _temp.playerScore = _CurrentScore;
-
-                leaderboard.Add(_temp);
+                leaderboard.Add(new Userdata.LeaderboardEntry()
+                {
+                    playerName = tempNames[i],
+                    playerScore = tempScores[i]
+                });
             }
             else
             {
@@ -512,7 +548,6 @@ public class GameManager : MonoBehaviour
             }
 
             yield return new WaitForSeconds(1f);
-
         }
 
     }

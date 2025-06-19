@@ -53,7 +53,10 @@ public class WordLoader : MonoBehaviour
 
                     _CurrentWorld = 0;
                     Userdata.Instance._CurrentWorld = _CurrentWorld;
-                    
+
+                    _World_1[i]._Star[0].gameObject.SetActive(true);
+                    _World_1[i]._Star[1].gameObject.SetActive(true);
+                    _World_1[i]._Star[2].gameObject.SetActive(true);
 
                     _World_1[i]._LevelPin.GetComponent<Button>().interactable = true;
 
@@ -93,6 +96,10 @@ public class WordLoader : MonoBehaviour
 
                     _World_2[i]._LevelPin.sprite = _PinImage[0];
 
+                    _World_2[i]._Star[0].gameObject.SetActive(true);
+                    _World_2[i]._Star[1].gameObject.SetActive(true);
+                    _World_2[i]._Star[2].gameObject.SetActive(true);
+
                     if (Userdata.Instance._WorldData.world[_id].level[i].stars == 3)
                     {
                         _World_2[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
@@ -122,6 +129,10 @@ public class WordLoader : MonoBehaviour
                 {
                     _CurrentWorld = 2;
                     Userdata.Instance._CurrentWorld = _CurrentWorld;
+
+                    _World_3[i]._Star[0].gameObject.SetActive(true);
+                    _World_3[i]._Star[1].gameObject.SetActive(true);
+                    _World_3[i]._Star[2].gameObject.SetActive(true);
 
                     _World_3[i]._LevelPin.GetComponent<Button>().interactable = true;
 
@@ -201,24 +212,74 @@ public class WordLoader : MonoBehaviour
                 {
                     if (_id == 0)
                     {
-                        _World_1[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
-                        _World_1[i + 1]._LevelPin.sprite = _PinImage[0];
 
-                        Debug.Log("UNLOCK : " + _World_1[i + 1]._LevelPin.GetComponent<Button>().interactable);
+                        if (i == 9)
+                        {
+                            _World_2[0]._LevelPin.GetComponent<Button>().interactable = true;
+                            _World_2[0]._LevelPin.sprite = _PinImage[0];
+
+                            Debug.Log("UNLOCK : " + _World_2[0]._LevelPin.GetComponent<Button>().interactable);
+
+                            _World_2[0]._Star[0].gameObject.SetActive(true);
+                            _World_2[0]._Star[1].gameObject.SetActive(true);
+                            _World_2[0]._Star[2].gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            _World_1[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
+                            _World_1[i + 1]._LevelPin.sprite = _PinImage[0];
+
+                            Debug.Log("UNLOCK : " + _World_1[i + 1]._LevelPin.GetComponent<Button>().interactable);
+
+                            _World_1[i + 1]._Star[0].gameObject.SetActive(true);
+                            _World_1[i + 1]._Star[1].gameObject.SetActive(true);
+                            _World_1[i + 1]._Star[2].gameObject.SetActive(true);
+                        }
+
                     }
                     else if (_id == 1)
                     {
-                        _World_2[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
-                        _World_2[i + 1]._LevelPin.sprite = _PinImage[0];
+
+                        if (i == 19)
+                        {
+                            _World_3[0]._LevelPin.GetComponent<Button>().interactable = true;
+                            _World_3[0]._LevelPin.sprite = _PinImage[0];
+
+                            Debug.Log("UNLOCK : " + _World_2[0]._LevelPin.GetComponent<Button>().interactable);
+
+                            _World_3[0]._Star[0].gameObject.SetActive(true);
+                            _World_3[0]._Star[1].gameObject.SetActive(true);
+                            _World_3[0]._Star[2].gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            _World_2[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
+                            _World_2[i + 1]._LevelPin.sprite = _PinImage[0];
+
+                            _World_2[i + 1]._Star[0].gameObject.SetActive(true);
+                            _World_2[i + 1]._Star[1].gameObject.SetActive(true);
+                            _World_2[i + 1]._Star[2].gameObject.SetActive(true);
+                        }
+
                     }
                     else if (_id == 2)
                     {
                         _World_3[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
                         _World_3[i + 1]._LevelPin.sprite = _PinImage[0];
+
+                        _World_2[i + 1]._Star[0].gameObject.SetActive(true);
+                        _World_2[i + 1]._Star[1].gameObject.SetActive(true);
+                        _World_2[i + 1]._Star[2].gameObject.SetActive(true);
                     }
                 }
+
+
+
+                
             }
         }
+
+
     }
 
 
@@ -291,6 +352,15 @@ public TMPro.TextMeshProUGUI _LevelName;
             _BoosterSlot[3].SetActive(false);
         }
 
+        foreach(TMPro.TextMeshProUGUI x in _LeaderboardName)
+        {
+            x.gameObject.SetActive(false);
+        }
+
+        foreach (TMPro.TextMeshProUGUI x in _SocreSlot)
+        {
+            x.gameObject.SetActive(false);
+        }
 
         _Score.text = Userdata.Instance._WorldData.world[_CurrentWorld].level[_id].score+"";
 
@@ -320,7 +390,17 @@ public TMPro.TextMeshProUGUI _LevelName;
                 }
             }
         }
-        
+
+        foreach (TMPro.TextMeshProUGUI x in _LeaderboardName)
+        {
+            x.gameObject.SetActive(true);
+        }
+
+        foreach (TMPro.TextMeshProUGUI x in _SocreSlot)
+        {
+            x.gameObject.SetActive(true);
+        }
+
 
         if (Userdata.Instance._WorldData.world[_CurrentWorld].level[_id].stars == 3)
         {

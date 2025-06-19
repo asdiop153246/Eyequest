@@ -69,6 +69,8 @@ public class Minigame_2_core : MonoBehaviour
         Destroy(A, 2f);
     }
 
+    public Animator _Player;
+
     IEnumerator _DoneProcessing()
     {
         _Log.GetComponent<TMPro.TextMeshProUGUI>().text = "Show Hit Effect";
@@ -120,6 +122,7 @@ public class Minigame_2_core : MonoBehaviour
         ChangeSFX.SetActive(true);
         yield return new WaitForSeconds(1);
         SlashSFX.SetActive(true);
+        _Player.GetComponent<Animator>().SetTrigger("_attack");
         yield return new WaitForSeconds(0.5f);
         HitSFX.SetActive(true);
         yield return new WaitForSeconds(2);
