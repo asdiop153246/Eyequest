@@ -362,6 +362,15 @@ public TMPro.TextMeshProUGUI _LevelName;
             x.gameObject.SetActive(false);
         }
 
+        _LeaderboardName[0].text = "-";
+        _SocreSlot[0].text = "-";
+
+        _LeaderboardName[1].text = "-";
+        _SocreSlot[1].text = "-";
+
+        _LeaderboardName[2].text = "-";
+        _SocreSlot[2].text = "-";
+
         _Score.text = Userdata.Instance._WorldData.world[_CurrentWorld].level[_id].score+"";
 
         if(Userdata.Instance._WorldData.world[_CurrentWorld].level[_id].Leaderboard.Count== 0){
