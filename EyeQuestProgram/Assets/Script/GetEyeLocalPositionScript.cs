@@ -14,6 +14,11 @@ public class GetEyeLocalPositionScript : MonoBehaviour
     foreach (var point in points)
     {
       //Debug.Log("Point ID: " + point._id);
+      if (point != null && point._id == 0)
+      {
+          point.GetComponent<SphereCollider>().enabled = true;
+      }
+
       if (point != null && point._id == 1 && _isRightIris == true)
       {
         _rightIris = point.gameObject;

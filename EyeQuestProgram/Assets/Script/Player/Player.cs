@@ -47,6 +47,7 @@ public class Player : MonoBehaviour
     [Header("Game Manager")]
     private GameManager gameManager;
     public GameObject _turnEffect;
+    public GameObject _DefeatPanel;
 
     [Header("Skill Settings")]
     public List<Skill> skills = new List<Skill>();
@@ -322,7 +323,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         DealDamage(target.gameObject, damage, isCritical, skillIndex);
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
         Destroy(slashEffect);
     }
 
@@ -373,6 +374,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log($"{gameObject.name} has died.");
         // Handle player death logic here, e.g., disable controls, play animation, etc.
+
         gameObject.SetActive(false); // Disable the player GameObject
     }
     public void EndAttack()

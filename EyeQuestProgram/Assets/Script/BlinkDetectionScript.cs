@@ -95,7 +95,7 @@ public class BlinkDetectionScript : MonoBehaviour
       }
 
       wasBlinking = isBlinking;
-      if (_blinkCount >= 5 & _player.isChoosingShield == false)
+      if (_blinkCount >= 1 & _player.isChoosingShield == false)
       {
         _player.Attack(6);
         _player.isChoosingBlink = false;

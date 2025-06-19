@@ -67,17 +67,17 @@ public class MonsterHealth : MonoBehaviour
     {
         
         isDead = true;
-
-        yield return new WaitForSeconds(2f);
-        GameObject x = Instantiate(_DieEffect, _Root.transform.position, Quaternion.identity);
-        Destroy(x, 2f);
-        yield return new WaitForSeconds(0f);
-
         GameManager gm = FindObjectOfType<GameManager>();
         if (gm != null)
         {
             gm.RemoveMonster(transform.parent.gameObject); // Notify GameManager before destroying
         }
+        yield return new WaitForSeconds(2f);
+        GameObject x = Instantiate(_DieEffect, _Root.transform.position, Quaternion.identity);
+        Destroy(x, 2f);
+        yield return new WaitForSeconds(0f);
+
+
 
         Destroy(transform.parent.gameObject);
     }

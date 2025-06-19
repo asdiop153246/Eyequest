@@ -9,8 +9,9 @@ public class GetPointID : MonoBehaviour
   public GameObject _DetectionZone;
   public GameObject _centerText;
   public GameObject _CenterNoseAlignment;
+  public GameObject _CameraCheckText;
 
-  
+
   private void Start()
   {
     Debug.Log("Start Searching for CenterPoint");
@@ -35,6 +36,7 @@ public class GetPointID : MonoBehaviour
 
     }
 
+
     PointAnnotation[] points = GetComponentsInChildren<PointAnnotation>();
 
     foreach (var point in points)
@@ -54,6 +56,14 @@ public class GetPointID : MonoBehaviour
     {
       Debug.LogWarning("CenterPoint with ID 4 not found.");
     }
+    // if (_CameraCheckText == null)
+    // {
+    //   _CameraCheckText = GameObject.Find("CameraCheckText");
+    //   if (_CameraCheckText != null && _centerPoint != null)
+    //   {
+    //     _CameraCheckText.GetComponent<TextMeshProUGUI>().text = "Found CenterPoint";
+    //   }
+    // }
   }
   private void Update()
   {

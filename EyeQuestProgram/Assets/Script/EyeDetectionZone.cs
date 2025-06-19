@@ -43,7 +43,7 @@ public class EyeDetectionZone : MonoBehaviour
   private void OnTriggerEnter(Collider other)
   {
     PointAnnotation point = other.gameObject.GetComponent<PointAnnotation>();
-    if (point != null && point._id == _eyeID)
+    if (point != null)
     {
       isEyeInside = true;
       eyeStayTimer = 0f; // start counting
@@ -53,7 +53,7 @@ public class EyeDetectionZone : MonoBehaviour
   private void OnTriggerExit(Collider other)
   {
     PointAnnotation point = other.gameObject.GetComponent<PointAnnotation>();
-    if (point != null && point._id == _eyeID)
+    if (point != null)
     {
       isEyeInside = false;
       eyeStayTimer = 0f; // reset timer on exit

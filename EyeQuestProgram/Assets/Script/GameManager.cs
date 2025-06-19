@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.Android;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
     public GameObject _TurnBar;
     public GameObject _HpBar;
     public List<GameObject> _PotionIcon;
+    public bool _isGameStart;
 
     public GameObject _Player;
     public enum EnemyTier { Normal, Miniboss, Boss }
@@ -116,7 +118,7 @@ public class GameManager : MonoBehaviour
     {
         if (!_isAlreadySelectionSkill)
         {
-            if (selectedTarget == null)
+            if (selectedTarget == null || currentTurnIndex != 0)
             {
                 _skillUI.SetActive(false);
             }
@@ -129,7 +131,7 @@ public class GameManager : MonoBehaviour
         {
             _skillUI.SetActive(false);
         }
-       
+
     }
 
     public void _SelectionSkill()
@@ -162,7 +164,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         _TurnBar.SetActive(true);
         StartCoroutine(GetComponent<ShiftTurnScript>()._DelayCreateShifting());
-        
+
         yield return new WaitForSeconds(1f);
         PrepareText.transform.parent.gameObject.SetActive(true);
         PrepareText.gameObject.SetActive(true);
@@ -181,8 +183,9 @@ public class GameManager : MonoBehaviour
         PrepareText.gameObject.SetActive(false);
         PrepareText.transform.parent.gameObject.SetActive(false);
         _HpBar.SetActive(true);
+        _isGameStart = true;
         StartTurn();
-        
+
     }
     void CalculateStatsModifier()
     {
@@ -206,6 +209,12 @@ public class GameManager : MonoBehaviour
         // Reinitialize players and monsters
         SpawnMonsters();
         StartTurn();
+    }
+
+    public void restartStage()
+    {
+        _userdata._CurrentStage = stageIndex;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(2);
     }
     void SpawnMonsters()
     {
@@ -384,52 +393,55 @@ public class GameManager : MonoBehaviour
         StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 1));*/
 
     }
-    int starcount;
+    public int starcount;
+public float starDelay = 0.7f; // time between each star popping out
+
     public int CalculateEndGameRewards()
     {
-
         if (Stars.Length < 3) return 0;
+
         foreach (GameObject star in Stars)
         {
             star.SetActive(false);
         }
 
+        starcount = 0;
+
         Player player = players[0].GetComponent<Player>();
         float healthPercent = (float)player.stats.currentHealth / player.stats.maxHealth;
 
+        bool star1 = spawnedMonsters.Count == 0;
+        bool star2 = healthPercent >= 0.3f;
+        bool star3 = healthPercent >= 0.5f;
 
-        if (spawnedMonsters.Count == 0)
+        if (star1) starcount++;
+        if (star2) starcount++;
+        if (star3) starcount++;
+
+        StartCoroutine(PopStars(star1, star2, star3));
+        return starcount;
+    }
+    private IEnumerator PopStars(bool s1, bool s2, bool s3)
+    {
+        yield return new WaitForSeconds(starDelay);
+        if (s1)
         {
             Stars[0].SetActive(true);
-            starcount += 1;
-        }
-        else
-        {
-            Stars[0].SetActive(false);
+            yield return new WaitForSeconds(starDelay);
         }
 
-        if (healthPercent >= 0.3f)
+        if (s2)
         {
             Stars[1].SetActive(true);
-        }
-        else
-        {
-            Stars[1].SetActive(false);
+            yield return new WaitForSeconds(starDelay);
         }
 
-        if (healthPercent >= 0.5f)
+        if (s3)
         {
             Stars[2].SetActive(true);
         }
-        else
-        {
-            Stars[2].SetActive(false);
-        }
-
-        //Stars[2].SetActive(healthPercent >= 0.5f);
-
-        return starcount;
     }
+
 
     public List<GameObject> _UserName;
     public List<GameObject> _Score;
@@ -597,6 +609,7 @@ public class GameManager : MonoBehaviour
     }
     public void SelectTarget(GameObject target)
     {
+        if (!_isGameStart) return;
         selectedTarget = target;
         Debug.Log($"Selected target: {target.name}");
         isReadyToAttack = true; // Set flag to indicate player is ready to attack
