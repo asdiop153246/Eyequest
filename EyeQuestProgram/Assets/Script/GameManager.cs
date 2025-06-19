@@ -237,6 +237,8 @@ public class GameManager : MonoBehaviour
             spawnedMonsters.Add(monster);
         }
     }
+
+
     int GetMaxMonsterIndexForStage(int stage)
     {
 
@@ -519,6 +521,13 @@ public class GameManager : MonoBehaviour
         if (spawnedMonsters.Contains(monster))
         {
             spawnedMonsters.Remove(monster);
+        }
+
+        // Remove its UI
+        ShiftTurnScript shiftTurn = FindObjectOfType<ShiftTurnScript>();
+        if (shiftTurn != null)
+        {
+            shiftTurn.RemoveTurnUI(monster);
         }
     }
     private IEnumerator AnimateTurnText()

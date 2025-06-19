@@ -50,6 +50,8 @@ public class Player : MonoBehaviour
 
     [Header("Skill Settings")]
     public List<Skill> skills = new List<Skill>();
+    public GameObject[] _skillsBullet;
+    public Transform _bulletSpawnPoint;
     public TextMeshProUGUI skillText; // Assign in Inspector
     public bool isChoosingBlink = false;
     public bool isChoosingShield = false;
@@ -96,7 +98,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            DealDamage(gameManager.selectedTarget, 100f, false, 0); // Test Damage
+            //DealDamage(gameManager.selectedTarget, 100f, false, 0); // Test Damage
         }
     }
     public void ResetForNewStage()
@@ -183,9 +185,6 @@ public class Player : MonoBehaviour
     
     public void Attack(int skillIndex)
     {
-
-        
-
         if (_MinigameCore != null)
         {
             _MinigameCore.GetComponent<Minigame_1_core>()._DoneVision();
@@ -221,16 +220,26 @@ public class Player : MonoBehaviour
         if (skillIndex == 7) // Assuming skillIndex 7 is for "Shield"
         {
             _ShieldGuideObject.SetActive(false);
-            StartCoroutine(DelayedDamage(2f, gameManager.selectedTarget, 0, false, skillIndex));
+            StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex,transform.position));
         }
         else if (skillIndex == 6) // Assuming skillIndex 6 is for "Blinkshot"
         {
             _blinkGuideObject.SetActive(false);
-            StartCoroutine(DelayedDamage(2f, gameManager.selectedTarget, actualAttackPower, isCritical, skillIndex));
+            StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex,_bulletSpawnPoint.position));
         }
         else
         {
-            StartCoroutine(DelayedDamage(2f, gameManager.selectedTarget, actualAttackPower, isCritical, skillIndex));
+            if (_skillsBullet != null && _skillsBullet.Length > skillIndex)
+            {
+                StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex,_bulletSpawnPoint.position));
+                // GameObject bullet = Instantiate(_skillsBullet[skillIndex], _bulletSpawnPoint.position, Quaternion.identity);
+                // PlayerBullet bulletScript = bullet.GetComponent<PlayerBullet>();
+                // bulletScript.SetTarget(gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex, this);
+            }
+            else
+            {
+                Debug.LogWarning("Bullet prefab not found or index out of range.");
+            }
         }
 
         StartCoroutine(_DelayCooldown());
@@ -241,32 +250,35 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _GameManagerCore.GetComponent<GameManager>()._isAlreadySelectionSkill = false;
     }
-    private IEnumerator DelayedDamage(float delay, GameObject target, float damage, bool wasCritical, int skillIndex)
+    private IEnumerator DelayedDamage(float delay, Transform target, float damage, bool wasCritical, int skillIndex, Vector3 _spawnPosition)
     {
         yield return new WaitForSeconds(delay);
 
-        DealDamage(target, damage, wasCritical, skillIndex);
+        GameObject bullet = Instantiate(_skillsBullet[skillIndex], _spawnPosition, Quaternion.identity);
+        PlayerBullet bulletScript = bullet.GetComponent<PlayerBullet>();
+        bulletScript.SetTarget(gameManager.selectedTarget.transform, damage, wasCritical, skillIndex, this);
+        //DealDamage(target, damage, wasCritical, skillIndex);
     }
 
-    private void DealDamage(GameObject target, float damageAmount, bool wasCritical, int skillIndex)
-    {
-        if (target == null)
-        {
-            Debug.LogWarning("Target is null. Cannot deal damage.");
-            return;
-        }
-        MonsterHealth monster = target.GetComponentInChildren<MonsterHealth>();
-        Animator monAnim = target.GetComponentInChildren<Animator>();
-        if (monster != null && damageAmount > 0)
-        {
-            monster.TakeDamage(damageAmount);
-            monAnim.SetTrigger("_hit");
-            Debug.Log($"{gameObject.name} attacks {target.name} for {damageAmount} damage.");
-        }
-        skillText.text = skills[skillIndex].name + " used! " + (wasCritical ? "Critical Hit!" : "");
-        // Optionally check if it's your turn (gameManager can expose currentTurnPlayer)
-        Invoke(nameof(EndAttack), 3f);
-    }
+    // private void DealDamage(GameObject target, float damageAmount, bool wasCritical, int skillIndex)
+    // {
+    //     if (target == null)
+    //     {
+    //         Debug.LogWarning("Target is null. Cannot deal damage.");
+    //         return;
+    //     }
+    //     MonsterHealth monster = target.GetComponentInChildren<MonsterHealth>();
+    //     Animator monAnim = target.GetComponentInChildren<Animator>();
+    //     if (monster != null && damageAmount > 0)
+    //     {
+    //         monster.TakeDamage(damageAmount);
+    //         monAnim.SetTrigger("_hit");
+    //         Debug.Log($"{gameObject.name} attacks {target.name} for {damageAmount} damage.");
+    //     }
+    //     skillText.text = skills[skillIndex].name + " used! " + (wasCritical ? "Critical Hit!" : "");
+    //     // Optionally check if it's your turn (gameManager can expose currentTurnPlayer)
+    //     Invoke(nameof(EndAttack), 3f);
+    // }
     public void TakeDamage(float damage)
     {
         if (stats.isImmune) return;

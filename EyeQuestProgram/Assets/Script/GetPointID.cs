@@ -80,8 +80,8 @@ public class GetPointID : MonoBehaviour
       float toleranceY = 0.5f;
     if (_centerPoint != null && _DetectionZone != null)
     {
-      Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
-      Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
+      //Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
+      //Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
       if (Mathf.Abs(centerX - idealX) > toleranceX || Mathf.Abs(centerY - idealY) > toleranceY)
       {
         //Debug.LogWarning("Your face is not Center");

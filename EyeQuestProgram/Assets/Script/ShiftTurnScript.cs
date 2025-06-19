@@ -9,6 +9,7 @@ public class ShiftTurnScript : MonoBehaviour
     private GameManager gameManager;
     public GameObject TurnPrefab;
     public List<Sprite> MonsterUISprite; // Assign different sprites for each turn UI in Inspector
+    public List<GameObject> _activedmonsterUI;
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -21,28 +22,29 @@ public class ShiftTurnScript : MonoBehaviour
     {
         //StartCoroutine(_DelayCreateShifting());
     }
+    private Dictionary<GameObject, GameObject> monsterToUIMap = new Dictionary<GameObject, GameObject>();
 
     public IEnumerator _DelayCreateShifting()
     {
         yield return new WaitForSeconds(0f);
 
-        if (gameManager.spawnedMonsters.Count >= 0)
+        if (gameManager.spawnedMonsters.Count > 0)
         {
-            Debug.LogWarning("No monsters spawned. Please ensure monsters are spawned before shifting turns.");
             for (int i = 0; i < gameManager.spawnedMonsters.Count; i++)
             {
+                GameObject monster = gameManager.spawnedMonsters[i];
                 GameObject turnUI = Instantiate(TurnPrefab, topUIParent);
+                _activedmonsterUI.Add(turnUI);
+
                 UnityEngine.UI.Image imageComponent = turnUI.GetComponent<UnityEngine.UI.Image>();
                 if (imageComponent != null && i < MonsterUISprite.Count)
                 {
-                    imageComponent.sprite = MonsterUISprite[gameManager.spawnedMonsters[i].GetComponent<EnemyAI>()._MonsterID];
+                    int id = monster.GetComponent<EnemyAI>()._MonsterID;
+                    imageComponent.sprite = MonsterUISprite[id];
                 }
-                else
-                {
-                    Debug.LogWarning("Image component missing or sprite index out of range.");
-                }
+
+                monsterToUIMap[monster] = turnUI;
             }
-            yield return new WaitForSeconds(0);
         }
     }
     public void ShiftTurnUI()
@@ -51,5 +53,15 @@ public class ShiftTurnScript : MonoBehaviour
 
         Transform currentTurn = topUIParent.GetChild(0);
         currentTurn.SetSiblingIndex(topUIParent.childCount - 1);
+    }
+    public void RemoveTurnUI(GameObject monster)
+    {
+        if (monsterToUIMap.ContainsKey(monster))
+        {
+            GameObject ui = monsterToUIMap[monster];
+            _activedmonsterUI.Remove(ui);
+            Destroy(ui);
+            monsterToUIMap.Remove(monster);
+        }
     }
 }
