@@ -129,6 +129,20 @@ public class GameManager : MonoBehaviour
         {
             _skillUI.SetActive(false);
         }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            /*foreach(GameObject x in spawnedMonsters)
+            {
+                spawnedMonsters.Remove(x);
+            }*/
+
+            _EndgamePanel.SetActive(true);
+            StartCoroutine(_CalulateReward());
+            StartCoroutine(_UpdateLeaderBoard());
+            Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), 3);
+            
+        }
        
     }
 
@@ -291,8 +305,9 @@ public class GameManager : MonoBehaviour
                     Debug.Log("No monsters left, ending game.");
                     _EndgamePanel.SetActive(true);
                     StartCoroutine(_CalulateReward());
-                    Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), CalculateEndGameRewards());
                     StartCoroutine(_UpdateLeaderBoard());
+                    Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), CalculateEndGameRewards());
+                    
                     return;
                 }
 
@@ -550,6 +565,8 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
         }
 
+        //Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
+
     }
     public void RemoveMonster(GameObject monster)
     {
@@ -585,8 +602,9 @@ public class GameManager : MonoBehaviour
             Debug.Log("All monsters defeated.");
             _EndgamePanel.SetActive(true);
             StartCoroutine(_CalulateReward());
-            Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), CalculateEndGameRewards());
             StartCoroutine(_UpdateLeaderBoard());
+            Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), CalculateEndGameRewards());
+            
             return;
         }
 
