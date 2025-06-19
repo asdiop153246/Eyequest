@@ -326,6 +326,7 @@ Transform:
   - {fileID: 2950506977373297884}
   - {fileID: 1460502730850839291}
   - {fileID: 2065410774251543090}
+  - {fileID: 8000711710473436018}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 1.628, y: 182.004, z: -2.457}
 --- !u!54 &2202749436252375153
@@ -371,6 +372,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 2950506977372934246}
+  myBulletType: 2
   bulletSpawnPoint: {fileID: 1460502730850839291}
   _MonsterID: 1
   baseStats:
@@ -642,6 +644,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &8677314283434171041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8000711710473436018}
+  m_Layer: 0
+  m_Name: Core
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8000711710473436018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8677314283434171041}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.021680713, y: -0.9995111, z: 0.013828538, w: -0.01778547}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 0.4325742, y: 0.43257436, z: 0.4325742}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2122152308421193270}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8729093915070335137
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,6 +870,9 @@ MonoBehaviour:
   isDead: 0
   healthBarUI: {fileID: 7754443603588568997}
   healthText: {fileID: 2125310906353667076}
+  _HitEffect: {fileID: 7806558557828870354, guid: 2319d0fc8c49d4642a4da478b3c589af, type: 3}
+  _Root: {fileID: 8677314283434171041}
+  _DieEffect: {fileID: 3037282632951184280, guid: a06571c4db241b942963dc56424732b4, type: 3}
 --- !u!1001 &1017290132183393568
 PrefabInstance:
   m_ObjectHideFlags: 0

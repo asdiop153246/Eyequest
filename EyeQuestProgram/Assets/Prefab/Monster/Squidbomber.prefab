@@ -368,6 +368,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 2445774036914242285}
+  myBulletType: 4
   bulletSpawnPoint: {fileID: 0}
   _MonsterID: 8
   baseStats:
@@ -729,6 +730,9 @@ MonoBehaviour:
   isDead: 0
   healthBarUI: {fileID: 7754443603588568997}
   healthText: {fileID: 2125310906353667076}
+  _HitEffect: {fileID: 0}
+  _Root: {fileID: 0}
+  _DieEffect: {fileID: 0}
 --- !u!1001 &7248284105471894549
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -11,8 +11,10 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] protected GameManager gameManager;
     public TextMeshProUGUI ActionText;
     public GameObject _Highlight;
+    public BulletType myBulletType;
     public Transform bulletSpawnPoint;
     public int _MonsterID;
+ 
     [System.Serializable]
     public class Stats
     {
@@ -71,27 +73,30 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         Invoke(nameof(EndTurn), 1.5f);
     }
-    public void ShootAtPlayer(GameObject player)
+public void ShootAtPlayer(GameObject target)
+{
+    if (target == null) return;
+    Debug.Log($"Target name {target.name}");
+    GameObject bullet = BulletPool.Instance.GetBullet(myBulletType);
+
+    if (myBulletType == BulletType.Nature) // or BulletType.Nature, depending on your enum
     {
-        GameObject bulletObj = BulletPool.Instance.GetBullet();
-
-        if (bulletSpawnPoint != null)
-        {
-            bulletObj.transform.position = bulletSpawnPoint.position;
-            bulletObj.transform.rotation = bulletSpawnPoint.rotation;
-        }
-        else
-        {
-            bulletObj.transform.position = transform.position;
-            bulletObj.transform.rotation = Quaternion.identity;
-        }
-
-        bulletObj.SetActive(true);
-
-        BulletEnemy bullet = bulletObj.GetComponent<BulletEnemy>();
-        bullet.damage = CurrentStats.Damage;
-        bullet.SetTarget(player.transform);
+        // Spawn at player's ground position
+        Vector3 groundPosition = target.transform.position;
+        groundPosition.y = 0.1f; // adjust to just above ground level
+        bullet.transform.position = groundPosition;
     }
+    else
+    {
+        // Normal spawn from bullet point
+        bullet.transform.position = bulletSpawnPoint.position;
+    }
+
+    bullet.transform.rotation = Quaternion.identity;
+    bullet.SetActive(true);
+    bullet.GetComponent<BulletEnemy>().SetTarget(target.transform, myBulletType,CurrentStats.Damage);
+}
+
 
     protected void EndTurn()
     {

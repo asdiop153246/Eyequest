@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEditor.EditorTools;
 
 [System.Serializable]
 public class Skill
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour
     [Header("Skill Settings")]
     public List<Skill> skills = new List<Skill>();
     public GameObject[] _skillsBullet;
+    public GameObject[] _SwipePrefab;
     public Transform _bulletSpawnPoint;
     public TextMeshProUGUI skillText; // Assign in Inspector
     public bool isChoosingBlink = false;
@@ -220,21 +222,18 @@ public class Player : MonoBehaviour
         if (skillIndex == 7) // Assuming skillIndex 7 is for "Shield"
         {
             _ShieldGuideObject.SetActive(false);
-            StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex,transform.position));
+            StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex, transform.position));
         }
         else if (skillIndex == 6) // Assuming skillIndex 6 is for "Blinkshot"
         {
             _blinkGuideObject.SetActive(false);
-            StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex,_bulletSpawnPoint.position));
+            StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex, _bulletSpawnPoint.position));
         }
         else
         {
             if (_skillsBullet != null && _skillsBullet.Length > skillIndex)
             {
-                StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex,_bulletSpawnPoint.position));
-                // GameObject bullet = Instantiate(_skillsBullet[skillIndex], _bulletSpawnPoint.position, Quaternion.identity);
-                // PlayerBullet bulletScript = bullet.GetComponent<PlayerBullet>();
-                // bulletScript.SetTarget(gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex, this);
+                StartCoroutine(DelayedDamage(2, gameManager.selectedTarget.transform, actualAttackPower, isCritical, skillIndex, _bulletSpawnPoint.position));
             }
             else
             {
@@ -254,35 +253,106 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        GameObject bullet = Instantiate(_skillsBullet[skillIndex], _spawnPosition, Quaternion.identity);
-        PlayerBullet bulletScript = bullet.GetComponent<PlayerBullet>();
-        bulletScript.SetTarget(gameManager.selectedTarget.transform, damage, wasCritical, skillIndex, this);
-        //DealDamage(target, damage, wasCritical, skillIndex);
+        // Adjust spawn position based on skill index
+        Vector3 adjustedPosition = _spawnPosition;
+        if  (skillIndex == 0 && target != null)
+        {
+            GameObject infinitybullet = Instantiate(_skillsBullet[skillIndex], _spawnPosition, Quaternion.identity);
+            InfinityBullet infinityBullet = infinitybullet.GetComponent<InfinityBullet>();
+            infinityBullet.SetTarget(gameManager.selectedTarget.transform, damage, wasCritical, skillIndex, this);
+        }
+        else
+        {
+            if (skillIndex == 2 && target != null)
+            {
+                Debug.Log("Performing Vertical Swipe");
+                StartCoroutine(PerformSlashAttack(target, damage, wasCritical, 2, 0));
+            }
+            else if (skillIndex == 3 && target != null)
+            {
+                Debug.Log("Performing Horizontal Swipe");
+                StartCoroutine(PerformSlashAttack(target, damage, wasCritical, 2, 1));
+            }
+            else if (skillIndex == 4 && target != null)
+            {
+                Debug.Log("Performing XStrike Swipe");
+                StartCoroutine(PerformSlashAttack(target, damage, wasCritical, 2, 2));
+            }
+            else
+            {
+                GameObject bullet = Instantiate(_skillsBullet[skillIndex], adjustedPosition, Quaternion.identity);
+                PlayerBullet bulletScript = bullet.GetComponent<PlayerBullet>();
+                bulletScript.SetTarget(target, damage, wasCritical, skillIndex, this);
+            }
+
+        }
+    }
+    private IEnumerator PerformSlashAttack(Transform target, float damage, bool isCritical, int skillIndex, int effectindex)
+    {
+        Vector3 spawnPos = target.position + Vector3.up * 1f;
+        GameObject slashEffect = Instantiate(_SwipePrefab[effectindex], spawnPos, Quaternion.Euler(0, 0, 0));
+
+        float forwardAngle = 0f;
+        float reverseAngle = 0f;
+
+        // Determine rotation angles
+        if (effectindex == 1) // Horizontal Swipe
+        {
+            forwardAngle = 180f;
+            reverseAngle = 0f;
+        }
+        else if (effectindex == 0) // Vertical Swipe
+        {
+            forwardAngle = 90f;
+            reverseAngle = -90f;
+        }
+        else if (effectindex == 2)
+        {
+            forwardAngle = -55;
+            reverseAngle = 55;
+        }
+
+        float duration = 1f;
+
+        // Forward swipe (instant snap)
+        slashEffect.transform.rotation = Quaternion.Euler(0, 0, forwardAngle);
+        yield return new WaitForSeconds(duration);
+
+        // Reverse swipe (instant snap)
+        slashEffect.transform.rotation = Quaternion.Euler(0, 0, reverseAngle);
+        yield return new WaitForSeconds(duration);
+
+        DealDamage(target.gameObject, damage, isCritical, skillIndex);
+        yield return new WaitForSeconds(1f);
+        Destroy(slashEffect);
     }
 
-    // private void DealDamage(GameObject target, float damageAmount, bool wasCritical, int skillIndex)
-    // {
-    //     if (target == null)
-    //     {
-    //         Debug.LogWarning("Target is null. Cannot deal damage.");
-    //         return;
-    //     }
-    //     MonsterHealth monster = target.GetComponentInChildren<MonsterHealth>();
-    //     Animator monAnim = target.GetComponentInChildren<Animator>();
-    //     if (monster != null && damageAmount > 0)
-    //     {
-    //         monster.TakeDamage(damageAmount);
-    //         monAnim.SetTrigger("_hit");
-    //         Debug.Log($"{gameObject.name} attacks {target.name} for {damageAmount} damage.");
-    //     }
-    //     skillText.text = skills[skillIndex].name + " used! " + (wasCritical ? "Critical Hit!" : "");
-    //     // Optionally check if it's your turn (gameManager can expose currentTurnPlayer)
-    //     Invoke(nameof(EndAttack), 3f);
-    // }
+
+
+    private void DealDamage(GameObject target, float damageAmount, bool wasCritical, int skillIndex)
+    {
+        if (target == null)
+        {
+            Debug.LogWarning("Target is null. Cannot deal damage.");
+            return;
+        }
+        MonsterHealth monster = target.GetComponentInChildren<MonsterHealth>();
+        Animator monAnim = target.GetComponentInChildren<Animator>();
+        if (monster != null && damageAmount > 0)
+        {
+            monster.TakeDamage(damageAmount);
+            monAnim.SetTrigger("_hit");
+            Debug.Log($"{gameObject.name} attacks {target.name} for {damageAmount} damage.");
+        }
+        skillText.text = skills[skillIndex].name + " used! " + (wasCritical ? "Critical Hit!" : "");
+        // Optionally check if it's your turn (gameManager can expose currentTurnPlayer)
+        Invoke(nameof(EndAttack), 3f);
+    }
     public void TakeDamage(float damage)
     {
         if (stats.isImmune) return;
         stats.currentHealth = Mathf.Max(0f, stats.currentHealth - damage);
+        GetComponent<Animator>().SetTrigger("_gethit");
         StartCoroutine(ShowGetHitEffect());
         if (stats.currentHealth <= 0)
         {
@@ -296,7 +366,7 @@ public class Player : MonoBehaviour
         if (_gethitEffect != null)
         {
             _gethitEffect.SetActive(true);
-            yield return new WaitForSeconds(0.7f); // Show effect for 0.5 seconds
+            yield return new WaitForSeconds(1f); // Show effect for 0.5 seconds
             _gethitEffect.SetActive(false);
         }
     }

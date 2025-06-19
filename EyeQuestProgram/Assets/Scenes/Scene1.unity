@@ -3434,6 +3434,7 @@ GameObject:
   - component: {fileID: 648554360}
   - component: {fileID: 648554362}
   - component: {fileID: 648554361}
+  - component: {fileID: 648554363}
   m_Layer: 5
   m_Name: ExampleUI (5)
   m_TagString: Untagged
@@ -3499,6 +3500,86 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 648554359}
   m_CullTransparentMesh: 1
+--- !u!114 &648554363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648554359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 648554361}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 737317296}
+        m_TargetAssemblyTypeName: Player, Assembly-CSharp
+        m_MethodName: Attack
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7348556799119088645}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 109579313}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &655457964
 GameObject:
   m_ObjectHideFlags: 0
@@ -3841,8 +3922,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b07c680effc055c47841f2050f39e6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 1096697336207531159, guid: c47e242a7987c984fa2229f2295c7a0c, type: 3}
-  poolSize: 10
+  bulletEntries:
+  - bulletType: 0
+    bulletPrefab: {fileID: 1096697336207531159, guid: c47e242a7987c984fa2229f2295c7a0c, type: 3}
+    poolSize: 2
+  - bulletType: 1
+    bulletPrefab: {fileID: 8543218529545814629, guid: 8b7345567fe6517459eb800dbc7d25e0, type: 3}
+    poolSize: 2
+  - bulletType: 2
+    bulletPrefab: {fileID: 7611768259454570361, guid: b3132cf99a4179e4b970012ac5d6c884, type: 3}
+    poolSize: 2
+  - bulletType: 3
+    bulletPrefab: {fileID: 2069488915866148281, guid: 68a644315ab3aa14dbb8f6a7575e069c, type: 3}
+    poolSize: 2
+  - bulletType: 4
+    bulletPrefab: {fileID: 9032882730828590221, guid: 8d62c925ccd2b8b48962efbbf7f96d1c, type: 3}
+    poolSize: 2
 --- !u!4 &675772118
 Transform:
   m_ObjectHideFlags: 0
@@ -4815,14 +4910,18 @@ MonoBehaviour:
   _turnEffect: {fileID: 2589451199568318588}
   skills: []
   _skillsBullet:
+  - {fileID: 1247535247826914599, guid: 3c90e9cf22dd9064b9787d78092f367c, type: 3}
+  - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
+  - {fileID: 3825517281649902359, guid: a676f3d6a4276484ea1a6b12cdb78519, type: 3}
+  - {fileID: 3857764086149752969, guid: 6b9fd60f7dde55d408391ad980b7c4d5, type: 3}
+  - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
   - {fileID: 3864172391871287630, guid: cdcd4aae9001cfd47837c10d937b18ab, type: 3}
   - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
-  - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
-  - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
-  - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
-  - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
-  - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
-  - {fileID: 6629050986064988329, guid: 73e72eae38f90d549b53213b7112bd63, type: 3}
+  - {fileID: 3484851197330182456, guid: 138ba1327332a574da3c5c8cff022d4d, type: 3}
+  _SwipePrefab:
+  - {fileID: 6576000194947666888, guid: b4c63323318570d49bd48db8844de0b1, type: 3}
+  - {fileID: 878199259626827980, guid: 5b16fc3ee815de7438367cfce94af0ca, type: 3}
+  - {fileID: 878199259626827980, guid: 24b609cac92d8be408849dce3e653f38, type: 3}
   _bulletSpawnPoint: {fileID: 456289080}
   skillText: {fileID: 1715862442}
   isChoosingBlink: 0
@@ -8534,7 +8633,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 7584686413758794710}
+      - m_Target: {fileID: 8101415071541458851}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -9344,6 +9443,12 @@ MonoBehaviour:
   - {fileID: 6043074615316534412, guid: 03cbce9a36254894b89ff3d23da56a34, type: 3}
   - {fileID: 6043074615316534412, guid: d06d3000bd6ff0c4c9e5c03202da466c, type: 3}
   - {fileID: 7346133487484140658, guid: affe5ec7d6e9bdd4c85dfc7f6b339c22, type: 3}
+  - {fileID: 7346133487484140658, guid: 48ded86bd48b8c745b19a4042e5ae59b, type: 3}
+  - {fileID: 4325830281084596758, guid: e3784745c37e7bb4391f02e5f20a0f2f, type: 3}
+  - {fileID: 4325830281084596758, guid: 1f15c5a961247d043876611d3828902e, type: 3}
+  - {fileID: 4325830281084596758, guid: 83203e0fb36ca944aa8803c0fe00f7d8, type: 3}
+  - {fileID: 7346133487484140658, guid: adb78196279794642b5e37f790e77c36, type: 3}
+  - {fileID: 6043074615316534412, guid: 28c264d60f49c52469f6f3a46a933999, type: 3}
   spawnPoints:
   - {fileID: 1140109561}
   - {fileID: 1143379570}
@@ -11321,7 +11426,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -11556,15 +11661,15 @@ RectTransform:
   m_GameObject: {fileID: 1887467995}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.063078, y: 0.063078, z: 0.063078}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1569620971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -425, y: 0.5}
-  m_SizeDelta: {x: 4199, y: 4221.6753}
+  m_AnchoredPosition: {x: -425, y: 0.50003}
+  m_SizeDelta: {x: 126, y: 126}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1887467997
 MonoBehaviour:
@@ -11586,7 +11691,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ad7ae460b7eab40418453e2ceb17f1e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 006cf8d1be489714f81760d6a17cc357, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

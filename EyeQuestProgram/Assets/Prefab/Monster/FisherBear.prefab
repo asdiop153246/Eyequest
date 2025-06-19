@@ -120,6 +120,9 @@ MonoBehaviour:
   isDead: 0
   healthBarUI: {fileID: 8553792802576156837}
   healthText: {fileID: 1970931766782915669}
+  _HitEffect: {fileID: 0}
+  _Root: {fileID: 0}
+  _DieEffect: {fileID: 0}
 --- !u!1 &2212457729939230025
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,7 +322,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 024f96df69155724e9fe224e3990b43d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a6fafab2adf7e91439cc67e4611b3ade, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -430,6 +433,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 8880718756124121464}
+  myBulletType: 1
   bulletSpawnPoint: {fileID: 0}
   _MonsterID: 4
   baseStats:
@@ -644,7 +648,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 82a7072cff3b0f94eaf4ce5812cf2dbf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4a28ba99d6ca031438d1bd60aee2e5fd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -719,7 +723,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1adad90c663b32940beb450b1ecdef5f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 02a362f07fd0eac4c8c9cab8255fbf67, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
