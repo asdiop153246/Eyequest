@@ -4,38 +4,33 @@ using UnityEngine;
 
 public class BulletEnemy : MonoBehaviour
 {
-    public float speed = 10f;
     private Transform target;
-    private float lifeTime = 5f;
-    public float damage;
+    public float speed = 5f;
+    [SerializeField] private float _damage;
+    private BulletType bulletType;
 
-    public void SetTarget(Transform playerTarget)
+
+    public void SetTarget(Transform target, BulletType type, float damage)
     {
-        target = playerTarget;
-        Invoke(nameof(DisableBullet), lifeTime);
+        this.target = target;
+        this.bulletType = type;
+        this._damage = damage;
     }
 
     void Update()
     {
         if (target == null)
         {
-            DisableBullet();
+            BulletPool.Instance.ReturnBullet(bulletType, gameObject);
             return;
         }
 
         transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        
         if (Vector3.Distance(transform.position, target.position) < 0.2f)
         {
-            // Handle hit (optional)
-            target.GetComponent<Animator>()?.SetTrigger("_gethit");
-            target.GetComponent<Player>()?.TakeDamage(damage);
-            DisableBullet();
+            target.GetComponent<Player>()?.TakeDamage(_damage); // example damage
+            
+            BulletPool.Instance.ReturnBullet(bulletType, gameObject);
         }
-    }
-
-    void DisableBullet()
-    {
-        gameObject.SetActive(false);
     }
 }
