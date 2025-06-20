@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
     {
         if (!_isAlreadySelectionSkill)
         {
-            if (selectedTarget == null || currentTurnIndex != 0)
+            if (selectedTarget == null || currentTurnIndex != 0 || _Player.GetComponent<Player>().isAction == true)
             {
                 _skillUI.SetActive(false);
             }
@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
         numberOfMonsters = GetAmountofMonsterForCurrentStage();
 
         // Determine which monster prefabs are allowed based on stageIndex
-        int maxPrefabIndex = GetMaxMonsterIndexForStage(stageIndex);
+        int maxPrefabIndex = GetMaxMonsterIndexForStage(stageIndex); //stageIndex for gameplay
 
         for (int i = 0; i < numberOfMonsters; i++)
         {
@@ -274,10 +274,10 @@ public class GameManager : MonoBehaviour
 
     int GetMaxMonsterIndexForStage(int stage)
     {
-
-        if (stage <= 2) return 0;
-        else if (stage <= 5) return 1;
-        else return Mathf.Min(2, monsterPrefabs.Length - 1);
+        return 8;
+        // if (stage <= 2) return 0;
+        // else if (stage <= 5) return 1;
+        // else return Mathf.Min(2, monsterPrefabs.Length - 1);
     }
     public int GetAmountofMonsterForCurrentStage()
     {

@@ -14,7 +14,7 @@ public class EnemyAI : MonoBehaviour
     public BulletType myBulletType;
     public Transform bulletSpawnPoint;
     public int _MonsterID;
- 
+
     [System.Serializable]
     public class Stats
     {
@@ -37,9 +37,9 @@ public class EnemyAI : MonoBehaviour
     }
     protected virtual void Start()
     {
-        
+
         ActionText = GameObject.Find("SkillCastText").GetComponent<TextMeshProUGUI>();
-        
+
     }
 
     public virtual void TakeTurn()
@@ -64,7 +64,7 @@ public class EnemyAI : MonoBehaviour
             }
         }
 
-        
+
     }
     IEnumerator delayBullet()
     {
@@ -73,31 +73,40 @@ public class EnemyAI : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         Invoke(nameof(EndTurn), 1.5f);
     }
-public void ShootAtPlayer(GameObject target)
-{
-    if (target == null) return;
-    Debug.Log($"Target name {target.name}");
-    GameObject bullet = BulletPool.Instance.GetBullet(myBulletType);
-
-    if (myBulletType == BulletType.Nature) // or BulletType.Nature, depending on your enum
+    public void ShootAtPlayer(GameObject target)
     {
-        // Spawn at player's ground position
-        Vector3 groundPosition = target.transform.position;
-        groundPosition.y = 0.1f; // adjust to just above ground level
-        bullet.transform.position = groundPosition;
+        if (target == null) return;
+        Debug.Log($"Target name {target.name}");
+        GameObject bullet = BulletPool.Instance.GetBullet(myBulletType);
+
+        if (myBulletType == BulletType.Nature) // or BulletType.Nature, depending on your enum
+        {
+            // Spawn at player's ground position
+            Vector3 groundPosition = target.transform.position;
+            groundPosition.y = -1f; // adjust to just above ground level
+            bullet.transform.position = groundPosition;
+            StartCoroutine(DelaybeforeDestroyNature(bullet, target));
+            return;
+        }
+        else
+        {
+            // Normal spawn from bullet point
+            bullet.transform.position = bulletSpawnPoint.position;
+        }
+
+        bullet.transform.rotation = Quaternion.identity;
+        bullet.SetActive(true);
+        bullet.GetComponent<BulletEnemy>().SetTarget(target.transform, myBulletType, CurrentStats.Damage);
     }
-    else
+
+    IEnumerator DelaybeforeDestroyNature(GameObject _bullet, GameObject _target)
     {
-        // Normal spawn from bullet point
-        bullet.transform.position = bulletSpawnPoint.position;
+        _bullet.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        _target.GetComponent<Player>().TakeDamage(CurrentStats.Damage);
+        BulletPool.Instance.ReturnBullet(BulletType.Nature, _bullet);
+        
     }
-
-    bullet.transform.rotation = Quaternion.identity;
-    bullet.SetActive(true);
-    bullet.GetComponent<BulletEnemy>().SetTarget(target.transform, myBulletType,CurrentStats.Damage);
-}
-
-
     protected void EndTurn()
     {
         ActionText.text = "";
