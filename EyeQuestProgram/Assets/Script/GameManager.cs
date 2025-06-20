@@ -312,11 +312,8 @@ public class GameManager : MonoBehaviour
                 if (spawnedMonsters.Count == 0)
                 {
                     Debug.Log("No monsters left, ending game.");
-                    _EndgamePanel.SetActive(true);
-                    StartCoroutine(_CalulateReward());
-                    StartCoroutine(_UpdateLeaderBoard());
-                    Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), CalculateEndGameRewards());
-                    
+
+                    StartCoroutine(_EndGame());
                     return;
                 }
 
@@ -351,8 +348,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public IEnumerator _EndGame()
+    {
+        _EndgamePanel.SetActive(true);
+        _CurrentScore = CalculateScore();
+        _CurrentStar = CalculateEndGameRewards();
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(_CalulateReward());
+        yield return new WaitForSeconds(0.2f);
+        StartCoroutine(_UpdateLeaderBoard());
+        yield return new WaitForSeconds(0.2f);
+        Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(_CurrentScore, _CurrentStar);
+    }
+
     public TMPro.TextMeshProUGUI _ScoreUI;
     public int _CurrentScore;
+    public int _CurrentStar;
     int CalculateScore()
     {
         bool levelCleared;
@@ -385,19 +396,20 @@ public class GameManager : MonoBehaviour
         _RewardIcon[0].SetActive(false);
         _RewardIcon[1].SetActive(false);
         _RewardIcon[2].SetActive(false);
-        int _Vision = 0;
+
+        int _Vision = Random.Range(10, 100);
         int _Gem = 0;
-        int _Gold = 0;
+        int _Gold = Random.Range(10, 100);
 
         yield return new WaitForSeconds(1f);
         _RewardIcon[0].SetActive(true);
-        _RewardIcon[0].transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Random.Range(10, 100)+"";
+        _RewardIcon[0].transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = _Gold + "";
         Userdata.Instance._User.data.currency.gold += _Gold;
         StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 0));
 
         yield return new WaitForSeconds(1f);
         _RewardIcon[1].SetActive(true);
-        _RewardIcon[1].transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Random.Range(10, 100) + "";
+        _RewardIcon[1].transform.GetChild(0).gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = _Vision + "";
         Userdata.Instance._User.data.currency.vision_point += _Vision;
         StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 2));
 
@@ -612,11 +624,8 @@ public float starDelay = 0.7f; // time between each star popping out
         if (totalTurns == 1) // Only player left
         {
             Debug.Log("All monsters defeated.");
-            _EndgamePanel.SetActive(true);
-            StartCoroutine(_CalulateReward());
-            StartCoroutine(_UpdateLeaderBoard());
-            Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), CalculateEndGameRewards());
-            
+            StartCoroutine(_EndGame());
+
             return;
         }
 
