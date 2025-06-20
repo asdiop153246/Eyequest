@@ -354,7 +354,7 @@ Transform:
   m_GameObject: {fileID: 2416093080013126903}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.214, z: -0}
+  m_LocalPosition: {x: -0, y: 0.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -979,6 +979,7 @@ MonoBehaviour:
   gameManager: {fileID: 0}
   ActionText: {fileID: 0}
   _Highlight: {fileID: 4310388369755330274}
+  myBulletType: 0
   bulletSpawnPoint: {fileID: 2651346294464792373}
   _MonsterID: 0
   baseStats:

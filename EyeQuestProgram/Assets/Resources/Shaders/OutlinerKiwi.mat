@@ -60,7 +60,7 @@ Material:
     - _Fade_Distance: 75
     - _Outline_Color: 0
     - _Outline_Distance: 75
-    - _Outline_Thickness: 0.0075
+    - _Outline_Thickness: 0.0023
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SrcBlend: 5

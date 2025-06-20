@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI PrepareText;
 
+    public TextMeshProUGUI _WorldLevel;
+
     public GameObject _EndgamePanel;
     [Header("Reward Settings")]
     public GameObject[] Stars;
@@ -51,13 +53,15 @@ public class GameManager : MonoBehaviour
         if (_userdata == null)
         {
             Debug.LogError("Userdata not found in the scene.");
-
+            _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
         }
         else
         {
 
             worldIndex = _userdata._CurrentWorld;
             stageIndex = _userdata._CurrentStage;
+
+            _WorldLevel.text = "World - " + (worldIndex + 1) +" - "+ (stageIndex + 1);
 
             _PotionIcon[0].SetActive(false);
             _PotionIcon[1].SetActive(false);
@@ -611,7 +615,7 @@ public float starDelay = 0.7f; // time between each star popping out
         if (turnText != null)
         {
             turnText.transform.parent.gameObject.SetActive(true);
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(1f);
             turnText.transform.parent.gameObject.SetActive(false);
         }
     }
