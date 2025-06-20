@@ -55,8 +55,10 @@ public class Player : MonoBehaviour
     public GameObject[] _SwipePrefab;
     public Transform _bulletSpawnPoint;
     public TextMeshProUGUI skillText; // Assign in Inspector
+    public GameObject Shield;
     public bool isChoosingBlink = false;
     public bool isChoosingShield = false;
+    public bool isAction = false;
 
     public GameObject _gethitEffect;
 
@@ -147,8 +149,10 @@ public class Player : MonoBehaviour
         if (gameManager.currentTurnIndex == 0)
         {
             Debug.Log($"{gameObject.name} is taking a turn.");
+            isAction = false;
             stats.isImmune = false;
             _turnEffect.SetActive(true); // Activate the turn effect
+            Shield.SetActive(false);
 
         }
         else
@@ -205,6 +209,7 @@ public class Player : MonoBehaviour
         }
 
         //Skill selectedSkill = skills[skillIndex];
+        isAction = true;
         float actualAttackPower = stats.baseAttackPower; //+ selectedSkill.additionalAttackPower;
         bool isCritical = false;
 
@@ -277,6 +282,13 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("Performing XStrike Swipe");
                 StartCoroutine(PerformSlashAttack(target, damage, wasCritical, 2, 2));
+            }
+            else if (skillIndex == 7 && target != null)
+            {
+                Debug.Log("Shield Active");
+                stats.isImmune = true;
+                Shield.SetActive(true);
+                DealDamage(target.gameObject, 0, false, skillIndex);
             }
             else
             {
@@ -366,7 +378,7 @@ public class Player : MonoBehaviour
         if (_gethitEffect != null)
         {
             _gethitEffect.SetActive(true);
-            yield return new WaitForSeconds(1f); // Show effect for 0.5 seconds
+            yield return new WaitForSeconds(2f); // Show effect for 0.5 seconds
             _gethitEffect.SetActive(false);
         }
     }
