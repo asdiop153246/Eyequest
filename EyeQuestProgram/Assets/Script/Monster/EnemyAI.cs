@@ -70,6 +70,7 @@ public class EnemyAI : MonoBehaviour
     {
         yield return new WaitForSeconds(1.2f);
         ShootAtPlayer(gameManager.GetRandomPlayer());
+        //ShootAtPlayer(gameManager._Player.GetComponent<Player>()._PlayerHitTarget);
         yield return new WaitForSeconds(1.5f);
         Invoke(nameof(EndTurn), 1.5f);
     }

@@ -67,6 +67,8 @@ public class Player : MonoBehaviour
     public GameObject _ShieldGuideObject; // Assign the blink guide object in Inspector
     public GameObject _blinkGuideObject; // Assign the blink guide object in Inspector
 
+    public GameObject _PlayerHitTarget;
+
     void Start()
     {
 
@@ -339,7 +341,7 @@ public class Player : MonoBehaviour
         Destroy(slashEffect);
     }
 
-
+    
 
     private void DealDamage(GameObject target, float damageAmount, bool wasCritical, int skillIndex)
     {

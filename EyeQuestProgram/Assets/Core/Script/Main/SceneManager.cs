@@ -102,6 +102,7 @@ public class SceneManager : MonoBehaviour
 
     public GameObject[] _LevelMap;
 
+    public AudioClip[] _BgSound;
     IEnumerator _ChangeMap(int _id)
     {
         yield return new WaitForSeconds(0.1f);
@@ -116,6 +117,9 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[2].SetActive(false);
                 _WorldName.text = "Word - 1";
                 Userdata.Instance._CurrentWorld = 0;
+                GetComponent<AudioSource>().Stop();
+                GetComponent<AudioSource>().PlayOneShot(_BgSound[0]);
+
                 break;
             case 1:
                 _LevelMap[0].SetActive(false);
@@ -123,6 +127,8 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[2].SetActive(true);
                 _WorldName.text = "Word - 3";
                 Userdata.Instance._CurrentWorld = 2;
+                GetComponent<AudioSource>().Stop();
+                GetComponent<AudioSource>().PlayOneShot(_BgSound[1]);
                 break;
             case 2:
                 _LevelMap[0].SetActive(false);
@@ -130,13 +136,14 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[2].SetActive(false);
                 _WorldName.text = "Word - 2";
                 Userdata.Instance._CurrentWorld = 1;
+                GetComponent<AudioSource>().Stop();
+                GetComponent<AudioSource>().PlayOneShot(_BgSound[2]);
                 break;
         }
 
         
         GetComponent<WordLoader>().UpdateLevel(_CurrentWorldId);
         
-
     }
 
     public void _MoveRight()

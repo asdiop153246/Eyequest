@@ -121,7 +121,7 @@ MonoBehaviour:
   healthBarUI: {fileID: 8553792802576156837}
   healthText: {fileID: 1970931766782915669}
   _HitEffect: {fileID: 7806558557828870354, guid: 2319d0fc8c49d4642a4da478b3c589af, type: 3}
-  _Root: {fileID: 4325830281084596758}
+  _Root: {fileID: 1500092574946174543}
   _DieEffect: {fileID: 3037282632951184280, guid: a06571c4db241b942963dc56424732b4, type: 3}
 --- !u!1 &776831052148966198
 GameObject:
@@ -1027,6 +1027,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c038ce977a1796e408787823411c25c4, type: 3}
+--- !u!1 &1500092574946174543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8916629877453427801, guid: c038ce977a1796e408787823411c25c4, type: 3}
+  m_PrefabInstance: {fileID: 8029739595235144214}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8858754528259701936 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1558179296859410086, guid: c038ce977a1796e408787823411c25c4, type: 3}
