@@ -11154,10 +11154,11 @@ MonoBehaviour:
   _isAlreadySelectionSkill: 0
   _ScoreUI: {fileID: 465630504}
   _CurrentScore: 0
+  _CurrentStar: 0
   _RewardIcon:
   - {fileID: 423308640}
-  - {fileID: 1439727618}
   - {fileID: 1139068443}
+  - {fileID: 1439727618}
   starcount: 0
   starDelay: 0.7
   _UserName:
