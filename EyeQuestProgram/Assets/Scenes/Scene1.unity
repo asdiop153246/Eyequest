@@ -11277,7 +11277,7 @@ MonoBehaviour:
   isReadyToAttack: 0
   currentTurnIndex: 0
   turnText: {fileID: 1541749814}
-  worldIndex: 1
+  worldIndex: 2
   stageIndex: 1
   statsModifier: 0
   _skillUI: {fileID: 886684883}

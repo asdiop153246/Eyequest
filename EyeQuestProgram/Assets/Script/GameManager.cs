@@ -278,6 +278,21 @@ public class GameManager : MonoBehaviour
 
     int GetMaxMonsterIndexForStage(int stage)
     {
+        //return 8;
+        if (worldIndex == 1)
+        {
+            if (stage <= 2) return 0; // Early stages
+            else if (stage <= 5) return 1; // Mid stages
+            else if (stage <= 8) return 2; // MiniBoss stages
+            else return Mathf.Min(3, monsterPrefabs.Length - 1); // Boss stage
+        }
+        else if (worldIndex == 2)
+        {
+            if (stage <= 2) return 0; // Early stages
+            else if (stage <= 15) return 1; // Mid stages
+            else if (stage <= 17) return 2; // MiniBoss stages
+            else return Mathf.Min(3, monsterPrefabs.Length - 1); // Boss stage
+        }
         return 8;
         // if (stage <= 2) return 0;
         // else if (stage <= 5) return 1;
@@ -285,10 +300,20 @@ public class GameManager : MonoBehaviour
     }
     public int GetAmountofMonsterForCurrentStage()
     {
-        if (stageIndex <= 2) return 1; // Early stages
-        else if (stageIndex <= 5) return 2; // Mid stages
-        else if (stageIndex <= 8) return 2; // MiniBoss stages
-        else if (stageIndex == 9) return 1; // Boss stage
+        if (worldIndex == 1)
+        {
+            if (stageIndex <= 2) return 1; // Early stages
+            else if (stageIndex <= 5) return 2; // Mid stages
+            else if (stageIndex <= 8) return 2; // MiniBoss stages
+            else if (stageIndex >= 9) return 1; // Boss stage
+        }
+        else if (worldIndex == 2)
+        {
+            if (stageIndex <= 2) return 2; // Early stages
+            else if (stageIndex <= 15) return 3; // Mid stages
+            else if (stageIndex <= 17) return 3; // MiniBoss stages
+            else if (stageIndex >= 18) return 1; // Boss stage
+        }
 
         return 1;
     }
