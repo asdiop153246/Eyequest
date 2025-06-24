@@ -141,9 +141,27 @@ public class SceneManager : MonoBehaviour
                 break;
         }
 
-        
-        GetComponent<WordLoader>().UpdateLevel(_CurrentWorldId);
-        
+
+        if (_id == 0)
+        {
+            GetComponent<WordLoader>()._CurrentWorld = 0;
+            Userdata.Instance._CurrentWorld = 0;
+            GetComponent<WordLoader>()._CurrentLevelCounter = Userdata.Instance._WorldData.world[GetComponent<WordLoader>()._CurrentWorld].level.Count;
+        }
+        else if (_id == 2)
+        {
+            GetComponent<WordLoader>()._CurrentWorld = 2;
+            Userdata.Instance._CurrentWorld =2;
+            GetComponent<WordLoader>()._CurrentLevelCounter = Userdata.Instance._WorldData.world[GetComponent<WordLoader>()._CurrentWorld].level.Count;
+        }
+        else if (_id == 1)
+        {
+            GetComponent<WordLoader>()._CurrentWorld = 1;
+            Userdata.Instance._CurrentWorld = 1;
+            GetComponent<WordLoader>()._CurrentLevelCounter = Userdata.Instance._WorldData.world[GetComponent<WordLoader>()._CurrentWorld].level.Count;
+        }
+        //GetComponent<WordLoader>().UpdateLevel(_CurrentWorldId);
+
     }
 
     public void _MoveRight()

@@ -36,23 +36,26 @@ public class WordLoader : MonoBehaviour
 
     public void _ForceUpdate()
     {
-        UpdateLevel(0);
+        UpdateLevel(_CurrentWorld);
     }
 
+    public int _CurrentLevelCounter;
     public void UpdateLevel(int _id)
     {
-        // CURRENT LEVEL UNLOCK
-        for (int i = 0; i < Userdata.Instance._WorldData.world[_id].level.Count; i++)
+        
+
+        Debug.Log("Select By Id : " + _id + " CurrentWorld : "+ _CurrentWorld);
+        Debug.Log(Userdata.Instance._WorldData.world[_CurrentWorld].name + " / " + Userdata.Instance._WorldData.world[_CurrentWorld].level.Count);
+        for (int i = 0; i < _CurrentLevelCounter; i++)
         {
-            if (Userdata.Instance._WorldData.world[_id].level[i].isUnlock)
+            if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].isUnlock)
             {
-                if (_id == 0)
+                if (_CurrentWorld == 0)
                 {
 
-                    Debug.Log("CHECK STAR : " + Userdata.Instance._WorldData.world[_id].level[i].stars);
+                    Debug.Log("CHECK STAR : " + Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars);
 
-                    _CurrentWorld = 0;
-                    Userdata.Instance._CurrentWorld = _CurrentWorld;
+                    
 
                     _World_1[i]._Star[0].gameObject.SetActive(true);
                     _World_1[i]._Star[1].gameObject.SetActive(true);
@@ -62,36 +65,33 @@ public class WordLoader : MonoBehaviour
 
                     _World_1[i]._LevelPin.sprite = _PinImage[0];
 
-                    if (Userdata.Instance._WorldData.world[_id].level[i].stars == 3)
+                    if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 3)
                     {
                         _World_1[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_1[i]._Star[1].transform.GetChild(0).gameObject.SetActive(true);
                         _World_1[i]._Star[2].transform.GetChild(0).gameObject.SetActive(true);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 2)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 2)
                     {
                         _World_1[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_1[i]._Star[1].transform.GetChild(0).gameObject.SetActive(true);
                         _World_1[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 1)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 1)
                     {
                         _World_1[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_1[i]._Star[1].transform.GetChild(0).gameObject.SetActive(false);
                         _World_1[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 0)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 0)
                     {
                         _World_1[i]._Star[0].transform.GetChild(0).gameObject.SetActive(false);
                         _World_1[i]._Star[1].transform.GetChild(0).gameObject.SetActive(false);
                         _World_1[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
                 }
-                else if(_id == 1)
+                else if(_CurrentWorld == 1)
                 {
-                    _CurrentWorld = 1;
-                    Userdata.Instance._CurrentWorld = _CurrentWorld;
-
                     _World_2[i]._LevelPin.GetComponent<Button>().interactable = true;
 
                     _World_2[i]._LevelPin.sprite = _PinImage[0];
@@ -100,35 +100,34 @@ public class WordLoader : MonoBehaviour
                     _World_2[i]._Star[1].gameObject.SetActive(true);
                     _World_2[i]._Star[2].gameObject.SetActive(true);
 
-                    if (Userdata.Instance._WorldData.world[_id].level[i].stars == 3)
+                    if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 3)
                     {
                         _World_2[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_2[i]._Star[1].transform.GetChild(0).gameObject.SetActive(true);
                         _World_2[i]._Star[2].transform.GetChild(0).gameObject.SetActive(true);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 2)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 2)
                     {
                         _World_2[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_2[i]._Star[1].transform.GetChild(0).gameObject.SetActive(true);
                         _World_2[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 1)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 1)
                     {
                         _World_2[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_2[i]._Star[1].transform.GetChild(0).gameObject.SetActive(false);
                         _World_2[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 0)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 0)
                     {
                         _World_2[i]._Star[0].transform.GetChild(0).gameObject.SetActive(false);
                         _World_2[i]._Star[1].transform.GetChild(0).gameObject.SetActive(false);
                         _World_2[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
                 }
-                else if (_id == 2)
+                else if (_CurrentWorld == 2)
                 {
-                    _CurrentWorld = 2;
-                    Userdata.Instance._CurrentWorld = _CurrentWorld;
+                    Debug.Log(Userdata.Instance._WorldData.world[_CurrentWorld].level[i].isUnlock +"/"+ i + Userdata.Instance._WorldData.world[_CurrentWorld].level[i].level_id);
 
                     _World_3[i]._Star[0].gameObject.SetActive(true);
                     _World_3[i]._Star[1].gameObject.SetActive(true);
@@ -138,25 +137,25 @@ public class WordLoader : MonoBehaviour
 
                     _World_3[i]._LevelPin.sprite = _PinImage[0];
 
-                    if (Userdata.Instance._WorldData.world[_id].level[i].stars == 3)
+                    if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 3)
                     {
                         _World_3[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_3[i]._Star[1].transform.GetChild(0).gameObject.SetActive(true);
                         _World_3[i]._Star[2].transform.GetChild(0).gameObject.SetActive(true);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 2)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 2)
                     {
                         _World_3[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_3[i]._Star[1].transform.GetChild(0).gameObject.SetActive(true);
                         _World_3[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 1)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 1)
                     {
                         _World_3[i]._Star[0].transform.GetChild(0).gameObject.SetActive(true);
                         _World_3[i]._Star[1].transform.GetChild(0).gameObject.SetActive(false);
                         _World_3[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
-                    else if (Userdata.Instance._WorldData.world[_id].level[i].stars == 0)
+                    else if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars == 0)
                     {
                         _World_3[i]._Star[0].transform.GetChild(0).gameObject.SetActive(false);
                         _World_3[i]._Star[1].transform.GetChild(0).gameObject.SetActive(false);
@@ -169,7 +168,7 @@ public class WordLoader : MonoBehaviour
             }
             else
             {
-                if (_id == 0)
+                if (_CurrentWorld == 0)
                 {
                     _World_1[i]._LevelPin.GetComponent<Button>().interactable = false;
 
@@ -179,7 +178,7 @@ public class WordLoader : MonoBehaviour
                     _World_1[i]._Star[1].gameObject.SetActive(false);
                     _World_1[i]._Star[2].gameObject.SetActive(false);
                 }
-                else if (_id == 1)
+                else if (_CurrentWorld == 1)
                 {
                     _World_2[i]._LevelPin.GetComponent<Button>().interactable = false;
 
@@ -189,8 +188,10 @@ public class WordLoader : MonoBehaviour
                     _World_2[i]._Star[1].gameObject.SetActive(false);
                     _World_2[i]._Star[2].gameObject.SetActive(false);
                 }
-                else if (_id == 2)
+                else if (_CurrentWorld == 2)
                 {
+                    Debug.Log(i);
+
                     _World_3[i]._LevelPin.GetComponent<Button>().interactable = false;
 
                     _World_3[i]._LevelPin.sprite = _PinImage[1];
@@ -204,13 +205,13 @@ public class WordLoader : MonoBehaviour
 
         // Unlock NEXT LEVEL
 
-        for (int i = 0; i < Userdata.Instance._WorldData.world[_id].level.Count; i++)
+        for (int i = 0; i < _CurrentLevelCounter; i++)
         {
-            if (Userdata.Instance._WorldData.world[_id].level[i].isUnlock)
+            if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].isUnlock)
             {
-                if (Userdata.Instance._WorldData.world[_id].level[i].stars != 0)
+                if (Userdata.Instance._WorldData.world[_CurrentWorld].level[i].stars != 0)
                 {
-                    if (_id == 0)
+                    if (_CurrentWorld == 0)
                     {
 
                         if (i == 9)
@@ -237,7 +238,7 @@ public class WordLoader : MonoBehaviour
                         }
 
                     }
-                    else if (_id == 1)
+                    else if (_CurrentWorld == 1)
                     {
 
                         if (i == 19)
@@ -262,7 +263,7 @@ public class WordLoader : MonoBehaviour
                         }
 
                     }
-                    else if (_id == 2)
+                    else if (_CurrentWorld == 2)
                     {
                         _World_3[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
                         _World_3[i + 1]._LevelPin.sprite = _PinImage[0];
