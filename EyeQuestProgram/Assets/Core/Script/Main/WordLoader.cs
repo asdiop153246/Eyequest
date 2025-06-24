@@ -127,7 +127,7 @@ public class WordLoader : MonoBehaviour
                 }
                 else if (_CurrentWorld == 2)
                 {
-                    Debug.Log(Userdata.Instance._WorldData.world[_CurrentWorld].level[i].isUnlock +"/"+ i + Userdata.Instance._WorldData.world[_CurrentWorld].level[i].level_id);
+                    
 
                     _World_3[i]._Star[0].gameObject.SetActive(true);
                     _World_3[i]._Star[1].gameObject.SetActive(true);
@@ -161,6 +161,8 @@ public class WordLoader : MonoBehaviour
                         _World_3[i]._Star[1].transform.GetChild(0).gameObject.SetActive(false);
                         _World_3[i]._Star[2].transform.GetChild(0).gameObject.SetActive(false);
                     }
+
+                    Debug.Log(_World_3[i]._LevelPin.gameObject.name + " / " + i + _World_3[i]._Star[0].transform.GetChild(0).gameObject.activeSelf);
                 }
 
                 
@@ -265,12 +267,12 @@ public class WordLoader : MonoBehaviour
                     }
                     else if (_CurrentWorld == 2)
                     {
-                        _World_3[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
+                        /*_World_3[i + 1]._LevelPin.GetComponent<Button>().interactable = true;
                         _World_3[i + 1]._LevelPin.sprite = _PinImage[0];
 
-                        _World_2[i + 1]._Star[0].gameObject.SetActive(true);
-                        _World_2[i + 1]._Star[1].gameObject.SetActive(true);
-                        _World_2[i + 1]._Star[2].gameObject.SetActive(true);
+                        _World_3[i + 1]._Star[0].gameObject.SetActive(true);
+                        _World_3[i + 1]._Star[1].gameObject.SetActive(true);
+                        _World_3[i + 1]._Star[2].gameObject.SetActive(true);*/
                     }
                 }
 

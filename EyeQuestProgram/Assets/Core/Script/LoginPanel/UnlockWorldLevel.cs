@@ -27,7 +27,7 @@ public class UnlockWorldLevel : MonoBehaviour
                 }
                 else
                 {
-                    Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
+                   // Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
                 }
                 break;
 
@@ -49,7 +49,7 @@ public class UnlockWorldLevel : MonoBehaviour
                 }
                 else
                 {
-                    Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
+                    //Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
                 }
                 break;
 
@@ -66,7 +66,7 @@ public class UnlockWorldLevel : MonoBehaviour
                 }
                 else
                 {
-                    Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
+                    
                 }
                 break;
         }

@@ -669,6 +669,7 @@ public float starDelay = 0.7f; // time between each star popping out
     {
         stageIndex++;
 
+        Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
         // Optional: Reset worldIndex if you want to loop or increase it based on stage
         // if (stageIndex > 9)
         // {

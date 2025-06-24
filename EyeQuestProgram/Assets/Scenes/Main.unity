@@ -6842,7 +6842,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 124138845}
   m_OnClick:
     m_PersistentCalls:
@@ -36933,7 +36933,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 707421262}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -45982,7 +45982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &861192449
 RectTransform:
   m_ObjectHideFlags: 0
@@ -55572,7 +55572,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1061475440}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -61365,10 +61365,11 @@ MonoBehaviour:
     - {fileID: 465824007}
   - _LevelPin: {fileID: 1630381545}
     _Star:
-    - {fileID: 219490004}
-    - {fileID: 1783965393}
-    - {fileID: 465824007}
+    - {fileID: 1449482062}
+    - {fileID: 1443469666}
+    - {fileID: 861192448}
   _CurrentWorld: 0
+  _CurrentLevelCounter: 0
   _LevelName: {fileID: 779207989}
   _Score: {fileID: 1242344401}
   _LeaderboardName:
@@ -76671,7 +76672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1443469667
 RectTransform:
   m_ObjectHideFlags: 0
@@ -76928,7 +76929,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1449482063
 RectTransform:
   m_ObjectHideFlags: 0
@@ -83103,8 +83104,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1040.8
-  m_fontSizeBase: 1040.8
+  m_fontSize: 116.3
+  m_fontSizeBase: 116.3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -104220,7 +104221,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924707696}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
