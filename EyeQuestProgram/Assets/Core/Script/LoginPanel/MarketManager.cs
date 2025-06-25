@@ -13,10 +13,10 @@ public class MarketManager : MonoBehaviour
     public TMPro.TextMeshProUGUI _HeaderTxt;
 
     public GameObject _MarketObj;
-    public void _UpdateStoreByWord()
+    public void _UpdateStoreByWord(int _id)
     {
         _MarketObj.SetActive(true);
-        _HeaderTxt.text = "World - " + Userdata.Instance._CurrentWorld + "Level - " + Userdata.Instance._CurrentStage;
+        _HeaderTxt.text = "World " + Userdata.Instance._CurrentWorld + " - " + Userdata.Instance._CurrentStage;
         // 0-4 - SHOP World 1 
         // 1-5 // 1-13 - SHOP World 2 
         // 2-3 // 2-8 - SHOP World 3 
@@ -61,7 +61,7 @@ public class MarketManager : MonoBehaviour
                 break;
 
             case 1:
-                if (Userdata.Instance._CurrentStage == 5)
+                if (_id == 5)
                 {
                     _MarketSlot_IMG[0].GetComponent<Image>().sprite = GetComponent<InventorySystem>()._ItemStore[10]._StoreIcon;
                     _MarketSlot_IMG[1].GetComponent<Image>().sprite = GetComponent<InventorySystem>()._ItemStore[11]._StoreIcon;
@@ -95,7 +95,7 @@ public class MarketManager : MonoBehaviour
 
                 }
 
-                if (Userdata.Instance._CurrentStage == 13)
+                if (_id == 13)
                 {
                     _MarketSlot_IMG[0].GetComponent<Image>().sprite = GetComponent<InventorySystem>()._ItemStore[16]._StoreIcon;
                     _MarketSlot_IMG[1].GetComponent<Image>().sprite = GetComponent<InventorySystem>()._ItemStore[17]._StoreIcon;
@@ -130,7 +130,7 @@ public class MarketManager : MonoBehaviour
                 break;
 
             case 2:
-                if (Userdata.Instance._CurrentStage == 3)
+                if (_id == 3)
                 {
                     _MarketSlot_IMG[0].GetComponent<Image>().sprite = GetComponent<InventorySystem>()._ItemStore[22]._StoreIcon;
                     _MarketSlot_IMG[1].GetComponent<Image>().sprite = GetComponent<InventorySystem>()._ItemStore[23]._StoreIcon;
@@ -149,7 +149,7 @@ public class MarketManager : MonoBehaviour
                     _Packaget[2].SetActive(true);
                 }
 
-                if (Userdata.Instance._CurrentStage == 8)
+                if (_id == 11)
                 {
                     _MarketSlot_IMG[0].GetComponent<Image>().sprite = GetComponent<InventorySystem>()._ItemStore[25]._StoreIcon;
                     _MarketSlot_IMG[1].GetComponent<Image>().sprite = GetComponent<InventorySystem>()._ItemStore[26]._StoreIcon;
