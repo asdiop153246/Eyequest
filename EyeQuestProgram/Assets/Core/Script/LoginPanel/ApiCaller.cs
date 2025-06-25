@@ -778,4 +778,46 @@ public class ApiCaller : MonoBehaviour
             //StartCoroutine(_DiscardItem(_CurrentItemId, _Type));
         }
     }
+
+    [System.Serializable]
+    public class LevelData
+    {
+        public int level_id;
+        public int score;
+        public int stars;
+        public bool isUnlock;
+    }
+
+    public IEnumerator _UpdateLeveldata(int _Score , int _Star)
+    {
+        LevelData _temp = new LevelData();
+        _temp.level_id = Userdata.Instance._Levelid;
+        _temp.score = _Score;
+        _temp.stars = _Star;
+        _temp.isUnlock = true;
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/game/update-level", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+
+            //OnCall_GetInventory_Failed?.Invoke();
+        }
+        else
+        {
+            
+        }
+    }
 }

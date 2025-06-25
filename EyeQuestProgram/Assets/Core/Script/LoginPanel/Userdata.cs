@@ -336,6 +336,7 @@ public class Userdata : MonoBehaviour
 
     public int _CurrentWorld;
     public int _CurrentStage;
+    public int _Levelid;
 
     public bool _isUsePotion_A;
     public bool _isUsePotion_B;

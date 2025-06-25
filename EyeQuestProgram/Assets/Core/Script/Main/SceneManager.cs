@@ -105,8 +105,12 @@ public class SceneManager : MonoBehaviour
     public AudioClip[] _BgSound;
     IEnumerator _ChangeMap(int _id)
     {
+        _MapBg.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
+        _MapBg.gameObject.SetActive(true);
+
         _MapBg.sprite = _WorldMap[_id];
+        
         _MapBg.SetNativeSize();
 
         switch (_CurrentWorldId)

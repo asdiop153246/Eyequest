@@ -9,7 +9,13 @@ public class UnlockWorldLevel : MonoBehaviour
         Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].stars = _Star;
         Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].score = _Score;
         Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].isUnlock = true;
-        
+
+        if(_Score > Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].stars)
+        {
+            StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._UpdateLeveldata(
+            Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].score,
+            Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].stars));
+        }
 
         switch (Userdata.Instance._CurrentWorld)
         {

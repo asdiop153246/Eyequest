@@ -42,7 +42,25 @@ public class WordLoader : MonoBehaviour
     public int _CurrentLevelCounter;
     public void UpdateLevel(int _id)
     {
-        
+        if (_id == 0)
+        {
+            GetComponent<WordLoader>()._CurrentWorld = 0;
+            Userdata.Instance._CurrentWorld = 0;
+            GetComponent<WordLoader>()._CurrentLevelCounter = Userdata.Instance._WorldData.world[GetComponent<WordLoader>()._CurrentWorld].level.Count;
+        }
+        else if (_id == 2)
+        {
+            GetComponent<WordLoader>()._CurrentWorld = 2;
+            Userdata.Instance._CurrentWorld = 2;
+            GetComponent<WordLoader>()._CurrentLevelCounter = Userdata.Instance._WorldData.world[GetComponent<WordLoader>()._CurrentWorld].level.Count;
+        }
+        else if (_id == 1)
+        {
+            GetComponent<WordLoader>()._CurrentWorld = 1;
+            Userdata.Instance._CurrentWorld = 1;
+            GetComponent<WordLoader>()._CurrentLevelCounter = Userdata.Instance._WorldData.world[GetComponent<WordLoader>()._CurrentWorld].level.Count;
+        }
+
 
         Debug.Log("Select By Id : " + _id + " CurrentWorld : "+ _CurrentWorld);
         Debug.Log(Userdata.Instance._WorldData.world[_CurrentWorld].name + " / " + Userdata.Instance._WorldData.world[_CurrentWorld].level.Count);
@@ -302,6 +320,7 @@ public TMPro.TextMeshProUGUI _LevelName;
         
         _CurrentLevel = _id;
         Userdata.Instance._CurrentStage = _CurrentLevel;
+        Userdata.Instance._Levelid = Userdata.Instance._WorldData.world[_CurrentWorld].level[_id].level_id;
         _LevelSelection.SetActive(true);
 
 
