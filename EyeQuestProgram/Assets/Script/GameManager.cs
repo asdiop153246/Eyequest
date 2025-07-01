@@ -138,10 +138,6 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            /*foreach(GameObject x in spawnedMonsters)
-            {
-                spawnedMonsters.Remove(x);
-            }*/
 
             _EndgamePanel.SetActive(true);
             StartCoroutine(_CalulateReward());
@@ -239,13 +235,23 @@ public class GameManager : MonoBehaviour
         EnemyTier currentTier = GetTierForCurrentStage();
         numberOfMonsters = GetAmountofMonsterForCurrentStage();
 
-        // Determine which monster prefabs are allowed based on stageIndex
-        int maxPrefabIndex = GetMaxMonsterIndexForStage(stageIndex); //stageIndex for gameplay
-
         for (int i = 0; i < numberOfMonsters; i++)
         {
-            int prefabIndex = Random.Range(0, maxPrefabIndex + 1);
-            GameObject prefab = monsterPrefabs[prefabIndex];
+            GameObject prefab;
+            EnemyTier tierToApply = EnemyTier.Normal;
+
+            if (currentTier == EnemyTier.Boss)
+            {
+                prefab = monsterPrefabs[9]; // Always use prefab 9
+                tierToApply = (i == 0) ? EnemyTier.Boss : EnemyTier.Normal;
+            }
+            else
+            {
+                int maxPrefabIndex = GetMaxMonsterIndexForStage(stageIndex);
+                int prefabIndex = Random.Range(0, maxPrefabIndex + 1);
+                prefab = monsterPrefabs[prefabIndex];
+                tierToApply = (currentTier == EnemyTier.Miniboss) ? EnemyTier.Miniboss : EnemyTier.Normal;
+            }
 
             GameObject monster = Instantiate(prefab, spawnPoints[i].position, Quaternion.identity);
             monster.transform.Rotate(0, 180, 0);
@@ -254,26 +260,17 @@ public class GameManager : MonoBehaviour
             EnemyAI ai = monster.GetComponent<EnemyAI>();
             if (ai != null)
             {
-                if (currentTier == EnemyTier.Boss)
-                {
-                    EnemyTier tier = (i == 0) ? EnemyTier.Boss : EnemyTier.Normal;
-                    ai.ApplyTierModifier(tier, statsModifier);
-                    monster.name = $"{prefab.name} (Boss)";
-                }
-                else if (currentTier == EnemyTier.Miniboss)
-                {
-                    ai.ApplyTierModifier(EnemyTier.Miniboss, statsModifier);
-                    monster.name = $"{prefab.name} (Miniboss)";
-                }
-                else
-                {
-                    ai.ApplyTierModifier(EnemyTier.Normal, statsModifier);
-                }
+
+                ai.ApplyTierModifier(tierToApply, statsModifier);
+
+                if (tierToApply != EnemyTier.Normal)
+                    monster.name = $"{prefab.name} ({tierToApply})";
             }
 
             spawnedMonsters.Add(monster);
         }
     }
+
 
 
     int GetMaxMonsterIndexForStage(int stage)
@@ -315,7 +312,7 @@ public class GameManager : MonoBehaviour
             else if (stageIndex >= 18) return 1; // Boss stage
         }
 
-        return 1;
+        return 3;
     }
     public GameObject GetRandomPlayer()
     {

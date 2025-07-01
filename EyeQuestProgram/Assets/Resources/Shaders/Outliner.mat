@@ -21,7 +21,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Outliner
-  m_Shader: {fileID: -6465566751694194690, guid: c0459dea9bcac10428345654ccc3e051, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: c0459dea9bcac10428345654ccc3e051,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -60,7 +61,7 @@ Material:
     - _Fade_Distance: 75
     - _Outline_Color: 0
     - _Outline_Distance: 75
-    - _Outline_Thickness: 0.001
+    - _Outline_Thickness: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _SrcBlend: 5

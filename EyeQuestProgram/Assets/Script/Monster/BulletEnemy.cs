@@ -6,17 +6,18 @@ public class BulletEnemy : MonoBehaviour
 {
     private Transform target;
     private Transform _Movetarget;
-    public float speed = 5f;
+    public float speed;
     [SerializeField] private float _damage;
     private BulletType bulletType;
 
 
-    public void SetTarget(Transform target, BulletType type, float damage)
+    public void SetTarget(Transform target, BulletType type, float damage, float speedf)
     {
         this.target = target;
         _Movetarget = target.GetComponent<Player>()._PlayerHitTarget.transform;
         this.bulletType = type;
         this._damage = damage;
+        this.speed = speedf;
     }
 
     void Update()

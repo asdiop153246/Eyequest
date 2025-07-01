@@ -11262,6 +11262,7 @@ MonoBehaviour:
   - {fileID: 4325830281084596758, guid: 83203e0fb36ca944aa8803c0fe00f7d8, type: 3}
   - {fileID: 7346133487484140658, guid: adb78196279794642b5e37f790e77c36, type: 3}
   - {fileID: 6043074615316534412, guid: 28c264d60f49c52469f6f3a46a933999, type: 3}
+  - {fileID: 2747594799657747831, guid: 6ab1cc8971b78f846a0eb6ae79a90b61, type: 3}
   spawnPoints:
   - {fileID: 1140109561}
   - {fileID: 1143379570}
@@ -11277,8 +11278,8 @@ MonoBehaviour:
   isReadyToAttack: 0
   currentTurnIndex: 0
   turnText: {fileID: 1541749814}
-  worldIndex: 2
-  stageIndex: 1
+  worldIndex: 1
+  stageIndex: 2
   statsModifier: 0
   _skillUI: {fileID: 886684883}
   _TurnBar: {fileID: 341816355}
@@ -11355,6 +11356,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8284efc99476b514886778a9ae6e36b6, type: 3}
   - {fileID: 21300000, guid: 3fef9a94d2b80fd49923503d88e2c713, type: 3}
   - {fileID: 21300000, guid: 5918ce023600b254a96daccc42cb41f5, type: 3}
+  - {fileID: 21300000, guid: 228377b9cc8b1cd408514336033c847a, type: 3}
   - {fileID: 21300000, guid: 228377b9cc8b1cd408514336033c847a, type: 3}
   _activedmonsterUI: []
 --- !u!82 &1484418860
@@ -67268,7 +67270,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -41.400024, y: 84.80005}
+  m_AnchoredPosition: {x: -41.399902, y: 84.80005}
   m_SizeDelta: {x: -294, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7348556799119088645
