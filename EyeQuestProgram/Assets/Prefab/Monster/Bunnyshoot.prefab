@@ -492,7 +492,7 @@ MonoBehaviour:
   isDead: 0
   healthBarUI: {fileID: 8719818214403410072}
   healthText: {fileID: 8556373539972097043}
-  _HitEffect: {fileID: 157776, guid: 82bf03917e16d3d4cad30518cca28308, type: 3}
+  _HitEffect: {fileID: 4225374483206829120, guid: 2319d0fc8c49d4642a4da478b3c589af, type: 3}
   _Root: {fileID: 7298580393518201697}
   _DieEffect: {fileID: 3037282632951184280, guid: a06571c4db241b942963dc56424732b4, type: 3}
 --- !u!1 &3440000290736109640
@@ -1046,6 +1046,7 @@ MonoBehaviour:
     CriticalChance: 0
     CriticalPower: 0
     DamageReduction: 0
+  _isTest: 1
   _Thinking: {fileID: 2520360078615619890}
   _SoundSFX:
   - {fileID: 8300000, guid: 678d32abc5140f9489a00e375384ddb0, type: 3}

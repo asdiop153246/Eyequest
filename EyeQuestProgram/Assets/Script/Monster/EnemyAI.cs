@@ -32,6 +32,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private Stats baseStats = new Stats();
     public Stats CurrentStats => baseStats;
 
+    public bool _isTest;
     void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();

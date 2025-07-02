@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
 
     public GameObject _PlayerHitTarget;
 
+    public bool _isTest;
     void Start()
     {
 
@@ -131,7 +132,14 @@ public class Player : MonoBehaviour
         stats.luck = stats.level + 2 + (gameManager.LuckItemModifier);
         stats.tenacity = stats.level + 2 + (gameManager.TenacityItemModifier);
 
-        stats.maxHealth = MathF.Round(((stats.tenacity + gameManager.TenacityItemModifier) * 6f) + ((stats.strength + gameManager.StrengthItemModifier) * 1.5f));
+        if (_isTest)
+        {
+            stats.maxHealth = 9999;
+        }
+        else
+        {
+            stats.maxHealth = MathF.Round(((stats.tenacity + gameManager.TenacityItemModifier) * 6f) + ((stats.strength + gameManager.StrengthItemModifier) * 1.5f));
+        }
         stats.currentHealth = stats.maxHealth;
 
         stats.baseAttackPower = MathF.Round(((stats.strength + gameManager.StrengthItemModifier) * 2f) + (stats.luck * 0.5f));

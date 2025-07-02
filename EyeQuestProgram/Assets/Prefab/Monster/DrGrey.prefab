@@ -420,6 +420,7 @@ MonoBehaviour:
     CriticalChance: 0
     CriticalPower: 0
     DamageReduction: 0
+  _isTest: 1
   _Thinking: {fileID: 5881341815978984493}
   _SoundSFX:
   - {fileID: 0}

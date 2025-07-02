@@ -324,7 +324,10 @@ public class GameManager : MonoBehaviour
     {
         if (worldIndex == 1)
         {
-            if (stageIndex <= 2) return 1; // Early stages
+            if (stageIndex <= 2)
+            {
+                return 0;
+            }// Early stages
             else if (stageIndex <= 5) return 2; // Mid stages
             else if (stageIndex <= 8) return 2; // MiniBoss stages
             else if (stageIndex >= 9) return 1; // Boss stage
