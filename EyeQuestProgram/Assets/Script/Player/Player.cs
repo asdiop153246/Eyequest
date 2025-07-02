@@ -143,6 +143,8 @@ public class Player : MonoBehaviour
 
     public void takeTurn()
     {
+        GetComponent<AudioSource>().PlayOneShot(_Clips[UnityEngine.Random.Range(0,2)]);
+
         if (gameManager == null)
         {
             Debug.LogWarning("GameManager is not assigned or found in the scene.");
@@ -190,7 +192,8 @@ public class Player : MonoBehaviour
     public GameObject _MinigameCore;
     // Call this method when it's the player's turn
     public GameObject _GameManagerCore;
-    
+
+    public AudioClip[] _Clips;
     public void Attack(int skillIndex)
     {
         if (_MinigameCore != null)
@@ -258,6 +261,7 @@ public class Player : MonoBehaviour
     }
     private IEnumerator DelayedDamage(float delay, Transform target, float damage, bool wasCritical, int skillIndex, Vector3 _spawnPosition)
     {
+        GetComponent<AudioSource>().PlayOneShot(_Clips[2]);
         yield return new WaitForSeconds(delay);
 
         // Adjust spawn position based on skill index
@@ -284,6 +288,16 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("Performing XStrike Swipe");
                 StartCoroutine(PerformSlashAttack(target, damage, wasCritical, 2, 2));
+            }
+            else if (skillIndex == 5 && target != null)
+            {
+                Debug.Log("Performing XStrike Swipe");
+                StartCoroutine(PerformSlashAttack(target, damage, wasCritical, 2, 3));
+            }
+            else if (skillIndex == 6 && target != null)
+            {
+                Debug.Log("Performing XStrike Swipe");
+                StartCoroutine(PerformSlashAttack(target, damage, wasCritical, 2, 4));
             }
             else if (skillIndex == 7 && target != null)
             {
@@ -326,7 +340,7 @@ public class Player : MonoBehaviour
             reverseAngle = 55;
         }
 
-        float duration = 1f;
+        float duration = 0f;
 
         // Forward swipe (instant snap)
         slashEffect.transform.rotation = Quaternion.Euler(0, 0, forwardAngle);
@@ -338,7 +352,7 @@ public class Player : MonoBehaviour
 
         DealDamage(target.gameObject, damage, isCritical, skillIndex);
         //yield return new WaitForSeconds(1f);
-        Destroy(slashEffect);
+        Destroy(slashEffect,3f);
     }
 
     
@@ -362,12 +376,15 @@ public class Player : MonoBehaviour
         // Optionally check if it's your turn (gameManager can expose currentTurnPlayer)
         Invoke(nameof(EndAttack), 3f);
     }
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, BulletType type)
     {
         if (stats.isImmune) return;
+
+        GetComponent<AudioSource>().PlayOneShot(_Clips[3]);
+
         stats.currentHealth = Mathf.Max(0f, stats.currentHealth - damage);
         GetComponent<Animator>().SetTrigger("_gethit");
-        StartCoroutine(ShowGetHitEffect());
+        StartCoroutine(ShowGetHitEffect(type));
         if (stats.currentHealth <= 0)
         {
             Die();
@@ -375,14 +392,20 @@ public class Player : MonoBehaviour
 
         UpdateHealthBar();
     }
-    IEnumerator ShowGetHitEffect()
+
+    public List<GameObject> _HitEffect;
+    IEnumerator ShowGetHitEffect(BulletType type)
     {
-        if (_gethitEffect != null)
+        /*if (_gethitEffect != null)
         {
             _gethitEffect.SetActive(true);
             yield return new WaitForSeconds(2f); // Show effect for 0.5 seconds
             _gethitEffect.SetActive(false);
-        }
+        }*/
+        Debug.Log("Hit Id :" + (int)type);
+        _HitEffect[(int)type].SetActive(true);
+        yield return new WaitForSeconds(2f); // Show effect for 0.5 seconds
+        _HitEffect[(int)type].SetActive(false);
     }
     void Die()
     {

@@ -31,7 +31,7 @@ public class BulletEnemy : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, _Movetarget.position, speed * Time.deltaTime);
         if (Vector3.Distance(transform.position, _Movetarget.position) < 0.2f)
         {
-            target.GetComponent<Player>()?.TakeDamage(_damage); // example damage
+            target.GetComponent<Player>()?.TakeDamage(_damage, this.bulletType); // example damage
             
             BulletPool.Instance.ReturnBullet(bulletType, gameObject);
         }
