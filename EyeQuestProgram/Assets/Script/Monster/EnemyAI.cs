@@ -14,6 +14,7 @@ public class EnemyAI : MonoBehaviour
     public BulletType myBulletType;
     public Transform bulletSpawnPoint;
     public int _MonsterID;
+    private GameManager.EnemyTier _enemyTier;
 
     [System.Serializable]
     public class Stats
@@ -42,14 +43,35 @@ public class EnemyAI : MonoBehaviour
 
     }
 
+    public void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            TakeTurn();
+        }
+    }
+
+    public GameObject _Thinking;
+
+    public AudioClip[] _SoundSFX;
     public virtual void TakeTurn()
     {
+        if(_SoundSFX[0])
+        GetComponent<AudioSource>().PlayOneShot(_SoundSFX[0]);
         Debug.Log($"{gameObject.name} is thinking...");
+        if(_Thinking)
+            _Thinking.SetActive(true);
+
         Invoke(nameof(PerformAction), 3f);
+
+       
     }
 
     protected virtual void PerformAction()
     {
+        if (_Thinking)
+            _Thinking.SetActive(false);
+
         GameObject target = gameManager.GetRandomPlayer();
         if (target != null)
         {
@@ -68,10 +90,24 @@ public class EnemyAI : MonoBehaviour
     }
     IEnumerator delayBullet()
     {
-        yield return new WaitForSeconds(1.2f);
+        
+        if (_enemyTier == GameManager.EnemyTier.Boss)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        else if (_enemyTier == GameManager.EnemyTier.Miniboss)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+        if (_SoundSFX[1])
+            GetComponent<AudioSource>().PlayOneShot(_SoundSFX[1]);
         ShootAtPlayer(gameManager.GetRandomPlayer());
         //ShootAtPlayer(gameManager._Player.GetComponent<Player>()._PlayerHitTarget);
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
         Invoke(nameof(EndTurn), 1.5f);
     }
     public void ShootAtPlayer(GameObject target)
@@ -80,7 +116,7 @@ public class EnemyAI : MonoBehaviour
         Debug.Log($"Target name {target.name}");
         GameObject bullet = BulletPool.Instance.GetBullet(myBulletType);
 
-        if (myBulletType == BulletType.Nature) // or BulletType.Nature, depending on your enum
+        /*if (myBulletType == BulletType.Nature) // or BulletType.Nature, depending on your enum
         {
             // Spawn at player's ground position
             Vector3 groundPosition = target.transform.position;
@@ -88,23 +124,48 @@ public class EnemyAI : MonoBehaviour
             bullet.transform.position = groundPosition;
             StartCoroutine(DelaybeforeDestroyNature(bullet, target));
             return;
-        }
-        else
-        {
+        }*/
+        /*else
+        {*/
             // Normal spawn from bullet point
             bullet.transform.position = bulletSpawnPoint.position;
-        }
+        //}
 
         bullet.transform.rotation = Quaternion.identity;
         bullet.SetActive(true);
-        bullet.GetComponent<BulletEnemy>().SetTarget(target.transform, myBulletType, CurrentStats.Damage);
+        if (_enemyTier == GameManager.EnemyTier.Boss)
+        {
+            bullet.GetComponent<BulletEnemy>().SetTarget(target.transform, myBulletType, CurrentStats.Damage, 15f);
+        }
+        else if (_enemyTier == GameManager.EnemyTier.Miniboss)
+        {
+            bullet.GetComponent<BulletEnemy>().SetTarget(target.transform, myBulletType, CurrentStats.Damage, 15f);
+        }
+        else
+        {
+            bullet.GetComponent<BulletEnemy>().SetTarget(target.transform, myBulletType, CurrentStats.Damage,15f);
+        }
+        
     }
 
     IEnumerator DelaybeforeDestroyNature(GameObject _bullet, GameObject _target)
     {
         _bullet.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        _target.GetComponent<Player>().TakeDamage(CurrentStats.Damage);
+        
+        if (_enemyTier == GameManager.EnemyTier.Boss)
+        {
+            yield return new WaitForSeconds(4f);
+        }
+        else if (_enemyTier == GameManager.EnemyTier.Miniboss)
+        {
+            yield return new WaitForSeconds(3f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2f);
+        }
+
+        _target.GetComponent<Player>().TakeDamage(CurrentStats.Damage, myBulletType);
         BulletPool.Instance.ReturnBullet(BulletType.Nature, _bullet);
         
     }
@@ -123,10 +184,9 @@ public class EnemyAI : MonoBehaviour
     }
     protected void ApplyStatProfile(Statsprofile profile, float totalStatPoints)
     {
-        Debug.Log($"Applying stat profile for {gameObject.name} with total stat points: {totalStatPoints}");
+        
         Debug.Log($"profile stats points: {profile.statsPoints}, StrengthPercent: {profile.StrengthPercent}, LuckPercent: {profile.LuckPercent}, TenacityPercent: {profile.TenacityPercent}");
-        totalStatPoints = profile.statsPoints * gameManager.statsModifier;
-
+        Debug.Log($"Applying stat profile for {gameObject.name} with total stat points: {totalStatPoints}");
         baseStats.Strength = totalStatPoints * profile.StrengthPercent;
         baseStats.Luck = totalStatPoints * profile.LuckPercent;
         baseStats.Tenacity = totalStatPoints * profile.TenacityPercent;
@@ -141,7 +201,7 @@ public class EnemyAI : MonoBehaviour
     {
   
         float finalMultiplier = baseModifier;
-
+        _enemyTier = tier;
         switch (tier)
         {
             case GameManager.EnemyTier.Miniboss:
@@ -155,17 +215,17 @@ public class EnemyAI : MonoBehaviour
         if (statProfile != null && statProfile.IsValid())
         {
             Debug.Log($"Applying tier modifier for {gameObject.name} with tier {tier} and modifier {finalMultiplier}");
-            ApplyStatProfile(statProfile, statProfile.statsPoints * finalMultiplier);
+            ApplyStatProfile(statProfile, statProfile.statsPoints + finalMultiplier);
         }
 
         // Optional: change appearance or effects
         if (tier == GameManager.EnemyTier.Boss)
         {
-            GetComponentInChildren<Animator>().GetComponent<Transform>().localScale *= 1.5f; // Example: make boss larger
+            GetComponentInChildren<Animator>().GetComponent<Transform>().localScale *= 1f; // Example: make boss larger
         }
         else if (tier == GameManager.EnemyTier.Miniboss)
         {
-            GetComponentInChildren<Animator>().GetComponent<Transform>().localScale *= 1.2f; // Example: make miniboss larger
+            GetComponentInChildren<Animator>().GetComponent<Transform>().localScale *= 1f; // Example: make miniboss larger
         }
     }
 }

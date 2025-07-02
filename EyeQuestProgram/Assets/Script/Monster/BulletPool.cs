@@ -8,6 +8,9 @@ public enum BulletType
     Lightning,
     Nature,
     Dark,
+    Bear,
+    Liana,
+    Psycholofish
 }
 
 public class BulletPool : MonoBehaviour

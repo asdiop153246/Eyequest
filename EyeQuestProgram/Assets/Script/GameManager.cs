@@ -54,6 +54,16 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Userdata not found in the scene.");
             _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+
+            _PotionIcon[0].SetActive(false);
+            _PotionIcon[1].SetActive(false);
+            _PotionIcon[2].SetActive(false);
+            _PotionIcon[3].SetActive(false);
+
+            _PotionIcon[4].SetActive(false);
+            _PotionIcon[5].SetActive(false);
+            _PotionIcon[6].SetActive(false);
+            _PotionIcon[7].SetActive(false);
         }
         else
         {
@@ -68,27 +78,36 @@ public class GameManager : MonoBehaviour
             _PotionIcon[2].SetActive(false);
             _PotionIcon[3].SetActive(false);
 
+            _PotionIcon[4].SetActive(false);
+            _PotionIcon[5].SetActive(false);
+            _PotionIcon[6].SetActive(false);
+            _PotionIcon[7].SetActive(false);
+
             if (_userdata._isUsePotion_A)
             {
                 _PotionIcon[0].SetActive(true);
+                _PotionIcon[4].SetActive(true);
                 Userdata.Instance._User.data.booster.booster1 -= 1;
             }
 
             if (_userdata._isUsePotion_B)
             {
                 _PotionIcon[1].SetActive(true);
+                _PotionIcon[5].SetActive(true);
                 Userdata.Instance._User.data.booster.booster2 -= 1;
             }
 
             if (_userdata._isUsePotion_C)
             {
                 _PotionIcon[2].SetActive(true);
+                _PotionIcon[6].SetActive(true);
                 Userdata.Instance._User.data.booster.booster3 -= 1;
             }
 
             if (_userdata._isUsePotion_D)
             {
                 _PotionIcon[3].SetActive(true);
+                _PotionIcon[7].SetActive(true);
                 Userdata.Instance._User.data.booster.booster4 -= 1;
             }
 
@@ -138,10 +157,6 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            /*foreach(GameObject x in spawnedMonsters)
-            {
-                spawnedMonsters.Remove(x);
-            }*/
 
             _EndgamePanel.SetActive(true);
             StartCoroutine(_CalulateReward());
@@ -164,10 +179,14 @@ public class GameManager : MonoBehaviour
         if (stageIndex >= 8) return EnemyTier.Miniboss;
         return EnemyTier.Normal;
     }
+
+    public GameObject _WarpProtal;
     IEnumerator DelaybeforeStartGame()
     {
         _HpBar.SetActive(false);
         _TurnBar.SetActive(false);
+        _WarpProtal.SetActive(true);
+        yield return new WaitForSeconds(1f);
         PrepareText.transform.parent.gameObject.SetActive(true);
         PrepareText.text = $"World {worldIndex} - Stage {stageIndex}";
         yield return new WaitForSeconds(1f);
@@ -184,6 +203,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GetComponent<ShiftTurnScript>()._DelayCreateShifting());
 
         yield return new WaitForSeconds(1f);
+        _WarpProtal.SetActive(false);
         PrepareText.transform.parent.gameObject.SetActive(true);
         PrepareText.gameObject.SetActive(true);
         PrepareText.text = "Prepare for Battle!";
@@ -239,13 +259,24 @@ public class GameManager : MonoBehaviour
         EnemyTier currentTier = GetTierForCurrentStage();
         numberOfMonsters = GetAmountofMonsterForCurrentStage();
 
-        // Determine which monster prefabs are allowed based on stageIndex
-        int maxPrefabIndex = GetMaxMonsterIndexForStage(stageIndex); //stageIndex for gameplay
-
         for (int i = 0; i < numberOfMonsters; i++)
         {
-            int prefabIndex = Random.Range(0, maxPrefabIndex + 1);
-            GameObject prefab = monsterPrefabs[prefabIndex];
+            GameObject prefab;
+            EnemyTier tierToApply = EnemyTier.Normal;
+
+            if (currentTier == EnemyTier.Boss)
+            {
+                prefab = monsterPrefabs[9]; // Always use prefab 9
+                tierToApply = (i == 0) ? EnemyTier.Boss : EnemyTier.Normal;
+            }
+            else
+            {
+                int maxPrefabIndex = GetMaxMonsterIndexForStage(stageIndex);
+                int prefabIndex = Random.Range(0, maxPrefabIndex + 1);
+                prefab = monsterPrefabs[prefabIndex];
+                //prefab = monsterPrefabs[9];
+                tierToApply = (currentTier == EnemyTier.Miniboss) ? EnemyTier.Miniboss : EnemyTier.Normal;
+            }
 
             GameObject monster = Instantiate(prefab, spawnPoints[i].position, Quaternion.identity);
             monster.transform.Rotate(0, 180, 0);
@@ -254,26 +285,17 @@ public class GameManager : MonoBehaviour
             EnemyAI ai = monster.GetComponent<EnemyAI>();
             if (ai != null)
             {
-                if (currentTier == EnemyTier.Boss)
-                {
-                    EnemyTier tier = (i == 0) ? EnemyTier.Boss : EnemyTier.Normal;
-                    ai.ApplyTierModifier(tier, statsModifier);
-                    monster.name = $"{prefab.name} (Boss)";
-                }
-                else if (currentTier == EnemyTier.Miniboss)
-                {
-                    ai.ApplyTierModifier(EnemyTier.Miniboss, statsModifier);
-                    monster.name = $"{prefab.name} (Miniboss)";
-                }
-                else
-                {
-                    ai.ApplyTierModifier(EnemyTier.Normal, statsModifier);
-                }
+
+                ai.ApplyTierModifier(tierToApply, statsModifier);
+
+                if (tierToApply != EnemyTier.Normal)
+                    monster.name = $"{prefab.name} ({tierToApply})";
             }
 
             spawnedMonsters.Add(monster);
         }
     }
+
 
 
     int GetMaxMonsterIndexForStage(int stage)
@@ -315,7 +337,7 @@ public class GameManager : MonoBehaviour
             else if (stageIndex >= 18) return 1; // Boss stage
         }
 
-        return 1;
+        return 3;
     }
     public GameObject GetRandomPlayer()
     {
