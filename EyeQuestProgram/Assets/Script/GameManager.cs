@@ -137,6 +137,12 @@ public class GameManager : MonoBehaviour
     }
 
     public bool _isAlreadySelectionSkill;
+
+    public void _DisableAlreadySelectionSkill()
+    {
+        _isAlreadySelectionSkill = false;
+    }
+
     void Update()
     {
         if (!_isAlreadySelectionSkill)
@@ -326,7 +332,7 @@ public class GameManager : MonoBehaviour
         {
             if (stageIndex <= 2)
             {
-                return 0;
+                return 1;
             }// Early stages
             else if (stageIndex <= 5) return 2; // Mid stages
             else if (stageIndex <= 8) return 2; // MiniBoss stages

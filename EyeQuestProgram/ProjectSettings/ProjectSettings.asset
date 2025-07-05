@@ -163,6 +163,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.MetaverseXR.Eyequest
     Standalone: com.DefaultCompany.Eyequest
+    iPhone: com.MetaverseXR.Eyequest
   buildNumber:
     Standalone: 0
     VisionOS: 0
