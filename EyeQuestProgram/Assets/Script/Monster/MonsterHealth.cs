@@ -18,8 +18,17 @@ public class MonsterHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        maxHealth = this.transform.parent.GetComponent<EnemyAI>().CurrentStats.maxHealth;
-        cam = Camera.main;
+        
+        if (this.transform.parent.GetComponent<EnemyAI>()._isTest)
+        {
+            maxHealth = 9999;
+        }
+        else
+        {
+            maxHealth = this.transform.parent.GetComponent<EnemyAI>().CurrentStats.maxHealth;
+        }
+        
+            cam = Camera.main;
         currentHealth = maxHealth;
         if (healthBarUI != null)
         {

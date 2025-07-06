@@ -48,12 +48,24 @@ public class GameManager : MonoBehaviour
     public Userdata _userdata;
     void Start()
     {
+        
+
         //CheckAndRequestCameraPermission();
         _userdata = FindObjectOfType<Userdata>();
         if (_userdata == null)
         {
             Debug.LogError("Userdata not found in the scene.");
             _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+
+            _PotionIcon[0].SetActive(false);
+            _PotionIcon[1].SetActive(false);
+            _PotionIcon[2].SetActive(false);
+            _PotionIcon[3].SetActive(false);
+
+            _PotionIcon[4].SetActive(false);
+            _PotionIcon[5].SetActive(false);
+            _PotionIcon[6].SetActive(false);
+            _PotionIcon[7].SetActive(false);
         }
         else
         {
@@ -68,27 +80,36 @@ public class GameManager : MonoBehaviour
             _PotionIcon[2].SetActive(false);
             _PotionIcon[3].SetActive(false);
 
+            _PotionIcon[4].SetActive(false);
+            _PotionIcon[5].SetActive(false);
+            _PotionIcon[6].SetActive(false);
+            _PotionIcon[7].SetActive(false);
+
             if (_userdata._isUsePotion_A)
             {
                 _PotionIcon[0].SetActive(true);
+                _PotionIcon[4].SetActive(true);
                 Userdata.Instance._User.data.booster.booster1 -= 1;
             }
 
             if (_userdata._isUsePotion_B)
             {
                 _PotionIcon[1].SetActive(true);
+                _PotionIcon[5].SetActive(true);
                 Userdata.Instance._User.data.booster.booster2 -= 1;
             }
 
             if (_userdata._isUsePotion_C)
             {
                 _PotionIcon[2].SetActive(true);
+                _PotionIcon[6].SetActive(true);
                 Userdata.Instance._User.data.booster.booster3 -= 1;
             }
 
             if (_userdata._isUsePotion_D)
             {
                 _PotionIcon[3].SetActive(true);
+                _PotionIcon[7].SetActive(true);
                 Userdata.Instance._User.data.booster.booster4 -= 1;
             }
 
@@ -118,6 +139,12 @@ public class GameManager : MonoBehaviour
     }
 
     public bool _isAlreadySelectionSkill;
+
+    public void _DisableAlreadySelectionSkill()
+    {
+        _isAlreadySelectionSkill = false;
+    }
+
     void Update()
     {
         if (!_isAlreadySelectionSkill)
@@ -160,10 +187,14 @@ public class GameManager : MonoBehaviour
         if (stageIndex >= 8) return EnemyTier.Miniboss;
         return EnemyTier.Normal;
     }
+
+    public GameObject _WarpProtal;
     IEnumerator DelaybeforeStartGame()
     {
         _HpBar.SetActive(false);
         _TurnBar.SetActive(false);
+        _WarpProtal.SetActive(true);
+        yield return new WaitForSeconds(1f);
         PrepareText.transform.parent.gameObject.SetActive(true);
         PrepareText.text = $"World {worldIndex} - Stage {stageIndex}";
         yield return new WaitForSeconds(1f);
@@ -180,6 +211,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(GetComponent<ShiftTurnScript>()._DelayCreateShifting());
 
         yield return new WaitForSeconds(1f);
+        _WarpProtal.SetActive(false);
         PrepareText.transform.parent.gameObject.SetActive(true);
         PrepareText.gameObject.SetActive(true);
         PrepareText.text = "Prepare for Battle!";
@@ -250,6 +282,7 @@ public class GameManager : MonoBehaviour
                 int maxPrefabIndex = GetMaxMonsterIndexForStage(stageIndex);
                 int prefabIndex = Random.Range(0, maxPrefabIndex + 1);
                 prefab = monsterPrefabs[prefabIndex];
+                //prefab = monsterPrefabs[9];
                 tierToApply = (currentTier == EnemyTier.Miniboss) ? EnemyTier.Miniboss : EnemyTier.Normal;
             }
 
@@ -299,7 +332,10 @@ public class GameManager : MonoBehaviour
     {
         if (worldIndex == 1)
         {
-            if (stageIndex <= 2) return 1; // Early stages
+            if (stageIndex <= 2)
+            {
+                return 1;
+            }// Early stages
             else if (stageIndex <= 5) return 2; // Mid stages
             else if (stageIndex <= 8) return 2; // MiniBoss stages
             else if (stageIndex >= 9) return 1; // Boss stage
@@ -689,6 +725,10 @@ public float starDelay = 0.7f; // time between each star popping out
 
     public void NextStage()
     {
+        Userdata.Instance._isWinning = true;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+
+        /*
         stageIndex++;
 
         Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
@@ -721,10 +761,11 @@ public float starDelay = 0.7f; // time between each star popping out
         Player _player = players[0].GetComponent<Player>();
         _player.ApplyStats();
         CalculateStatsModifier();
-        StartCoroutine(DelaybeforeStartGame());
+        StartCoroutine(DelaybeforeStartGame());*/
     }
     public void ReturntoMenu()
     {
+        Userdata.Instance._isBackOnly = true;
         // Reset all game state variables
         currentTurnIndex = 0;
         spawnedMonsters.Clear();

@@ -4955,7 +4955,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duration: 2
   size: 1
-  spinSpeed: 2
+  spinSpeed: 3
+  yOffset: 1
 --- !u!1 &6075780773494686475
 GameObject:
   m_ObjectHideFlags: 0
