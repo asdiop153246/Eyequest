@@ -41,7 +41,7 @@ public class GetPointID : MonoBehaviour
 
     foreach (var point in points)
     {
-      if (point != null && point._id == 4)
+      if (point != null && point._id == 0)
       {
         _centerPoint = point.gameObject;
         _centerPoint.gameObject.name = "CenterPoint";
@@ -54,7 +54,7 @@ public class GetPointID : MonoBehaviour
     }
     if (_centerPoint == null)
     {
-      Debug.LogWarning("CenterPoint with ID 4 not found.");
+      Debug.LogWarning("CenterPoint with ID 0 not found.");
     }
     // if (_CameraCheckText == null)
     // {
@@ -69,11 +69,11 @@ public class GetPointID : MonoBehaviour
   {
     if (_centerPoint == null)
     {
-      Debug.LogWarning("CenterPoint with ID 4 not found.");
+      Debug.LogWarning("CenterPoint with ID 0 not found.");
       PointAnnotation[] points = GetComponentsInChildren<PointAnnotation>();
       foreach (var point in points)
       {
-        if (point != null && point._id == 4)
+        if (point != null && point._id == 0) // 4 for nose 0 for center eye
         {
           _centerPoint = point.gameObject;
           _centerPoint.gameObject.name = "CenterPoint";
@@ -84,19 +84,19 @@ public class GetPointID : MonoBehaviour
       float centerX = _centerPoint.transform.position.x;
       float centerY = _centerPoint.transform.position.y;
       
-      float idealX = -2.672843f;
-      float idealY = 5.905392f;
+      float idealX = -1.9f;
+      float idealY = 6.1f;
       float toleranceX = 0.5f;
       float toleranceY = 0.5f;
     if (_centerPoint != null && _DetectionZone != null)
     {
-      //Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
-      //Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
+      Debug.Log("_Centerpoint X = " + _centerPoint.transform.position.x);
+      Debug.Log("_Centerpoint Y = " + _centerPoint.transform.position.y);
       if (Mathf.Abs(centerX - idealX) > toleranceX || Mathf.Abs(centerY - idealY) > toleranceY)
       {
         //Debug.LogWarning("Your face is not Center");
         _isCenterPoint = false;
-        _centerPoint.GetComponent<PointAnnotation>().SetRadius(1f);
+        //_centerPoint.GetComponent<PointAnnotation>().SetRadius(1f);
         _DetectionZone.SetActive(_isCenterPoint);
         _centerText.SetActive(true);
         _CenterNoseAlignment.SetActive(true);
@@ -104,7 +104,7 @@ public class GetPointID : MonoBehaviour
       else
       {
         _isCenterPoint = true;
-        _centerPoint.GetComponent<PointAnnotation>().SetRadius(0f);
+        //_centerPoint.GetComponent<PointAnnotation>().SetRadius(0f);
         _DetectionZone.SetActive(_isCenterPoint);
         _centerText.SetActive(false);
         _CenterNoseAlignment.SetActive(false);
