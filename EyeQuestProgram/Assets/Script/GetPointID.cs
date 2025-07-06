@@ -86,7 +86,7 @@ public class GetPointID : MonoBehaviour
       
       float idealX = -1.9f;
       float idealY = 6.1f;
-      float toleranceX = 0.5f;
+      float toleranceX = 0.42f;
       float toleranceY = 0.5f;
     if (_centerPoint != null && _DetectionZone != null)
     {
