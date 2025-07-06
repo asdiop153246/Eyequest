@@ -24,6 +24,20 @@ public class WordLoader : MonoBehaviour
         {
             _BuyBoosterOK();
         };
+
+        
+
+        if (Userdata.Instance._isWinning || Userdata.Instance._isBackOnly)
+        {
+            _BackFromGame();
+            Debug.Log("BACK FROM GAME");
+        }
+        else
+        {
+            _UpdateCurrentKiwiPostion(false);
+            Debug.Log("_UpdateCurrentKiwiPostion");
+        }
+        
     }
 
     public void OnDisable()
@@ -42,6 +56,7 @@ public class WordLoader : MonoBehaviour
     public int _CurrentLevelCounter;
     public void UpdateLevel(int _id)
     {
+
         if (_id == 0)
         {
             GetComponent<WordLoader>()._CurrentWorld = 0;
@@ -318,6 +333,8 @@ public TMPro.TextMeshProUGUI _LevelName;
     public void _OpenLevelPopUp(int _id)
     {
         
+        
+
         _CurrentLevel = _id;
         Userdata.Instance._CurrentStage = _CurrentLevel;
         Userdata.Instance._Levelid = Userdata.Instance._WorldData.world[_CurrentWorld].level[_id].level_id;
@@ -325,6 +342,22 @@ public TMPro.TextMeshProUGUI _LevelName;
 
 
         _LevelName.text = "Level : " + (_id+1);
+
+        switch (_CurrentWorld)
+        {
+            case 0:
+                _CurrentKiwiPosition = _LevelOnWorld_1[_CurrentLevel];
+                break;
+            case 1:
+                _CurrentKiwiPosition = _LevelOnWorld_2[_CurrentLevel];
+                break;
+            case 2:
+                _CurrentKiwiPosition = _LevelOnWorld_3[_CurrentLevel];
+                break;
+        }
+
+        _Move();
+        
 
         if (Userdata.Instance._User.data.booster.booster1 != 0)
         {
@@ -459,6 +492,9 @@ public TMPro.TextMeshProUGUI _LevelName;
         }
 
         Debug.Log("Check VV");
+
+        Userdata.Instance._isBackOnly = false;
+        Userdata.Instance._isWinning = false;
     }
 
 
@@ -563,5 +599,230 @@ public TMPro.TextMeshProUGUI _LevelName;
     {
         Application.LoadLevel(_id);
 
+    }
+
+    public List<GameObject> _HideBackFromGameObj;
+    public List<GameObject> _ShowBackFromGameObj;
+
+    public List<GameObject> _Level;
+
+    public void _BackFromGame()
+    {
+
+        UpdateLevel(Userdata.Instance._CurrentWorld); // UPDATE UI
+
+        foreach (GameObject x in _HideBackFromGameObj)
+        {
+            x.SetActive(false);
+        }
+
+        foreach (GameObject x in _ShowBackFromGameObj)
+        {
+            x.SetActive(true);
+        }
+
+        _Level[Userdata.Instance._CurrentWorld].SetActive(true);
+
+        if (Userdata.Instance._isBackOnly && !Userdata.Instance._isWinning)
+        {
+            _UpdateCurrentKiwiPostion(false);
+            Debug.Log("Userdata.Instance._isBackOnly");
+        }
+        else if (Userdata.Instance._isWinning)
+        {
+            _MoveToNextLevel(); // MOVE TO NEXT LEVEL
+        }
+        
+    }
+
+    public GameObject[] _LevelOnWorld_1;
+    public GameObject[] _LevelOnWorld_2;
+    public GameObject[] _LevelOnWorld_3;
+    public GameObject[] _KiwiIcon;
+
+    public GameObject _CurrentKiwiPosition;
+
+    public void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            _Move();
+        }
+    }
+    public float duration;      // Total move time
+    public float bounceHeight = 20f; // Bounce amount in pixels
+    public int bounceCount = 10;      // How many up-downs (optional)
+
+    public void _UpdateCurrentKiwiPostion(bool _isStarter)
+    {
+        if (_isStarter)
+        {
+            Userdata.Instance._CurrentStage = 0;
+
+            switch (Userdata.Instance._CurrentWorld)
+            {
+                case 0:
+                    _CurrentKiwiPosition = _LevelOnWorld_1[0];
+                    break;
+                case 1:
+                    _CurrentKiwiPosition = _LevelOnWorld_2[0];
+                    break;
+                case 2:
+                    _CurrentKiwiPosition = _LevelOnWorld_3[0];
+                    break;
+            }
+
+            _Move();
+        }
+        else
+        {
+            switch (Userdata.Instance._CurrentWorld)
+            {
+                case 0:
+                    _CurrentKiwiPosition = _LevelOnWorld_1[Userdata.Instance._CurrentStage];
+                    break;
+                case 1:
+                    _CurrentKiwiPosition = _LevelOnWorld_2[Userdata.Instance._CurrentStage];
+                    break;
+                case 2:
+                    _CurrentKiwiPosition = _LevelOnWorld_3[Userdata.Instance._CurrentStage];
+                    break;
+            }
+
+            _Move();
+        }
+        
+    }
+
+    public void _Move()
+    {
+        switch (Userdata.Instance._CurrentWorld)
+        {
+            case 0:
+                //_CurrentKiwiPosition =
+               StartCoroutine(MoveWithBounce(_CurrentKiwiPosition.transform.position, _LevelOnWorld_1[Userdata.Instance._CurrentStage].transform.position, duration));
+                break;
+            case 1:
+                StartCoroutine(MoveWithBounce(_CurrentKiwiPosition.transform.position, _LevelOnWorld_2[Userdata.Instance._CurrentStage].transform.position, duration));
+                break;
+            case 2:
+                StartCoroutine(MoveWithBounce(_CurrentKiwiPosition.transform.position, _LevelOnWorld_3[Userdata.Instance._CurrentStage].transform.position, duration));
+                break;
+        }    
+    }
+
+    public void _MoveToNextLevel()
+    {
+        UpdateLevel(Userdata.Instance._CurrentWorld);
+
+        switch (Userdata.Instance._CurrentWorld)
+        {
+            case 0:
+                _CurrentKiwiPosition = _LevelOnWorld_1[Userdata.Instance._CurrentStage];
+                break;
+            case 1:
+                _CurrentKiwiPosition = _LevelOnWorld_2[Userdata.Instance._CurrentStage];
+                break;
+            case 2:
+                _CurrentKiwiPosition = _LevelOnWorld_3[Userdata.Instance._CurrentStage];
+                break;
+        }
+
+        switch (Userdata.Instance._CurrentWorld)
+        {
+            case 0:
+                if (Userdata.Instance._CurrentStage == 3)
+                {
+                    Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[5].isUnlock = true;
+                    Userdata.Instance._CurrentStage = 5;
+                }
+                else if (Userdata.Instance._CurrentStage == 9)
+                {
+                    Userdata.Instance._WorldData.world[1].level[0].isUnlock = true;
+                    Userdata.Instance._CurrentWorld = 1;
+                    Userdata.Instance._CurrentStage = 0;
+                }
+                else
+                {
+                     Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
+                }
+                break;
+
+            case 1:
+                if (Userdata.Instance._CurrentStage == 4)
+                {
+                    Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[6].isUnlock = true;
+                    Userdata.Instance._CurrentStage = 6;
+                }
+                else if (Userdata.Instance._CurrentStage == 12)
+                {
+                    Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[14].isUnlock = true;
+                    Userdata.Instance._CurrentStage = 14;
+                }
+                else if (Userdata.Instance._CurrentStage == 18)
+                {
+                    Userdata.Instance._WorldData.world[2].level[0].isUnlock = true;
+                    Userdata.Instance._CurrentStage = 0;
+                }
+                else
+                {
+                    Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
+                }
+                break;
+
+            case 2:
+                if (Userdata.Instance._CurrentStage == 2)
+                {
+                    Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[4].isUnlock = true;
+                    Userdata.Instance._CurrentStage = 4;
+                }
+                else if (Userdata.Instance._CurrentStage == 7)
+                {
+                    Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[9].isUnlock = true;
+                    Userdata.Instance._CurrentStage = 9;
+                }
+                else
+                {
+                    Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
+                }
+                break;
+        }
+
+        switch (Userdata.Instance._CurrentWorld)
+        {
+            case 0:
+                //_CurrentKiwiPosition =
+                StartCoroutine(MoveWithBounce(_CurrentKiwiPosition.transform.position, _LevelOnWorld_1[Userdata.Instance._CurrentStage].transform.position, duration));
+                break;
+            case 1:
+                StartCoroutine(MoveWithBounce(_CurrentKiwiPosition.transform.position, _LevelOnWorld_2[Userdata.Instance._CurrentStage].transform.position, duration));
+                break;
+            case 2:
+                StartCoroutine(MoveWithBounce(_CurrentKiwiPosition.transform.position, _LevelOnWorld_3[Userdata.Instance._CurrentStage].transform.position, duration));
+                break;
+        }
+    }
+
+    IEnumerator MoveWithBounce(Vector3 startPos, Vector3 endPos, float duration)
+    {
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float t = elapsed / duration;
+            // Linear position
+            Vector3 newPos = Vector3.Lerp(startPos, endPos, t);
+
+            // Add vertical bounce using sine wave
+            float bounce = Mathf.Sin(t * Mathf.PI * bounceCount) * bounceHeight;
+            newPos.y += bounce;
+
+            _KiwiIcon[Userdata.Instance._CurrentWorld].transform.position = newPos;
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        _KiwiIcon[Userdata.Instance._CurrentWorld].transform.position = endPos;
     }
 }

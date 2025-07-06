@@ -17,7 +17,7 @@ public class UnlockWorldLevel : MonoBehaviour
             Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].stars));
         }
 
-        switch (Userdata.Instance._CurrentWorld)
+        /*switch (Userdata.Instance._CurrentWorld)
         {
             case 0:
                 if(Userdata.Instance._CurrentStage == 3)
@@ -75,6 +75,6 @@ public class UnlockWorldLevel : MonoBehaviour
                     
                 }
                 break;
-        }
+        }*/
     }
 }

@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
     public Userdata _userdata;
     void Start()
     {
+        
+
         //CheckAndRequestCameraPermission();
         _userdata = FindObjectOfType<Userdata>();
         if (_userdata == null)
@@ -723,6 +725,10 @@ public float starDelay = 0.7f; // time between each star popping out
 
     public void NextStage()
     {
+        Userdata.Instance._isWinning = true;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+
+        /*
         stageIndex++;
 
         Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
@@ -755,10 +761,11 @@ public float starDelay = 0.7f; // time between each star popping out
         Player _player = players[0].GetComponent<Player>();
         _player.ApplyStats();
         CalculateStatsModifier();
-        StartCoroutine(DelaybeforeStartGame());
+        StartCoroutine(DelaybeforeStartGame());*/
     }
     public void ReturntoMenu()
     {
+        Userdata.Instance._isBackOnly = true;
         // Reset all game state variables
         currentTurnIndex = 0;
         spawnedMonsters.Clear();

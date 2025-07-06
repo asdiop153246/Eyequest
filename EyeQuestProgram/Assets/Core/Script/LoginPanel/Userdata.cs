@@ -342,4 +342,7 @@ public class Userdata : MonoBehaviour
     public bool _isUsePotion_B;
     public bool _isUsePotion_C;
     public bool _isUsePotion_D;
+
+    public bool _isWinning;
+    public bool _isBackOnly;
 }
