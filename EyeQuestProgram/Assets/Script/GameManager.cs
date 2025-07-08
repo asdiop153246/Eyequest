@@ -707,10 +707,12 @@ public float starDelay = 0.7f; // time between each star popping out
             if (monster != null && monster != selectedTarget)
             {
                 monster.GetComponent<EnemyAI>()._Highlight.SetActive(false); // Hide highlight for other monsters
+                monster.GetComponent<EPOOutline.Outlinable>().enabled = false;
             }
             else if (monster != null && monster == selectedTarget)
             {
                 monster.GetComponent<EnemyAI>()._Highlight.SetActive(true); // Show highlight for selected monster
+                monster.GetComponent<EPOOutline.Outlinable>().enabled = true;
             }
         }
 
