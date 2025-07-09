@@ -8,13 +8,21 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private Statsprofile statProfile;
     private float totalStatPoints;
-    [SerializeField] protected GameManager gameManager;
+    public GameManager gameManager;
     public TextMeshProUGUI ActionText;
     public GameObject _Highlight;
     public BulletType myBulletType;
     public Transform bulletSpawnPoint;
     public int _MonsterID;
     private GameManager.EnemyTier _enemyTier;
+    public _MonsterType _enemyType;
+    public enum _MonsterType
+    {
+        Stretching,
+        Rest,
+        Relaxant
+
+    }
 
     [System.Serializable]
     public class Stats
@@ -42,6 +50,11 @@ public class EnemyAI : MonoBehaviour
 
         ActionText = GameObject.Find("SkillCastText").GetComponent<TextMeshProUGUI>();
 
+        if (_MonsterID == 9)
+        {
+            gameManager.gameObject.GetComponent<GameManager>()._VolumeCore.GetComponent<SaturationController>()._isStarter();
+        }
+        
     }
 
     public void FixedUpdate()

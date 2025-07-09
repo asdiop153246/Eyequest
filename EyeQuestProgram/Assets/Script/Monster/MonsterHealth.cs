@@ -52,6 +52,8 @@ public class MonsterHealth : MonoBehaviour
 
     public GameObject _HitEffect;
     public GameObject _Root;
+    float hpPercent;
+    float grayValue;
     public void TakeDamage(float damage)
     {
         if (isDead) return;
@@ -60,6 +62,15 @@ public class MonsterHealth : MonoBehaviour
         Destroy(x, 2f);
 
         currentHealth -= damage;
+
+        if (transform.parent.gameObject.GetComponent<EnemyAI>()._MonsterID == 9)
+        {
+            hpPercent = (currentHealth / maxHealth) * 100f;
+            grayValue = hpPercent*-1;
+            transform.parent.gameObject.GetComponent<EnemyAI>().gameManager.gameObject.GetComponent<GameManager>()._VolumeCore.GetComponent<SaturationController>().SetSaturation(grayValue);
+        }
+        
+
 
         if (currentHealth <= 0)
         {

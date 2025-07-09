@@ -233,6 +233,29 @@ public class Player : MonoBehaviour
             actualAttackPower *= 2f; // Double the attack power for critical hits
             Debug.Log($"{gameObject.name} landed a critical hit!");
         }
+
+        switch (gameManager.selectedTarget.GetComponent<EnemyAI>()._enemyType)
+        {
+            case EnemyAI._MonsterType.Stretching:
+                if (skillIndex == 4 || skillIndex == 5 || skillIndex == 6)
+                {
+                    actualAttackPower *= 1.5f; // Double the attack power for critical hits
+                } 
+                break;
+            case EnemyAI._MonsterType.Rest:
+                if (skillIndex == 1 || skillIndex == 2 || skillIndex == 3)
+                {
+                    actualAttackPower *= 1.5f; // Double the attack power for critical hits
+                }
+                break;
+            case EnemyAI._MonsterType.Relaxant:
+                if (skillIndex == 0)
+                {
+                    actualAttackPower *= 1.5f; // Double the attack power for critical hits
+                }
+                break;
+        }
+
         if (animator != null)
         {
             animator.SetTrigger("_attack");

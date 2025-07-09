@@ -20,7 +20,11 @@ public class Update_Currency : MonoBehaviour
 
     public void OnDisable()
     {
-        Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_UpdateCurrency_OK -= Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_UpdateCurrency_OK;
+        if (Userdata.Instance.gameObject)
+        {
+            Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_UpdateCurrency_OK -= Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_UpdateCurrency_OK;
+        }
+        
     }
 
     public void _UpdateTxt()

@@ -52,6 +52,35 @@ public class GameManager : MonoBehaviour
 
         //CheckAndRequestCameraPermission();
         _userdata = FindObjectOfType<Userdata>();
+
+        _PotionIcon[0].SetActive(false);
+        _PotionIcon[1].SetActive(false);
+        _PotionIcon[2].SetActive(false);
+        _PotionIcon[3].SetActive(false);
+
+        _PotionIcon[4].SetActive(false);
+        _PotionIcon[5].SetActive(false);
+        _PotionIcon[6].SetActive(false);
+        _PotionIcon[7].SetActive(false);
+
+        _HpBar.SetActive(false);
+        _TurnBar.SetActive(false);
+
+
+        if (_userdata != null)
+        {
+            worldIndex = _userdata._CurrentWorld;
+            stageIndex = _userdata._CurrentStage;
+
+            _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+        }
+
+    }
+
+    public void _GamePlay()
+    {
+        
+
         if (_userdata == null)
         {
             Debug.LogError("Userdata not found in the scene.");
@@ -73,7 +102,7 @@ public class GameManager : MonoBehaviour
             worldIndex = _userdata._CurrentWorld;
             stageIndex = _userdata._CurrentStage;
 
-            _WorldLevel.text = "World - " + (worldIndex + 1) +" - "+ (stageIndex + 1);
+            _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
 
             _PotionIcon[0].SetActive(false);
             _PotionIcon[1].SetActive(false);
@@ -134,8 +163,8 @@ public class GameManager : MonoBehaviour
         Player player = players[0].GetComponent<Player>();
         player.ApplyStats();
         CalculateStatsModifier();
-        StartCoroutine(DelaybeforeStartGame());
 
+        StartCoroutine(DelaybeforeStartGame());
     }
 
     public bool _isAlreadySelectionSkill;
@@ -145,6 +174,8 @@ public class GameManager : MonoBehaviour
         _isAlreadySelectionSkill = false;
     }
 
+
+    public GameObject _HightLightCam;
     void Update()
     {
         if (!_isAlreadySelectionSkill)
@@ -152,15 +183,22 @@ public class GameManager : MonoBehaviour
             if (selectedTarget == null || currentTurnIndex != 0 || _Player.GetComponent<Player>().isAction == true)
             {
                 _skillUI.SetActive(false);
+                foreach (GameObject x in _HightLightSkill)
+                {
+                    x.SetActive(false);
+                }
             }
             else
             {
                 _skillUI.SetActive(true);
             }
+
+            _HightLightCam.SetActive(true);
         }
         else
         {
             _skillUI.SetActive(false);
+            _HightLightCam.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.H))
@@ -696,6 +734,9 @@ public float starDelay = 0.7f; // time between each star popping out
 
         StartTurn();
     }
+
+    public List<GameObject> _HightLightSkill;
+    public List<GameObject> _HightLightSkill_Icon;
     public void SelectTarget(GameObject target)
     {
         if (!_isGameStart) return;
@@ -716,8 +757,38 @@ public float starDelay = 0.7f; // time between each star popping out
             }
         }
 
+        foreach (GameObject x in _HightLightSkill)
+        {
+            x.SetActive(false);
+        }
 
+        foreach (GameObject x in _HightLightSkill_Icon)
+        {
+            x.GetComponent<Animation>().Play("Skill_Idle");
+        }
+
+        StartCoroutine(_Skill());
         // Optional: Show "Attack" button after selection
+    }
+
+    IEnumerator _Skill()
+    {
+        yield return new WaitForSeconds(0.5f);
+        switch (selectedTarget.GetComponent<EnemyAI>()._enemyType)
+        {
+            case EnemyAI._MonsterType.Stretching:
+                _HightLightSkill[0].SetActive(true);
+                _HightLightSkill_Icon[0].GetComponent<Animation>().Play("SkillHightLight");
+                break;
+            case EnemyAI._MonsterType.Rest:
+                _HightLightSkill[1].SetActive(true);
+                _HightLightSkill_Icon[1].GetComponent<Animation>().Play("SkillHightLight");
+                break;
+            case EnemyAI._MonsterType.Relaxant:
+                _HightLightSkill[2].SetActive(true);
+                _HightLightSkill_Icon[2].GetComponent<Animation>().Play("SkillHightLight");
+                break;
+        }
     }
     public List<GameObject> GetMonsters()
     {
@@ -840,4 +911,6 @@ public float starDelay = 0.7f; // time between each star popping out
         // Put your code here for what to do if user denied permission
         Debug.LogWarning("Camera permission denied - app may not work correctly.");
     }
+
+    public UnityEngine.Rendering.Volume _VolumeCore;
 }
