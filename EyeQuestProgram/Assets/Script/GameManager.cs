@@ -217,17 +217,17 @@ public class GameManager : MonoBehaviour
             if (selectedTarget == null || currentTurnIndex != 0 || _Player.GetComponent<Player>().isAction == true)
             {
                 _skillUI.SetActive(false);
-                foreach (GameObject x in _HightLightSkill)
-                {
-                    x.SetActive(false);
-                }
+
+                _HightLightCam.SetActive(false);
             }
             else
             {
                 _skillUI.SetActive(true);
+
+                _HightLightCam.SetActive(true);
             }
 
-            _HightLightCam.SetActive(true);
+            
         }
         else
         {
@@ -337,6 +337,7 @@ public class GameManager : MonoBehaviour
     void SpawnMonsters()
     {
         EnemyTier currentTier = GetTierForCurrentStage();
+        //numberOfMonsters = GetAmountofMonsterForCurrentStage();
         numberOfMonsters = GetAmountofMonsterForCurrentStage();
 
         for (int i = 0; i < numberOfMonsters; i++)
@@ -383,7 +384,7 @@ public class GameManager : MonoBehaviour
         //return 8;
         if (worldIndex == 1)
         {
-            if (stage <= 2) return 0; // Early stages
+            if (stage <= 2) return 8; // Early stages
             else if (stage <= 5) return 1; // Mid stages
             else if (stage <= 8) return 2; // MiniBoss stages
             else return Mathf.Min(3, monsterPrefabs.Length - 1); // Boss stage
@@ -406,7 +407,7 @@ public class GameManager : MonoBehaviour
         {
             if (stageIndex <= 2)
             {
-                return 1;
+                return 3;
             }// Early stages
             else if (stageIndex <= 5) return 2; // Mid stages
             else if (stageIndex <= 8) return 2; // MiniBoss stages
@@ -438,6 +439,7 @@ public class GameManager : MonoBehaviour
             if (currentTurnIndex == 0)
             {
                 turnText.text = "Player's Turn";
+                SelectTarget(selectedTarget);
                 players[0].GetComponent<Player>().takeTurn();
                 StartCoroutine(AnimateTurnText());
             }
@@ -774,7 +776,12 @@ public float starDelay = 0.7f; // time between each star popping out
     public void SelectTarget(GameObject target)
     {
         if (!_isGameStart) return;
+        if (target == null)
+            return;
+
+
         selectedTarget = target;
+
         Debug.Log($"Selected target: {target.name}");
         isReadyToAttack = true; // Set flag to indicate player is ready to attack
         foreach (GameObject monster in spawnedMonsters)

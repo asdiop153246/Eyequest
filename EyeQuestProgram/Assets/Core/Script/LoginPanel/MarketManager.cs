@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +13,13 @@ public class MarketManager : MonoBehaviour
     public TMPro.TextMeshProUGUI _HeaderTxt;
 
     public GameObject _MarketObj;
+
+    public void _OpenLink()
+    {
+        Application.OpenURL("https://eyequest.eyequila.com/th/beta-report?email="+Userdata.Instance._User.data.user.email+"&platform=ios");
+
+            // https://eyequest.eyequila.com/th/beta-report?email=asdas@sdsads.com&platform=ios&model=iphone13/en'ปรับprefix /th /en
+    }
     public void _UpdateStoreByWord(int _id)
     {
         _MarketObj.SetActive(true);

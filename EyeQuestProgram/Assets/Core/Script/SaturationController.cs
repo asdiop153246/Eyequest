@@ -45,7 +45,7 @@ public class SaturationController : MonoBehaviour
     {
         if (volume.profile.TryGet<ColorAdjustments>(out var colorAdjustments))
         {
-            colorAdjustments.saturation.value = Mathf.Clamp(value, -100f, 100f);
+            colorAdjustments.saturation.value = Mathf.Clamp(value, -100f, 0f);
         }
     }
 

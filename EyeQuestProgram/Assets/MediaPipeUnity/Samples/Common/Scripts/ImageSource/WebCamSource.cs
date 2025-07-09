@@ -134,7 +134,7 @@ namespace Mediapipe.Unity
       {
           int defaultIndex = 0;
 
-      #if UNITY_ANDROID && !UNITY_EDITOR
+      #if !UNITY_EDITOR
           // On real Android device, prefer index 1 if available
           defaultIndex = availableSources.Length > 1 ? 1 : 0;
       #endif

@@ -105,8 +105,6 @@ public class SceneManager : MonoBehaviour
     public AudioClip[] _BgSound;
     IEnumerator _ChangeMap(int _id)
     {
-        _MapBg.gameObject.SetActive(false);
-        yield return new WaitForSeconds(0.1f);
         _MapBg.gameObject.SetActive(true);
 
         _MapBg.sprite = _WorldMap[_id];
@@ -119,7 +117,7 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[0].SetActive(true);
                 _LevelMap[1].SetActive(false);
                 _LevelMap[2].SetActive(false);
-                _WorldName.text = "Word - 1";
+                _WorldName.text = "The Forest";
                 Userdata.Instance._CurrentWorld = 0;
                 GetComponent<AudioSource>().Stop();
                 GetComponent<AudioSource>().PlayOneShot(_BgSound[0]);
@@ -129,7 +127,7 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[0].SetActive(false);
                 _LevelMap[1].SetActive(false);
                 _LevelMap[2].SetActive(true);
-                _WorldName.text = "Word - 3";
+                _WorldName.text = "The Fallen City";
                 Userdata.Instance._CurrentWorld = 2;
                 GetComponent<AudioSource>().Stop();
                 GetComponent<AudioSource>().PlayOneShot(_BgSound[1]);
@@ -138,7 +136,7 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[0].SetActive(false);
                 _LevelMap[1].SetActive(true);
                 _LevelMap[2].SetActive(false);
-                _WorldName.text = "Word - 2";
+                _WorldName.text = "The Lab";
                 Userdata.Instance._CurrentWorld = 1;
                 GetComponent<AudioSource>().Stop();
                 GetComponent<AudioSource>().PlayOneShot(_BgSound[2]);
@@ -164,8 +162,8 @@ public class SceneManager : MonoBehaviour
             Userdata.Instance._CurrentWorld = 1;
             GetComponent<WordLoader>()._CurrentLevelCounter = Userdata.Instance._WorldData.world[GetComponent<WordLoader>()._CurrentWorld].level.Count;
         }
-        //GetComponent<WordLoader>().UpdateLevel(_CurrentWorldId);
 
+        yield return new WaitForSeconds(0);
     }
 
     public void _MoveRight()
@@ -212,7 +210,7 @@ public class SceneManager : MonoBehaviour
                 _CurrentWorld_Id = 1;
                 //Debug.Log("Current word :" + _CurrentWorld_Id);
 
-                Debug.Log("Current word :" + _CurrentWorld_Id + Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock);
+                //Debug.Log("Current word :" + _CurrentWorld_Id + Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock);
 
                 if (Userdata.Instance._WorldData.world[_CurrentWorld_Id].isUnlock)
                 {
