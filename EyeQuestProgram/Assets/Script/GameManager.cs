@@ -71,9 +71,43 @@ public class GameManager : MonoBehaviour
         {
             worldIndex = _userdata._CurrentWorld;
             stageIndex = _userdata._CurrentStage;
-
+            _ChangeMapAndSkyBox(_userdata._CurrentWorld);
             _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+
         }
+        else
+        {
+            _ChangeMapAndSkyBox(worldIndex-1);
+        }
+
+    }
+
+    public List<GameObject> _World;
+    public List<Material> _SkyBox;
+
+    public void _ChangeMapAndSkyBox(int Id)
+    {
+        foreach(GameObject x in _World)
+        {
+            x.SetActive(false);
+        }
+
+        switch (Id)
+        {
+            case 0:
+                _World[0].SetActive(true);
+                RenderSettings.skybox = _SkyBox[0];
+                break;
+            case 1:
+                _World[1].SetActive(true);
+                RenderSettings.skybox = _SkyBox[1];
+                break;
+            case 2:
+                _World[2].SetActive(true);
+                RenderSettings.skybox = _SkyBox[2];
+                break;
+        }
+
 
     }
 

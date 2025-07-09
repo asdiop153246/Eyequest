@@ -16,7 +16,7 @@ public class MarketManager : MonoBehaviour
     public void _UpdateStoreByWord(int _id)
     {
         _MarketObj.SetActive(true);
-        _HeaderTxt.text = "World " + Userdata.Instance._CurrentWorld + " - " + Userdata.Instance._CurrentStage;
+        _HeaderTxt.text = "Welcome Trallert";
         // 0-4 - SHOP World 1 
         // 1-5 // 1-13 - SHOP World 2 
         // 2-3 // 2-8 - SHOP World 3 
