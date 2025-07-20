@@ -9,6 +9,7 @@ TagManager:
   - FX
   - Global Resource
   - Monster
+  - CalibrationBox
   layers:
   - Default
   - TransparentFX
