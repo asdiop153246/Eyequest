@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "917852209560",
+    "project_id": "eyequest-notify",
+    "storage_bucket": "eyequest-notify.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917852209560:android:53d9eb49539ec4ffef6bed",
+        "android_client_info": {
+            "package_name": "com.eyequila.eyequest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCksPNa6bftdqeOz-r-oLvX711lE2LLb4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

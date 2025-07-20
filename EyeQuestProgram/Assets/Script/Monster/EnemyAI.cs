@@ -54,6 +54,11 @@ public class EnemyAI : MonoBehaviour
         {
             gameManager.gameObject.GetComponent<GameManager>()._VolumeCore.GetComponent<SaturationController>()._isStarter();
         }
+
+        if (Userdata.Instance.gameObject)
+        {
+            GetComponent<AudioSource>().enabled = Userdata.Instance._isBGSoundOn; 
+        }
         
     }
 
@@ -119,6 +124,8 @@ public class EnemyAI : MonoBehaviour
         }
         if (_SoundSFX[1])
             GetComponent<AudioSource>().PlayOneShot(_SoundSFX[1]);
+
+        Userdata.Instance._Haptic();
         ShootAtPlayer(gameManager.GetRandomPlayer());
         //ShootAtPlayer(gameManager._Player.GetComponent<Player>()._PlayerHitTarget);
         yield return new WaitForSeconds(1f);

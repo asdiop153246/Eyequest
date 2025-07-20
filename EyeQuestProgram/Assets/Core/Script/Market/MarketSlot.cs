@@ -10,5 +10,6 @@ public class MarketSlot : MonoBehaviour
     public void _OpenSlot()
     {
         _Core.GetComponent<MarketManager>()._OpenPopUP(_id);
+        Userdata.Instance._isCallSound(0);
     }
 }

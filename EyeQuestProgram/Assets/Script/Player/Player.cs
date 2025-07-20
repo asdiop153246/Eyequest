@@ -100,6 +100,11 @@ public class Player : MonoBehaviour
             healthText.text = $"{(int)stats.currentHealth}/{(int)stats.maxHealth}"; // Display initial health
             stats.currentHealth = stats.maxHealth; // Initialize health
         }
+
+        if (Userdata.Instance.gameObject)
+        {
+            GetComponent<AudioSource>().enabled = Userdata.Instance._isBGSoundOn;
+        }
     }
     void Update()
     {

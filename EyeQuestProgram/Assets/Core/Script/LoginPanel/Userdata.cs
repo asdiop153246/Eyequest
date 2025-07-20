@@ -345,4 +345,24 @@ public class Userdata : MonoBehaviour
 
     public bool _isWinning;
     public bool _isBackOnly;
+
+    public bool _isBGSoundOn;
+    public bool _isVibrationOn;
+
+    public void _Haptic()
+    {
+        if (_isVibrationOn)
+        {
+            Handheld.Vibrate();
+        }
+    }
+
+    public List<AudioClip> _Clip;
+    public void _isCallSound(int _id)
+    {
+        if (_isBGSoundOn)
+        {
+            GetComponent<AudioSource>().PlayOneShot(_Clip[_id]);
+        }
+    }
 }
