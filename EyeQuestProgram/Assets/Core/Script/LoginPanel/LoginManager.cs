@@ -103,10 +103,11 @@ public class LoginManager : MonoBehaviour
             yield return request.SendWebRequest();
             Debug.Log("request responseText:" + request.downloadHandler.text);
 
-            _WaitingPanel.SetActive(false);
+            
 
             if (request.result != UnityWebRequest.Result.Success)
             {
+                _WaitingPanel.SetActive(false);
                 _LoginFailed.SetActive(true);
                 yield return new WaitForSeconds(2f);
                 _LoginFailed.SetActive(false);
@@ -115,10 +116,10 @@ public class LoginManager : MonoBehaviour
             }
             else
             {
-                _LoginOK.SetActive(true);
+                _WaitingPanel.SetActive(true);
                 Userdata.Instance._User.data.user.email = _UserEmail;
                 yield return new WaitForSeconds(2f);
-                _LoginPanel.SetActive(false);
+                _WaitingPanel.SetActive(false);
                 _EnterPasswordPanel.SetActive(true);
             }
         }

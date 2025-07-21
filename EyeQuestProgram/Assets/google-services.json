@@ -9,7 +9,26 @@
       "client_info": {
         "mobilesdk_app_id": "1:917852209560:android:53d9eb49539ec4ffef6bed",
         "android_client_info": {
-            "package_name": "com.eyequila.eyequest"
+          "package_name": "com.MetaverseXR.EyeQuest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCksPNa6bftdqeOz-r-oLvX711lE2LLb4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:917852209560:android:c6b7cb4fe1688c28ef6bed",
+        "android_client_info": {
+          "package_name": "com.eyequila.eyequest"
         }
       },
       "oauth_client": [],

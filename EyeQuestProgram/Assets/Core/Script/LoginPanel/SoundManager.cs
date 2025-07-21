@@ -67,9 +67,22 @@ public class SoundManager : MonoBehaviour
     }
 
     public IEnumerator _DelayHideSound()
-    { 
+    {
+
+        foreach (AudioSource x in _BGSound)
+        {
+            x.enabled = false;
+        }
+
+        foreach (AudioListener z in _Sound)
+        {
+            z.enabled = false;
+        }
 
         yield return new WaitForSeconds(0.1f);
+
+        _SoundToggle.isOn = Userdata.Instance._isBGSoundOn;
+        _VibrationToggle.isOn = Userdata.Instance._isVibrationOn;
 
         if (Userdata.Instance._isBGSoundOn)
         {
