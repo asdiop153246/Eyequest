@@ -3,7 +3,14 @@ apply plugin: 'com.android.library'
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(name: 'mediapipe_android', ext: 'aar')
 **DEPS**}
+
+repositories {
+    flatDir {
+        dirs "$projectDir/../../Assets/com.github.homuler.mediapipe-0.16.1(1)/package/Runtime/Plugins/Android"
+    }
+}
 
 // Android Resolver Exclusions Start
 android {
@@ -47,6 +54,33 @@ android {
         noCompress = **BUILTIN_NOCOMPRESS** + unityStreamingAssets.tokenize(', ')
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~"
     }**PACKAGING_OPTIONS**
+
+    // Include libc++_shared.so and MediaPipe libraries
+    task copyLibcppShared(type: Copy) {
+        def ndkDir = android.ndkDirectory
+        from("$ndkDir/sources/cxx-stl/llvm-libc++/libs") { include '**/libc++_shared.so' }
+        // Add MediaPipe JNI libraries from Unity's plugins directory
+        from("$projectDir/../../Assets/Plugins/Android") { 
+            include '**/libmediapipe_jni.so'
+        }
+        // Add MediaPipe C library for all architectures
+        from("$projectDir/../../Assets/com.github.homuler.mediapipe-0.16.1(1)/package/Runtime/Plugins") { 
+            include 'libmediapipe_c.so'
+            // Copy to each architecture folder
+            eachFile { file ->
+                file.path = "arm64-v8a/${file.name}"
+            }
+        }
+        into("$projectDir/src/main/jniLibs")
+        includeEmptyDirs = false
+    }
+    clean.dependsOn 'cleanCopyLibcppShared'
+
+    tasks.whenTaskAdded { task ->
+        if (task.name == "mergeDebugJniLibFolders" || task.name == "mergeReleaseJniLibFolders") {
+            task.dependsOn("copyLibcppShared")
+        }
+    }
 }
 **IL_CPP_BUILD_SETUP**
 **SOURCE_BUILD_SETUP**
