@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -61,6 +61,38 @@ public class SoundManager : MonoBehaviour
 
     }
 
+    public Toggle _THToggle;
+    public Toggle _ENGToggle;
+
+    public void _GetToggleTH()
+    {
+        Userdata.Instance._isTh = _THToggle.isOn;
+
+        if (Userdata.Instance._isTh)
+        {
+            PlayerPrefs.SetFloat("_isTH", 1);
+
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("_isTH", 0);
+
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+
+    }
+
     public void OnEnable()
     {
         StartCoroutine(_DelayHideSound());
@@ -83,6 +115,7 @@ public class SoundManager : MonoBehaviour
 
         _SoundToggle.isOn = Userdata.Instance._isBGSoundOn;
         _VibrationToggle.isOn = Userdata.Instance._isVibrationOn;
+        
 
         if (Userdata.Instance._isBGSoundOn)
         {
@@ -109,6 +142,31 @@ public class SoundManager : MonoBehaviour
                 z.enabled = false;
             }
 
+        }
+
+        if (Userdata.Instance._isTh)
+        {
+            _THToggle.isOn = true;
+            _ENGToggle.isOn = false;
+
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+        else
+        {
+            _THToggle.isOn = false;
+            _ENGToggle.isOn = true;
+
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
         }
 
 

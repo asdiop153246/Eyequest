@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -819,5 +819,37 @@ public class ApiCaller : MonoBehaviour
         {
             
         }
+    }
+
+    [System.Serializable]
+    public class AnalyticData
+    {
+        public int analytic_type_id;
+        public string type;
+        public string value; // หรือใช้ DateTime ถ้าคุณต้องการจัดการเป็นวันเวลา
+    }
+
+    public IEnumerator _AnalyticAPI(int _id)
+    {
+
+        AnalyticData _temp = new AnalyticData();
+        _temp.analytic_type_id = Userdata.Instance._Levelid;
+        _temp.type = "";
+        _temp.value = "";
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/analytics", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
     }
 }

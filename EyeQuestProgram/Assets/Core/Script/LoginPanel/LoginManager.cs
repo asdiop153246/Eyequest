@@ -23,6 +23,7 @@ public class LoginManager : MonoBehaviour
 
     public GameObject _LoginOK;
     public GameObject _LoginFailed;
+    public TMPro.TextMeshProUGUI _LoginFailed_Txt;
     public GameObject _WaitingPanel;
 
     public void OnEnable()
@@ -171,7 +172,7 @@ public class LoginManager : MonoBehaviour
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-
+            _LoginFailed_Txt.text = request.downloadHandler.text + request.responseCode.ToString();
             _LoginFailed.SetActive(true);
             yield return new WaitForSeconds(2f);
             _LoginFailed.SetActive(false);

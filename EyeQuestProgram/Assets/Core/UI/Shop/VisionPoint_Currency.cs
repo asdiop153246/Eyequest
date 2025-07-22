@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +22,14 @@ public class VisionPoint_Currency : MonoBehaviour
 
     public void _UpdateTxt()
     {
-        _VisionTxt.text = "Your Point :"+Userdata.Instance._User.data.currency.vision_point + "";
+        if (Userdata.Instance._isTh)
+        {
+            _VisionTxt.text = "แต้ม : " + Userdata.Instance._User.data.currency.vision_point + "";
+        }
+        else
+        {
+            _VisionTxt.text = "Your Point :" + Userdata.Instance._User.data.currency.vision_point + "";
+        }
+        
     }
 }

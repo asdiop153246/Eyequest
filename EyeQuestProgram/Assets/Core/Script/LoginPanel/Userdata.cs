@@ -349,6 +349,8 @@ public class Userdata : MonoBehaviour
     public bool _isBGSoundOn;
     public bool _isVibrationOn;
 
+    public bool _isTh;
+
     public void _Haptic()
     {
         if (_isVibrationOn)
