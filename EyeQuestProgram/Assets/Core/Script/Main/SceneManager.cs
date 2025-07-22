@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -117,7 +117,15 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[0].SetActive(true);
                 _LevelMap[1].SetActive(false);
                 _LevelMap[2].SetActive(false);
-                _WorldName.text = "The Forest";
+                if (Userdata.Instance._isTh)
+                {
+                    _WorldName.text = "ป่าต้องสาป";
+                }
+                else
+                {
+                    _WorldName.text = "The Forest";
+                }
+                
                 Userdata.Instance._CurrentWorld = 0;
                 GetComponent<AudioSource>().Stop();
                 GetComponent<AudioSource>().PlayOneShot(_BgSound[0]);
@@ -127,7 +135,16 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[0].SetActive(false);
                 _LevelMap[1].SetActive(false);
                 _LevelMap[2].SetActive(true);
-                _WorldName.text = "The Fallen City";
+
+                if (Userdata.Instance._isTh)
+                {
+                    _WorldName.text = "เมืองล่มสลาย";
+                }
+                else
+                {
+                    _WorldName.text = "The Fallen City";
+                }
+
                 Userdata.Instance._CurrentWorld = 2;
                 GetComponent<AudioSource>().Stop();
                 GetComponent<AudioSource>().PlayOneShot(_BgSound[1]);
@@ -136,7 +153,17 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[0].SetActive(false);
                 _LevelMap[1].SetActive(true);
                 _LevelMap[2].SetActive(false);
-                _WorldName.text = "The Lab";
+
+                if (Userdata.Instance._isTh)
+                {
+                    _WorldName.text = "ห้องทดลอง";
+                }
+                else
+                {
+                    _WorldName.text = "The Lab";
+                }
+
+                
                 Userdata.Instance._CurrentWorld = 1;
                 GetComponent<AudioSource>().Stop();
                 GetComponent<AudioSource>().PlayOneShot(_BgSound[2]);

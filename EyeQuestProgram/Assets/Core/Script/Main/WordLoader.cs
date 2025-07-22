@@ -340,8 +340,15 @@ public TMPro.TextMeshProUGUI _LevelName;
         Userdata.Instance._Levelid = Userdata.Instance._WorldData.world[_CurrentWorld].level[_id].level_id;
         _LevelSelection.SetActive(true);
 
-
-        _LevelName.text = "Level : " + (_id+1);
+        if (Userdata.Instance._isTh)
+        {
+            _LevelName.text = "ด่านที่ " + (_id + 1);
+        }
+        else
+        {
+            _LevelName.text = "Level : " + (_id + 1);
+        }
+       
 
         switch (_CurrentWorld)
         {

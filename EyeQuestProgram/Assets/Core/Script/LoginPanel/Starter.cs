@@ -8,9 +8,9 @@ public class Starter : MonoBehaviour
     public GameObject _LoginCore;
 
     public void OnEnable()
-    {
+    { 
 
-        StartCoroutine(_Loader());
+
         StartCoroutine(_DelayHideSound());
     }
 
@@ -28,7 +28,7 @@ public class Starter : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        
+        StartCoroutine(_Loader());
 
         if (PlayerPrefs.GetFloat("Sound", 1) == 1)
         {
@@ -50,40 +50,42 @@ public class Starter : MonoBehaviour
             Userdata.Instance._isVibrationOn = false;
         }
 
-        //_SoundToggle.isOn = Userdata.Instance._isBGSoundOn;
-        //_VibrationToggle.isOn = Userdata.Instance._isVibrationOn;
-
-        yield return new WaitForSeconds(0.1f);
-
-        //GetComponent<AudioSource>().enabled = Userdata.Instance._isBGSoundOn;
-
-        if (Userdata.Instance._isBGSoundOn)
+        if (PlayerPrefs.GetFloat("_isTH", 1) == 1)
         {
-            foreach (AudioSource x in _BGSound)
-            {
-                x.enabled = true;
-            }
-
-            foreach (AudioListener z in _Sound)
-            {
-                z.enabled = true;
-            }
+            Userdata.Instance._isTh = true;
+            _THToggle.isOn = Userdata.Instance._isTh;
 
         }
         else
         {
-            foreach (AudioSource x in _BGSound)
-            {
-                x.enabled = false;
-            }
-
-            foreach (AudioListener z in _Sound)
-            {
-                z.enabled = false;
-            }
-
+            
+            Userdata.Instance._isTh = false;
+            _THToggle.isOn = Userdata.Instance._isTh;
         }
 
+        if (Userdata.Instance._isTh)
+        {
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+        else
+        {
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+
+        yield return new WaitForSeconds(0.1f);
+
+        GetComponent<AudioSource>().enabled = Userdata.Instance._isBGSoundOn;
+        
     }
 
     public Toggle _SoundToggle;
@@ -125,6 +127,37 @@ public class Starter : MonoBehaviour
 
             PlayerPrefs.SetFloat("Sound", 0);
         }
+    }
+
+    public Toggle _THToggle;
+
+    public void _GetToggleTH()
+    {
+        Userdata.Instance._isTh = _THToggle.isOn;
+
+        if (Userdata.Instance._isTh)
+        {
+            PlayerPrefs.SetFloat("_isTH", 1);
+
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("_isTH", 0);
+
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+
     }
 
     public IEnumerator _Loader()
