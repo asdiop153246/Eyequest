@@ -50,6 +50,38 @@ public class Starter : MonoBehaviour
             Userdata.Instance._isVibrationOn = false;
         }
 
+        if (PlayerPrefs.GetFloat("_isTH", 1) == 1)
+        {
+            Userdata.Instance._isTh = true;
+            _THToggle.isOn = Userdata.Instance._isTh;
+
+        }
+        else
+        {
+            
+            Userdata.Instance._isTh = false;
+            _THToggle.isOn = Userdata.Instance._isTh;
+        }
+
+        if (Userdata.Instance._isTh)
+        {
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+        else
+        {
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+
         yield return new WaitForSeconds(0.1f);
 
         GetComponent<AudioSource>().enabled = Userdata.Instance._isBGSoundOn;
@@ -95,6 +127,37 @@ public class Starter : MonoBehaviour
 
             PlayerPrefs.SetFloat("Sound", 0);
         }
+    }
+
+    public Toggle _THToggle;
+
+    public void _GetToggleTH()
+    {
+        Userdata.Instance._isTh = _THToggle.isOn;
+
+        if (Userdata.Instance._isTh)
+        {
+            PlayerPrefs.SetFloat("_isTH", 1);
+
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetFloat("_isTH", 0);
+
+            SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
+
+            foreach (SwitchTH switchTH in allSwitchTHComponents)
+            {
+                switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
+            }
+        }
+
     }
 
     public IEnumerator _Loader()

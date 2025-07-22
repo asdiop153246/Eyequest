@@ -268,12 +268,28 @@ public class GameManager : MonoBehaviour
         _WarpProtal.SetActive(true);
         yield return new WaitForSeconds(1f);
         PrepareText.transform.parent.gameObject.SetActive(true);
-        PrepareText.text = $"World {worldIndex} - Stage {stageIndex}";
+
+        if (Userdata.Instance._isTh)
+        {
+            PrepareText.text = $"โลก {worldIndex} - ด่าน {stageIndex}";
+        }
+        else
+        {
+            PrepareText.text = $"World {worldIndex} - Stage {stageIndex}";
+        }
+        
         yield return new WaitForSeconds(1f);
         PrepareText.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
         PrepareText.gameObject.SetActive(true);
-        PrepareText.text = "Monsters are gathering...";
+        if (Userdata.Instance._isTh)
+        {
+            PrepareText.text = "ระวังมอนส์เตอร์มาแล้ว!";
+        }
+        else
+        {
+            PrepareText.text = "Monsters are gathering...";
+        }
         yield return new WaitForSeconds(1f);
         PrepareText.gameObject.SetActive(false);
         PrepareText.transform.parent.gameObject.SetActive(false);
@@ -286,17 +302,38 @@ public class GameManager : MonoBehaviour
         _WarpProtal.SetActive(false);
         PrepareText.transform.parent.gameObject.SetActive(true);
         PrepareText.gameObject.SetActive(true);
-        PrepareText.text = "Prepare for Battle!";
+        if (Userdata.Instance._isTh)
+        {
+            PrepareText.text = "เตรียมพร้อมต่อสู้!";
+        }
+        else
+        {
+            PrepareText.text = "Prepare for Battle!";
+        }
         yield return new WaitForSeconds(1f);
         PrepareText.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
         PrepareText.gameObject.SetActive(true);
-        PrepareText.text = "Get Ready!";
+        if (Userdata.Instance._isTh)
+        {
+            PrepareText.text = "เตรียมพร้อม!";
+        }
+        else
+        {
+            PrepareText.text = "Get Ready!";
+        }
         yield return new WaitForSeconds(1f);
         PrepareText.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
         PrepareText.gameObject.SetActive(true);
-        PrepareText.text = "Fight!";
+        if (Userdata.Instance._isTh)
+        {
+            PrepareText.text = "ลุย!";
+        }
+        else
+        {
+            PrepareText.text = "Fight!";
+        }
         yield return new WaitForSeconds(1f);
         PrepareText.gameObject.SetActive(false);
         PrepareText.transform.parent.gameObject.SetActive(false);
@@ -438,7 +475,15 @@ public class GameManager : MonoBehaviour
         {
             if (currentTurnIndex == 0)
             {
-                turnText.text = "Player's Turn";
+                if (Userdata.Instance._isTh)
+                {
+                    turnText.text = "รอบของผู้เล่น";
+                }
+                else
+                {
+                    turnText.text = "Player's Turn";
+                }
+                
                 SelectTarget(selectedTarget);
                 players[0].GetComponent<Player>().takeTurn();
                 StartCoroutine(AnimateTurnText());
@@ -471,7 +516,14 @@ public class GameManager : MonoBehaviour
                     return;
                 }
 
-                turnText.text = $"{currentMonster.name}'s Turn";
+                if (Userdata.Instance._isTh)
+                {
+                    turnText.text = "รอบของ :" + currentMonster.name;
+                }
+                else
+                {
+                    turnText.text = $"{currentMonster.name}'s Turn";
+                }
                 StartCoroutine(AnimateTurnText());
 
                 EnemyAI ai = currentMonster.GetComponent<EnemyAI>();
