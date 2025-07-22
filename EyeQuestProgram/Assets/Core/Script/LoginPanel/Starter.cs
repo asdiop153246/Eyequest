@@ -8,9 +8,9 @@ public class Starter : MonoBehaviour
     public GameObject _LoginCore;
 
     public void OnEnable()
-    { 
+    {
 
-
+        StartCoroutine(_Loader());
         StartCoroutine(_DelayHideSound());
     }
 
@@ -28,7 +28,7 @@ public class Starter : MonoBehaviour
 
         yield return new WaitForSeconds(0.1f);
 
-        StartCoroutine(_Loader());
+        
 
         if (PlayerPrefs.GetFloat("Sound", 1) == 1)
         {
@@ -50,10 +50,40 @@ public class Starter : MonoBehaviour
             Userdata.Instance._isVibrationOn = false;
         }
 
+        //_SoundToggle.isOn = Userdata.Instance._isBGSoundOn;
+        //_VibrationToggle.isOn = Userdata.Instance._isVibrationOn;
+
         yield return new WaitForSeconds(0.1f);
 
-        GetComponent<AudioSource>().enabled = Userdata.Instance._isBGSoundOn;
-        
+        //GetComponent<AudioSource>().enabled = Userdata.Instance._isBGSoundOn;
+
+        if (Userdata.Instance._isBGSoundOn)
+        {
+            foreach (AudioSource x in _BGSound)
+            {
+                x.enabled = true;
+            }
+
+            foreach (AudioListener z in _Sound)
+            {
+                z.enabled = true;
+            }
+
+        }
+        else
+        {
+            foreach (AudioSource x in _BGSound)
+            {
+                x.enabled = false;
+            }
+
+            foreach (AudioListener z in _Sound)
+            {
+                z.enabled = false;
+            }
+
+        }
+
     }
 
     public Toggle _SoundToggle;

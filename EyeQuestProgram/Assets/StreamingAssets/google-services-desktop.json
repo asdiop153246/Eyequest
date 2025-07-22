@@ -7,20 +7,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:917852209560:android:53d9eb49539ec4ffef6bed",
+        "mobilesdk_app_id": "1:917852209560:ios:cd6401c0c7a9d749ef6bed",
         "android_client_info": {
-            "package_name": "com.eyequila.eyequest"
+          "package_name": "com.eyequila.eyequest"
         }
       },
-      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCksPNa6bftdqeOz-r-oLvX711lE2LLb4s"
+          "current_key": "AIzaSyD4ITxMYjPdeWWW-mPJhLlnC6C1RJgcsuc"
         }
       ],
       "services": {
+        "analytics_service": {
+          "status": 0
+        },
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "status": 1
         }
       }
     }

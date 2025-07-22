@@ -244,9 +244,9 @@ RectTransform:
   - {fileID: 552404213}
   m_Father: {fileID: 762562523}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 274.2, y: 970.2}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -218, y: -57}
   m_SizeDelta: {x: 2932, y: 588.4043}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &26248214
@@ -3721,7 +3721,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 314, y: 1136}
+  m_AnchoredPosition: {x: 371, y: 1136}
   m_SizeDelta: {x: 2877, y: 418.63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &374342463
@@ -14164,6 +14164,7 @@ MonoBehaviour:
   _Temp_UserEmail: 
   _LoginOK: {fileID: 67560528}
   _LoginFailed: {fileID: 1086725920}
+  _LoginFailed_Txt: {fileID: 1999036407}
   _WaitingPanel: {fileID: 462918371}
   _EnterPasswordPanel: {fileID: 2025892155}
   _HeaderEmail: {fileID: 846461231}
@@ -17328,7 +17329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6686e1aa7fa8a4d4682d626bfd142714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isDemo: 1
+  _isDemo: 0
   _User:
     status: 
     message: 
@@ -17874,8 +17875,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.012512, y: -376}
-  m_SizeDelta: {x: 1595.2, y: 221.679}
+  m_AnchoredPosition: {x: -0.012512, y: -849.4403}
+  m_SizeDelta: {x: 1595.2, y: 661.59}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1999036407
 MonoBehaviour:
@@ -17932,7 +17933,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 8
   m_wordSpacing: 0
