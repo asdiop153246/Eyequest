@@ -62,6 +62,7 @@ public class SoundManager : MonoBehaviour
     }
 
     public Toggle _THToggle;
+    public Toggle _ENGToggle;
 
     public void _GetToggleTH()
     {
@@ -114,7 +115,7 @@ public class SoundManager : MonoBehaviour
 
         _SoundToggle.isOn = Userdata.Instance._isBGSoundOn;
         _VibrationToggle.isOn = Userdata.Instance._isVibrationOn;
-        _THToggle.isOn = Userdata.Instance._isTh;
+        
 
         if (Userdata.Instance._isBGSoundOn)
         {
@@ -145,6 +146,9 @@ public class SoundManager : MonoBehaviour
 
         if (Userdata.Instance._isTh)
         {
+            _THToggle.isOn = true;
+            _ENGToggle.isOn = false;
+
             SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
 
             foreach (SwitchTH switchTH in allSwitchTHComponents)
@@ -154,6 +158,9 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
+            _THToggle.isOn = false;
+            _ENGToggle.isOn = true;
+
             SwitchTH[] allSwitchTHComponents = FindObjectsOfType<SwitchTH>();
 
             foreach (SwitchTH switchTH in allSwitchTHComponents)

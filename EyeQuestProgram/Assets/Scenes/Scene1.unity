@@ -37065,6 +37065,7 @@ MonoBehaviour:
   - {fileID: 963194226}
   - {fileID: 346746481}
   _THToggle: {fileID: 609072111}
+  _ENGToggle: {fileID: 724168564}
 --- !u!1 &201403190
 GameObject:
   m_ObjectHideFlags: 0
@@ -119725,7 +119726,19 @@ MonoBehaviour:
   m_Group: {fileID: 1184845912}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 199070714}
+        m_TargetAssemblyTypeName: SoundManager, Assembly-CSharp
+        m_MethodName: _GetToggleTH
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &615411444
 GameObject:
@@ -148352,7 +148365,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &823830989
 RectTransform:
   m_ObjectHideFlags: 0
@@ -287643,7 +287656,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2139674631
 RectTransform:
   m_ObjectHideFlags: 0
