@@ -492166,6 +492166,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3005656999025172402, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 284.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3005656999025172402, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 132.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 3005656999025172402, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3005656999025172402, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -422
+      objectReference: {fileID: 0}
     - target: {fileID: 3105873637119073788, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -492214,6 +492230,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 4635444128542835223, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4765328400998786128, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 167.99995
@@ -492384,8 +492404,33 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2507124197379836681, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
       insertIndex: 2
       addedObject: {fileID: 351290257}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5726996990955225279, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4697142171490144889}
   m_SourcePrefab: {fileID: 100100000, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+--- !u!1 &4697142171490144888 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5726996990955225279, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+  m_PrefabInstance: {fileID: 4697142171490144887}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4697142171490144889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697142171490144888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fe9215353519ae4f978b00e69085980, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isChangeImage: 0
+  _ENG: Your face is not at Center,  Align your face to match the Frame
+  _TH: "\u0E43\u0E1A\u0E2B\u0E19\u0E49\u0E32\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13\u0E44\u0E21\u0E48\u0E2D\u0E22\u0E39\u0E48\u0E01\u0E36\u0E48\u0E07\u0E01\u0E25\u0E32\u0E07
+    \u0E01\u0E23\u0E38\u0E13\u0E32\u0E08\u0E31\u0E14\u0E43\u0E1A\u0E2B\u0E19\u0E49\u0E32\u0E43\u0E2B\u0E49\u0E15\u0E23\u0E07\u0E01\u0E31\u0E1A\u0E01\u0E23\u0E2D\u0E1A"
+  _Img: []
 --- !u!199 &4782060145024068067
 ParticleSystemRenderer:
   serializedVersion: 6

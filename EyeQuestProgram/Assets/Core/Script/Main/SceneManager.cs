@@ -9,6 +9,15 @@ public class SceneManager : MonoBehaviour
 
     public void Start()
     {
+        if (Userdata.Instance._isTh)
+        {
+            _WorldName.text = "ป่าพิศวง";
+        }
+        else
+        {
+            _WorldName.text = "The Forest";
+        }
+
         _GamePlay.SetActive(true);
     }
     public void _Play()
@@ -119,7 +128,7 @@ public class SceneManager : MonoBehaviour
                 _LevelMap[2].SetActive(false);
                 if (Userdata.Instance._isTh)
                 {
-                    _WorldName.text = "ป่าต้องสาป";
+                    _WorldName.text = "ป่าพิศวง";
                 }
                 else
                 {
