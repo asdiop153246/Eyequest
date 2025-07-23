@@ -118,7 +118,16 @@ public class GameManager : MonoBehaviour
         if (_userdata == null)
         {
             Debug.LogError("Userdata not found in the scene.");
-            _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+
+            if (Userdata.Instance._isTh)
+            {
+                _WorldLevel.text = "โลกที่ " + (worldIndex + 1) + " - " + (stageIndex + 1);
+            }
+            else
+            {
+                _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+            }
+           
 
             _PotionIcon[0].SetActive(false);
             _PotionIcon[1].SetActive(false);
@@ -136,7 +145,14 @@ public class GameManager : MonoBehaviour
             worldIndex = _userdata._CurrentWorld;
             stageIndex = _userdata._CurrentStage;
 
-            _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+            if (Userdata.Instance._isTh)
+            {
+                _WorldLevel.text = "โลกที่ " + (worldIndex + 1) + " - " + (stageIndex + 1);
+            }
+            else
+            {
+                _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+            }
 
             _PotionIcon[0].SetActive(false);
             _PotionIcon[1].SetActive(false);
@@ -304,7 +320,7 @@ public class GameManager : MonoBehaviour
         PrepareText.gameObject.SetActive(true);
         if (Userdata.Instance._isTh)
         {
-            PrepareText.text = "เตรียมพร้อมต่อสู้!";
+            PrepareText.text = "เตรียมตัวต่อสู้!";
         }
         else
         {
@@ -316,7 +332,7 @@ public class GameManager : MonoBehaviour
         PrepareText.gameObject.SetActive(true);
         if (Userdata.Instance._isTh)
         {
-            PrepareText.text = "เตรียมพร้อม!";
+            PrepareText.text = "ระวัง!";
         }
         else
         {
@@ -518,7 +534,7 @@ public class GameManager : MonoBehaviour
 
                 if (Userdata.Instance._isTh)
                 {
-                    turnText.text = "รอบของ :" + currentMonster.name;
+                    turnText.text = "รอบของ " + currentMonster.name;
                 }
                 else
                 {
