@@ -17925,11 +17925,11 @@ MonoBehaviour:
   _HeaderEmail: {fileID: 846461231}
   _Temp_Password: 
   _Password_Field: {fileID: 448466220}
-  _Json: {fileID: 0}
-  _URLTxt: {fileID: 0}
-  _RequestTxt: {fileID: 0}
-  _downloadHandlerTxt: {fileID: 0}
-  _RequestCodeTxt: {fileID: 0}
+  _Json: {fileID: 1075876152}
+  _URLTxt: {fileID: 1075876152}
+  _RequestTxt: {fileID: 1075876152}
+  _downloadHandlerTxt: {fileID: 1075876152}
+  _RequestCodeTxt: {fileID: 1075876152}
   _RegisterPanel: {fileID: 1377736880}
   _Register_Username: {fileID: 122965702}
   _Register_Email_Input: {fileID: 175892792}
@@ -19047,7 +19047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1629149068
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20451,7 +20451,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1788894324
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23845,7 +23845,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2065530795
 RectTransform:
   m_ObjectHideFlags: 0
