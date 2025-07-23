@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
 using System.Text.RegularExpressions;
+//using UnityEditor.PackageManager.Requests;
+
 public class LoginManager : MonoBehaviour
 {
     public static LoginManager Instance;
@@ -24,6 +26,7 @@ public class LoginManager : MonoBehaviour
     public GameObject _LoginOK;
     public GameObject _LoginFailed;
     public TMPro.TextMeshProUGUI _LoginFailed_Txt;
+    public TMPro.TextMeshProUGUI _LoginFailed_Txt_Log;
     public GameObject _WaitingPanel;
 
     public void OnEnable()
@@ -145,6 +148,11 @@ public class LoginManager : MonoBehaviour
         StartCoroutine(_CheckPassword(_Temp_UserEmail, _Temp_Password));
     }
 
+    public TMPro.TextMeshProUGUI _Json;
+    public TMPro.TextMeshProUGUI _URLTxt;
+    public TMPro.TextMeshProUGUI _RequestTxt;
+    public TMPro.TextMeshProUGUI _downloadHandlerTxt;
+    public TMPro.TextMeshProUGUI _RequestCodeTxt;
     public IEnumerator _CheckPassword(string _UserEmail, string _UserPassword)
     {
         _WaitingPanel.SetActive(true);
@@ -155,8 +163,10 @@ public class LoginManager : MonoBehaviour
 
         string json = JsonUtility.ToJson(data);
         Debug.Log(json);
+        _Json.text = json;
         var request = new UnityWebRequest(_URL + "/api/login", "POST");
         Debug.Log(_URL + "/api/login");
+        _URLTxt.text = _URL + "/api/login";
         //request.SetRequestHeader("Authorization", Userdata.instance._Userdata.data.account.access_token);
 
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
@@ -164,9 +174,11 @@ public class LoginManager : MonoBehaviour
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Accept", "application/json");
         request.SetRequestHeader("Content-Type", "application/json");
-
+        _RequestTxt.text = "SENT API";
         yield return request.SendWebRequest();
         Debug.Log("request responseText:" + request.downloadHandler.text);
+        _downloadHandlerTxt.text = "request responseText:" + request.downloadHandler.text;
+        _RequestCodeTxt.text = request.responseCode.ToString()+" / "+ request.result;
 
         _WaitingPanel.SetActive(false);
 
