@@ -9,8 +9,21 @@ public class MediaPipeBridge : MonoBehaviour
 
     void Start()
     {
-        // เรียกฟังก์ชัน native เมื่อเริ่มเกม
         Debug.Log("Calling native function...");
-        YourNativeFunction();
+        try
+        {
+            YourNativeFunction();
+            Debug.Log("Native function called successfully.");
+        }
+        catch (System.DllNotFoundException e)
+        {
+            Debug.LogError("DllNotFoundException: " + e.Message);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Other Exception: " + ex.Message);
+        }
     }
+
+
 }

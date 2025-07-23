@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
             worldIndex = _userdata._CurrentWorld;
             stageIndex = _userdata._CurrentStage;
             _ChangeMapAndSkyBox(_userdata._CurrentWorld);
+
             _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
 
         }
@@ -118,7 +119,41 @@ public class GameManager : MonoBehaviour
         if (_userdata == null)
         {
             Debug.LogError("Userdata not found in the scene.");
-            _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+
+            if (Userdata.Instance._isTh)
+            {
+                
+
+                switch (worldIndex)
+                {
+                    case 0:
+                        _WorldLevel.text = "ป่าพิศวง - " + (stageIndex + 1);
+                        break;
+                    case 1:
+                        _WorldLevel.text = "เมืองล่มสลาย - " + (stageIndex + 1);
+                        break;
+                    case 2:
+                        _WorldLevel.text = "ห้องทดลอง - " + (stageIndex + 1);
+                        break;
+                }
+            }
+            else
+            {
+                switch (worldIndex)
+                {
+                    case 0:
+                        _WorldLevel.text = "The Forest - " + (stageIndex + 1);
+                        break;
+                    case 1:
+                        _WorldLevel.text = "The Fallen City - " + (stageIndex + 1);
+                        break;
+                    case 2:
+                        _WorldLevel.text = "The Lab - " + (stageIndex + 1);
+                        break;
+                }
+                
+            }
+           
 
             _PotionIcon[0].SetActive(false);
             _PotionIcon[1].SetActive(false);
@@ -136,7 +171,39 @@ public class GameManager : MonoBehaviour
             worldIndex = _userdata._CurrentWorld;
             stageIndex = _userdata._CurrentStage;
 
-            _WorldLevel.text = "World - " + (worldIndex + 1) + " - " + (stageIndex + 1);
+            if (Userdata.Instance._isTh)
+            {
+
+
+                switch (worldIndex)
+                {
+                    case 0:
+                        _WorldLevel.text = "ป่าพิศวง - " + (stageIndex + 1);
+                        break;
+                    case 1:
+                        _WorldLevel.text = "เมืองล่มสลาย - " + (stageIndex + 1);
+                        break;
+                    case 2:
+                        _WorldLevel.text = "ห้องทดลอง - " + (stageIndex + 1);
+                        break;
+                }
+            }
+            else
+            {
+                switch (worldIndex)
+                {
+                    case 0:
+                        _WorldLevel.text = "The Forest - " + (stageIndex + 1);
+                        break;
+                    case 1:
+                        _WorldLevel.text = "The Fallen City - " + (stageIndex + 1);
+                        break;
+                    case 2:
+                        _WorldLevel.text = "The Lab - " + (stageIndex + 1);
+                        break;
+                }
+
+            }
 
             _PotionIcon[0].SetActive(false);
             _PotionIcon[1].SetActive(false);
@@ -269,22 +336,56 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         PrepareText.transform.parent.gameObject.SetActive(true);
 
-        if (Userdata.Instance._isTh)
+        /*if (Userdata.Instance._isTh)
         {
             PrepareText.text = $"โลก {worldIndex} - ด่าน {stageIndex}";
         }
         else
         {
             PrepareText.text = $"World {worldIndex} - Stage {stageIndex}";
+        }*/
+
+        if (Userdata.Instance._isTh)
+        {
+
+
+            switch (_userdata._CurrentWorld)
+            {
+                case 0:
+                    PrepareText.text = "ป่าพิศวง - " + (stageIndex);
+                    break;
+                case 1:
+                    PrepareText.text = "เมืองล่มสลาย - " + (stageIndex);
+                    break;
+                case 2:
+                    PrepareText.text = "ห้องทดลอง - " + (stageIndex);
+                    break;
+            }
         }
-        
+        else
+        {
+            switch (_userdata._CurrentWorld)
+            {
+                case 0:
+                    PrepareText.text = "The Forest - " + (stageIndex);
+                    break;
+                case 1:
+                    PrepareText.text = "The Fallen City - " + (stageIndex);
+                    break;
+                case 2:
+                    PrepareText.text = "The Lab - " + (stageIndex);
+                    break;
+            }
+
+        }
+
         yield return new WaitForSeconds(1f);
         PrepareText.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
         PrepareText.gameObject.SetActive(true);
         if (Userdata.Instance._isTh)
         {
-            PrepareText.text = "ระวังมอนส์เตอร์มาแล้ว!";
+            PrepareText.text = "เหล่ามอนสเตอร์กำลังมา...";
         }
         else
         {
@@ -304,7 +405,7 @@ public class GameManager : MonoBehaviour
         PrepareText.gameObject.SetActive(true);
         if (Userdata.Instance._isTh)
         {
-            PrepareText.text = "เตรียมพร้อมต่อสู้!";
+            PrepareText.text = "เตรียมพร้อมลุยกันเถอะ!";
         }
         else
         {
@@ -316,7 +417,7 @@ public class GameManager : MonoBehaviour
         PrepareText.gameObject.SetActive(true);
         if (Userdata.Instance._isTh)
         {
-            PrepareText.text = "เตรียมพร้อม!";
+            PrepareText.text = "พร้อมกันหรือยังน้า?";
         }
         else
         {
@@ -328,7 +429,7 @@ public class GameManager : MonoBehaviour
         PrepareText.gameObject.SetActive(true);
         if (Userdata.Instance._isTh)
         {
-            PrepareText.text = "ลุย!";
+            PrepareText.text = "ลุยเลย! สู้ๆ";
         }
         else
         {
@@ -518,7 +619,7 @@ public class GameManager : MonoBehaviour
 
                 if (Userdata.Instance._isTh)
                 {
-                    turnText.text = "รอบของ :" + currentMonster.name;
+                    turnText.text = "รอบของ " + currentMonster.name;
                 }
                 else
                 {
