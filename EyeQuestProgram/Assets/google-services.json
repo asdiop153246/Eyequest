@@ -7,31 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:917852209560:android:53d9eb49539ec4ffef6bed",
-        "android_client_info": {
-          "package_name": "com.MetaverseXR.EyeQuest"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCksPNa6bftdqeOz-r-oLvX711lE2LLb4s"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:917852209560:android:c6b7cb4fe1688c28ef6bed",
         "android_client_info": {
           "package_name": "com.eyequila.eyequest"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "917852209560-au2u6vvsuti1vr1l1f15rv29dbi8i9g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCksPNa6bftdqeOz-r-oLvX711lE2LLb4s"
@@ -39,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "917852209560-au2u6vvsuti1vr1l1f15rv29dbi8i9g3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "917852209560-0nla70mvu5359bug3mfiggvniq9viqfv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.eyequila.eyequest"
+              }
+            }
+          ]
         }
       }
     }

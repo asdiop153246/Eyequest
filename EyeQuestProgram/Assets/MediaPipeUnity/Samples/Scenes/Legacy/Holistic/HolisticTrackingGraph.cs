@@ -178,7 +178,7 @@ namespace Mediapipe.Unity.Sample.Holistic
       AddTextureFrameToInputStream(_InputStreamName, textureFrame, glContext);
     }
 
-    public async Task<HolisticTrackingResult> WaitNextAsync()
+    public async System.Threading.Tasks.Task<HolisticTrackingResult> WaitNextAsync()
     {
       var results = await WhenAll(
         _poseDetectionStream.WaitNextAsync(),

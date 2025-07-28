@@ -33,7 +33,7 @@ public class QRDecodeTest : MonoBehaviour
         Debug.Log(dataText);
 
 		if (isOpenBrowserIfUrl) {
-			if (Utility.CheckIsUrlFormat(dataText))
+			if (Utility_QR.CheckIsUrlFormat(dataText))
 			{
 				if (!dataText.Contains("http://") && !dataText.Contains("https://"))
 				{

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Mediapipe.Unity.Sample.MediaPipeVideo
 {
   public class MediaPipeVideoGraph : GraphRunner
@@ -66,7 +67,7 @@ namespace Mediapipe.Unity.Sample.MediaPipeVideo
       AddTextureFrameToInputStream(_InputStreamName, textureFrame, glContext);
     }
 
-    public async Task<ImageFrame> WaitNextAsync()
+    public async System.Threading.Tasks.Task<ImageFrame> WaitNextAsync()
     {
       var result = await _outputVideoStream.WaitNextAsync();
       AssertResult(result);
