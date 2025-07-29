@@ -1,0 +1,497 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4718869709496313242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3782229191559979574}
+  - component: {fileID: 4109455748424746677}
+  - component: {fileID: 2648163414955337252}
+  - component: {fileID: 7159461742635276469}
+  - component: {fileID: 7311381648823651411}
+  - component: {fileID: 8408596623281667015}
+  - component: {fileID: 6529652208815435778}
+  m_Layer: 0
+  m_Name: Core
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3782229191559979574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4718869709496313242}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 356.65915, y: 1524.1793, z: -6.0691032}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4109455748424746677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4718869709496313242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6686e1aa7fa8a4d4682d626bfd142714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isDemo: 1
+  _User:
+    status: 
+    message: 
+    data:
+      user:
+        name: 
+        email: 
+        type: 
+        birthdate: 
+        created_at: 
+        updated_at: 
+      profile:
+        id: 0
+        user_id: 0
+        enterprise_id: 
+        gender: 
+        eye_problem: 
+        birthdate: 
+        created_at: 
+        updated_at: 
+      currency:
+        gold: 0
+        gem: 0
+        vision_point: 0
+      booster:
+        booster1: 0
+        booster2: 0
+        booster3: 0
+        booster4: 0
+      current_ware:
+        current_hat: 0
+        current_body: 0
+        current_weapon: 0
+      access_token: 
+  _WallExp_Token: 6|uwhA6lR4vhNWNr4JSiE9s3l7Bnjy6cPXdh6g24Pl8efd7c00
+  _InventroyStore: 
+  _RewardData:
+    status: 
+    code: 0
+    data: []
+  _RewardCategoryData:
+    status: 
+    code: 0
+    data: []
+  _RewardGetBrand:
+    status: 
+    code: 0
+    data: []
+  _RewardResponse_OK:
+    status: 
+    data:
+      reward_detail:
+        wellplace_redeem_transaction_id: 0
+        unique_key: 
+        product_code: 
+        product_qrcode: 
+        product_barcode: 
+        wellplace_show_code: 
+        wellplace_product_id: 0
+        name: 
+        wellplace_brand_id: 0
+        wellplace_category_id: 0
+        product_image: 
+        description: 
+        condition: 
+        promotion: 
+        point: 0
+        price: 0
+        cost: 0
+        code_prefix: 
+        code_length: 0
+        code_qty: 0
+        limit_time: 0
+        time_left: 0
+        start_date: 
+        end_date: 
+        app_link: 
+        created_at: 
+        updated_at: 
+        wellplace_brand_image: 
+      used_point: 0
+      current_vision_point: 0
+  _RedeemResponse:
+    status: 
+    code: 0
+    data: []
+  _WorldData:
+    world: []
+  _CurrentWorld: 0
+  _CurrentStage: 0
+  _Levelid: 0
+  _isUsePotion_A: 0
+  _isUsePotion_B: 0
+  _isUsePotion_C: 0
+  _isUsePotion_D: 0
+  _isWinning: 0
+  _isBackOnly: 0
+  _isBGSoundOn: 1
+  _isVibrationOn: 1
+  _isTh: 1
+  _Clip:
+  - {fileID: 8300000, guid: 13566ddacb21575479912070878dc328, type: 3}
+  - {fileID: 8300000, guid: 76fdee6df4926b84091ce68398c308a9, type: 3}
+--- !u!114 &2648163414955337252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4718869709496313242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a5db9a469417943bb41b3cdd279238, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Url: https://b8a1f0b9e414.ngrok-free.app
+  DiscardItem:
+    value: 
+--- !u!114 &7159461742635276469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4718869709496313242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b416f6ae65778ff4bbab7bf1d87548f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _CurrentQuestById:
+  - _id: 0
+    _isClaim: 1
+    _isDone: 1
+  - _id: 0
+    _isClaim: 0
+    _isDone: 0
+  - _id: 0
+    _isClaim: 0
+    _isDone: 1
+  - _id: 0
+    _isClaim: 0
+    _isDone: 0
+  - _id: 0
+    _isClaim: 0
+    _isDone: 1
+  _QuestList:
+  - _id: 0
+    _QuestName_ENG: Take a Break
+    _QuestCondition_ENG: Use 'relaxant' or 'rest' once
+    _QuestDescription_ENG: Just rest your eyes and enjoy the reward!
+    _QuestName_TH: "\u0E1E\u0E31\u0E01\u0E2A\u0E32\u0E22\u0E15\u0E32\u0E2A\u0E1A\u0E32\u0E22
+      \u0E46"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'relaxant' \u0E2B\u0E23\u0E37\u0E2D
+      'rest' \u0E2D\u0E22\u0E48\u0E32\u0E07\u0E19\u0E49\u0E2D\u0E22 1 \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E41\u0E04\u0E48\u0E1E\u0E31\u0E01\u0E2A\u0E32\u0E22\u0E15\u0E32
+      \u0E01\u0E47\u0E44\u0E14\u0E49\u0E23\u0E31\u0E1A\u0E23\u0E32\u0E07\u0E27\u0E31\u0E25\u0E41\u0E25\u0E49\u0E27"
+    _Type: 0
+    _Currency: 100
+  - _id: 1
+    _QuestName_ENG: Blink and Shoot
+    _QuestCondition_ENG: Use 'blink shot' once
+    _QuestDescription_ENG: Shoot fast and accurately with a blink!
+    _QuestName_TH: "\u0E01\u0E23\u0E30\u0E1E\u0E23\u0E34\u0E1A\u0E41\u0E25\u0E49\u0E27\u0E22\u0E34\u0E07"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'blink shot' 1 \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E22\u0E34\u0E07\u0E40\u0E23\u0E47\u0E27\u0E14\u0E49\u0E27\u0E22\u0E01\u0E32\u0E23\u0E01\u0E23\u0E30\u0E1E\u0E23\u0E34\u0E1A\u0E15\u0E32!"
+    _Type: 0
+    _Currency: 100
+  - _id: 2
+    _QuestName_ENG: Spin and Slide
+    _QuestCondition_ENG: Use 'cyclone' or 'vertical slide' once
+    _QuestDescription_ENG: Spin your gaze gently to activate the skill.
+    _QuestName_TH: "\u0E2B\u0E21\u0E38\u0E19\u0E40\u0E1A\u0E32 \u0E46 \u0E41\u0E25\u0E49\u0E27\u0E44\u0E1B\u0E15\u0E48\u0E2D"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'cyclone' \u0E2B\u0E23\u0E37\u0E2D
+      'vertical slide' 1 \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E43\u0E0A\u0E49\u0E2A\u0E32\u0E22\u0E15\u0E32\u0E1B\u0E31\u0E14\u0E2B\u0E21\u0E38\u0E19\u0E40\u0E1E\u0E37\u0E48\u0E2D\u0E40\u0E23\u0E35\u0E22\u0E01\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32"
+    _Type: 1
+    _Currency: 50
+  - _id: 3
+    _QuestName_ENG: Focus Time
+    _QuestCondition_ENG: Use 'focus beam' once
+    _QuestDescription_ENG: Lock your gaze on the target and fire!
+    _QuestName_TH: "\u0E42\u0E1F\u0E01\u0E31\u0E2A\u0E40\u0E1B\u0E49\u0E32\u0E40\u0E14\u0E35\u0E22\u0E27"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'focus beam' 1 \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E42\u0E1F\u0E01\u0E31\u0E2A\u0E2A\u0E32\u0E22\u0E15\u0E32\u0E44\u0E1B\u0E22\u0E31\u0E07\u0E40\u0E1B\u0E49\u0E32\u0E41\u0E25\u0E49\u0E27\u0E1B\u0E25\u0E48\u0E2D\u0E22\u0E1E\u0E25\u0E31\u0E07"
+    _Type: 0
+    _Currency: 100
+  - _id: 4
+    _QuestName_ENG: Say Hi to Bunnyshoot
+    _QuestCondition_ENG: Fight 1 'bunnyshoot' monster
+    _QuestDescription_ENG: "Let\u2019s meet and defeat Bunnyshoot today!"
+    _QuestName_TH: "\u0E40\u0E08\u0E2D\u0E1A\u0E31\u0E19\u0E19\u0E35\u0E48\u0E0A\u0E39\u0E49\u0E15"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A\u0E21\u0E2D\u0E19\u0E2A\u0E40\u0E15\u0E2D\u0E23\u0E4C
+      'bunnyshoot' 1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E27\u0E31\u0E19\u0E19\u0E35\u0E49\u0E21\u0E32\u0E17\u0E31\u0E01\u0E17\u0E32\u0E22\u0E01\u0E23\u0E30\u0E15\u0E48\u0E32\u0E22\u0E19\u0E31\u0E01\u0E22\u0E34\u0E07\u0E01\u0E31\u0E19"
+    _Type: 0
+    _Currency: 100
+  - _id: 5
+    _QuestName_ENG: Quick Stretch
+    _QuestCondition_ENG: Use 'stretching' once
+    _QuestDescription_ENG: Loosen up with a light eye-stretch move.
+    _QuestName_TH: "\u0E22\u0E37\u0E14\u0E01\u0E25\u0E49\u0E32\u0E21\u0E40\u0E19\u0E37\u0E49\u0E2D\u0E15\u0E32"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'stretching' 1 \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E1C\u0E48\u0E2D\u0E19\u0E04\u0E25\u0E32\u0E22\u0E2A\u0E32\u0E22\u0E15\u0E32\u0E14\u0E49\u0E27\u0E22\u0E17\u0E48\u0E32\u0E40\u0E1A\u0E32
+      \u0E46"
+    _Type: 0
+    _Currency: 100
+  - _id: 6
+    _QuestName_ENG: Air Slice
+    _QuestCondition_ENG: Use 'horizon slice' once
+    _QuestDescription_ENG: Cut through the air with your focused gaze.
+    _QuestName_TH: "\u0E1F\u0E31\u0E19\u0E2D\u0E32\u0E01\u0E32\u0E28"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'horizon slice' 1 \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E1F\u0E31\u0E19\u0E25\u0E21\u0E14\u0E49\u0E27\u0E22\u0E1E\u0E25\u0E31\u0E07\u0E2A\u0E32\u0E22\u0E15\u0E32"
+    _Type: 1
+    _Currency: 50
+  - _id: 7
+    _QuestName_ENG: X Mark
+    _QuestCondition_ENG: Use 'x strike' once
+    _QuestDescription_ENG: Form an X with your eyes and strike!
+    _QuestName_TH: "\u0E1F\u0E32\u0E14\u0E40\u0E1B\u0E47\u0E19 X"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'x strike' 1 \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E23\u0E27\u0E21\u0E2A\u0E32\u0E22\u0E15\u0E32\u0E40\u0E1B\u0E47\u0E19\u0E23\u0E39\u0E1B
+      X \u0E41\u0E25\u0E49\u0E27\u0E42\u0E08\u0E21\u0E15\u0E35!"
+    _Type: 0
+    _Currency: 100
+  - _id: 8
+    _QuestName_ENG: Infinity Power
+    _QuestCondition_ENG: Use 'infinity slash' once
+    _QuestDescription_ENG: Perform a stylish infinite slash.
+    _QuestName_TH: "\u0E2D\u0E34\u0E19\u0E1F\u0E34\u0E19\u0E34\u0E15\u0E35\u0E49\u0E2A\u0E41\u0E25\u0E0A"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'infinity slash' 1
+      \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E42\u0E08\u0E21\u0E15\u0E35\u0E44\u0E21\u0E48\u0E2A\u0E34\u0E49\u0E19\u0E2A\u0E38\u0E14\u0E14\u0E49\u0E27\u0E22\u0E17\u0E48\u0E32\u0E1E\u0E34\u0E40\u0E28\u0E29"
+    _Type: 1
+    _Currency: 50
+  - _id: 9
+    _QuestName_ENG: Daily Defense
+    _QuestCondition_ENG: Use 'shield' once
+    _QuestDescription_ENG: Defend with your eyes like a true guardian.
+    _QuestName_TH: "\u0E1B\u0E49\u0E2D\u0E07\u0E01\u0E31\u0E19\u0E2A\u0E32\u0E22\u0E15\u0E32"
+    _QuestCondition_TH: "\u0E43\u0E0A\u0E49\u0E17\u0E48\u0E32 'shield' 1 \u0E04\u0E23\u0E31\u0E49\u0E07"
+    _QuestDescription_TH: "\u0E1B\u0E49\u0E2D\u0E07\u0E01\u0E31\u0E19\u0E15\u0E31\u0E27\u0E40\u0E2D\u0E07\u0E14\u0E49\u0E27\u0E22\u0E1E\u0E25\u0E31\u0E07\u0E2A\u0E32\u0E22\u0E15\u0E32"
+    _Type: 0
+    _Currency: 100
+  - _id: 10
+    _QuestName_ENG: Meet Amanita
+    _QuestCondition_ENG: Fight 1 'amanita'
+    _QuestDescription_ENG: A cute but dangerous mushroom appears.
+    _QuestName_TH: "\u0E1E\u0E1A\u0E01\u0E31\u0E1A\u0E2D\u0E30\u0E21\u0E32\u0E19\u0E34\u0E15\u0E49\u0E32"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A 'amanita'
+      1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E40\u0E2B\u0E47\u0E14\u0E2B\u0E19\u0E49\u0E32\u0E15\u0E32\u0E19\u0E48\u0E32\u0E23\u0E31\u0E01\u0E41\u0E15\u0E48\u0E19\u0E48\u0E32\u0E01\u0E25\u0E31\u0E27!"
+    _Type: 1
+    _Currency: 50
+  - _id: 11
+    _QuestName_ENG: Meet Liana
+    _QuestCondition_ENG: Fight 1 'liana'
+    _QuestDescription_ENG: Be careful of the vines and stay sharp.
+    _QuestName_TH: "\u0E1E\u0E1A\u0E01\u0E31\u0E1A\u0E40\u0E25\u0E35\u0E22\u0E19\u0E48\u0E32"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A 'liana'
+      1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E23\u0E30\u0E27\u0E31\u0E07\u0E40\u0E16\u0E32\u0E27\u0E31\u0E25\u0E22\u0E4C\u0E23\u0E31\u0E14!"
+    _Type: 0
+    _Currency: 100
+  - _id: 12
+    _QuestName_ENG: Meet Insect-boy
+    _QuestCondition_ENG: Fight 1 'insect-boy'
+    _QuestDescription_ENG: Tiny but speedy! Defeat him fast.
+    _QuestName_TH: "\u0E1E\u0E1A\u0E01\u0E31\u0E1A\u0E2D\u0E34\u0E19\u0E40\u0E0B\u0E04\u0E17\u0E4C\u0E1A\u0E2D\u0E22"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A 'insect-boy'
+      1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E15\u0E31\u0E27\u0E40\u0E25\u0E47\u0E01\u0E41\u0E15\u0E48\u0E40\u0E23\u0E47\u0E27!"
+    _Type: 0
+    _Currency: 100
+  - _id: 13
+    _QuestName_ENG: Meet Fisherbear
+    _QuestCondition_ENG: Fight 1 'fisherbear'
+    _QuestDescription_ENG: An angry bear with a fishing rod!
+    _QuestName_TH: "\u0E1E\u0E1A\u0E01\u0E31\u0E1A\u0E1F\u0E34\u0E0A\u0E40\u0E0A\u0E2D\u0E23\u0E4C\u0E41\u0E1A\u0E23\u0E4C"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A 'fisherbear'
+      1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E2B\u0E21\u0E35\u0E15\u0E01\u0E1B\u0E25\u0E32\u0E2A\u0E38\u0E14\u0E42\u0E01\u0E23\u0E18!"
+    _Type: 0
+    _Currency: 100
+  - _id: 14
+    _QuestName_ENG: Meet Bumblebee
+    _QuestCondition_ENG: Fight 1 'bumblebee'
+    _QuestDescription_ENG: Buzz buzz... it stings and flies.
+    _QuestName_TH: "\u0E1E\u0E1A\u0E01\u0E31\u0E1A\u0E1A\u0E31\u0E21\u0E40\u0E1A\u0E34\u0E25\u0E1A\u0E35"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A 'bumblebee'
+      1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E1A\u0E34\u0E19\u0E44\u0E27 \u0E15\u0E48\u0E2D\u0E22\u0E41\u0E23\u0E07!"
+    _Type: 1
+    _Currency: 50
+  - _id: 15
+    _QuestName_ENG: Meet Dragonwitch
+    _QuestCondition_ENG: Fight 1 'dragonwitch'
+    _QuestDescription_ENG: Face a magical mini-boss with power.
+    _QuestName_TH: "\u0E1E\u0E1A\u0E01\u0E31\u0E1A\u0E14\u0E23\u0E32\u0E01\u0E49\u0E2D\u0E19\u0E27\u0E34\u0E17\u0E0A\u0E4C"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A 'dragonwitch'
+      1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E40\u0E08\u0E2D\u0E21\u0E34\u0E19\u0E34\u0E1A\u0E2D\u0E2A\u0E40\u0E27\u0E17\u0E21\u0E19\u0E15\u0E23\u0E4C!"
+    _Type: 0
+    _Currency: 100
+  - _id: 16
+    _QuestName_ENG: Meet Squidbomber
+    _QuestCondition_ENG: Fight 1 'squidbomber'
+    _QuestDescription_ENG: Ink incoming! Watch your eyes.
+    _QuestName_TH: "\u0E1E\u0E1A\u0E01\u0E31\u0E1A\u0E2A\u0E04\u0E27\u0E34\u0E14\u0E1A\u0E2D\u0E21\u0E40\u0E1A\u0E2D\u0E23\u0E4C"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A 'squidbomber'
+      1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E23\u0E30\u0E27\u0E36\u0E01\u0E2B\u0E21\u0E36\u0E01\u0E01\u0E23\u0E30\u0E08\u0E32\u0E22!"
+    _Type: 0
+    _Currency: 100
+  - _id: 17
+    _QuestName_ENG: Meet Psycholofish
+    _QuestCondition_ENG: Fight 1 'psycholofish'
+    _QuestDescription_ENG: "Don\u2019t get confused by the stare!"
+    _QuestName_TH: "\u0E1E\u0E1A\u0E01\u0E31\u0E1A\u0E44\u0E0B\u0E42\u0E04\u0E25\u0E42\u0E25\u0E1F\u0E34\u0E0A"
+    _QuestCondition_TH: "\u0E15\u0E48\u0E2D\u0E2A\u0E39\u0E49\u0E01\u0E31\u0E1A 'psycholofish'
+      1 \u0E15\u0E31\u0E27"
+    _QuestDescription_TH: "\u0E2D\u0E22\u0E48\u0E32\u0E42\u0E14\u0E19\u0E2A\u0E30\u0E01\u0E14\u0E08\u0E34\u0E15!"
+    _Type: 1
+    _Currency: 50
+--- !u!114 &7311381648823651411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4718869709496313242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1461e2c67a7914e9006c39b811a898, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8408596623281667015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4718869709496313242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efe1d41b5cb6f4fdba3109b4b9fa8333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &6529652208815435778
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4718869709496313242}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
