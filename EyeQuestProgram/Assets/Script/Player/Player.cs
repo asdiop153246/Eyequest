@@ -423,6 +423,7 @@ public class Player : MonoBehaviour
         StartCoroutine(ShowGetHitEffect(type));
         if (stats.currentHealth <= 0)
         {
+            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._RetryRate(Userdata.Instance._CurrentWorld, Userdata.Instance._CurrentStage));
             Die();
         }
 

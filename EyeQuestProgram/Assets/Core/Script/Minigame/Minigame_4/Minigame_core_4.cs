@@ -24,6 +24,7 @@ public class Minigame_core_4 : MonoBehaviour
 
     public void _GameStarter()
     {
+        StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>().MiniGameSession(System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), "Game4"));
         StartCoroutine(_ReadaySetGo());
     }
 

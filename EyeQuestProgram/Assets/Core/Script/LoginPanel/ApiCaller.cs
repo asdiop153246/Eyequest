@@ -821,26 +821,31 @@ public class ApiCaller : MonoBehaviour
         }
     }
 
+
+
+    #region Analytic
+
     [System.Serializable]
-    public class AnalyticData
+    public class SessionTimeClass
     {
-        public int analytic_type_id;
-        public string type;
-        public string value; // หรือใช้ DateTime ถ้าคุณต้องการจัดการเป็นวันเวลา
+        public string game_start;
+        public string game_quit;
     }
 
-    public IEnumerator _AnalyticAPI(int _id)
+    public string _Starttimestamp;
+    public string _Endtimestamp;
+    public IEnumerator _SessionTime()
     {
 
-        AnalyticData _temp = new AnalyticData();
-        _temp.analytic_type_id = Userdata.Instance._Levelid;
-        _temp.type = "";
-        _temp.value = "";
+        SessionTimeClass _temp = new SessionTimeClass();
+        _temp.game_start = _Starttimestamp;
+        _temp.game_quit = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
 
         json = JsonUtility.ToJson(_temp);
 
         Debug.Log(json);
-        var request = new UnityWebRequest(_Url + "/api/analytics", "POST");
+        var request = new UnityWebRequest(_Url + "/api/analytics/session-time", "POST");
         request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
@@ -852,4 +857,167 @@ public class ApiCaller : MonoBehaviour
         Debug.Log("request responseText:" + request.downloadHandler.text);
 
     }
+
+    public void OnApplicationQuit()
+    {
+        StartCoroutine(_SessionTime());
+    }
+
+    [System.Serializable]
+    public class LevelCompletionRateClass
+    {
+        public int level_passed;
+        public int world_id;
+        public int stage_id;
+    }
+
+    public IEnumerator _LevelCompletionRate(int _world_id,int _Stage_id)
+    {
+
+        LevelCompletionRateClass _temp = new LevelCompletionRateClass();
+        _temp.level_passed = 1;
+        _temp.world_id = _world_id;
+        _temp.stage_id = _Stage_id;
+
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/analytics/level-completion", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+    }
+
+    [System.Serializable]
+    public class RetryRateClass
+    {
+        public int level_failed;
+        public int world_id;
+        public int stage_id;
+    }
+
+    public IEnumerator _RetryRate(int _world_id, int _Stage_id)
+    {
+
+        RetryRateClass _temp = new RetryRateClass();
+        _temp.level_failed = 1;
+        _temp.world_id = _world_id;
+        _temp.stage_id = _Stage_id;
+
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/analytics/retry-rate", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+    }
+
+    [System.Serializable]
+    public class MiniGameSessionClass
+    {
+        public string minigame_start;
+        public string minigame_name;
+    }
+
+    public IEnumerator MiniGameSession(string Starter, string _MiniGameName)
+    {
+
+        MiniGameSessionClass _temp = new MiniGameSessionClass();
+        _temp.minigame_start = Starter;
+        _temp.minigame_name = _MiniGameName;
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/analytics/minigame-session", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+    }
+
+    [System.Serializable]
+    public class MarketPurchaseRateClass
+    {
+        public int item_id;
+        public int price;
+    }
+
+    public IEnumerator MarketPurchaseRate(int _itemId, int _Price)
+    {
+
+        MarketPurchaseRateClass _temp = new MarketPurchaseRateClass();
+        _temp.item_id = _itemId;
+        _temp.price = _Price;
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/analytics/market-purchase-rate", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+    }
+
+    [System.Serializable]
+    public class _FirstActionClass
+    {
+        public string first_event;
+    }
+
+    public IEnumerator FirstAction(string _EventName)
+    {
+
+        _FirstActionClass _temp = new _FirstActionClass();
+        _temp.first_event = _EventName;
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/analytics/first-action", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+    }
+
+
+
+    #endregion
 }

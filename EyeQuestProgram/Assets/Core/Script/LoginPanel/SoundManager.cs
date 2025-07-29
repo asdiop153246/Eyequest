@@ -44,6 +44,8 @@ public class SoundManager : MonoBehaviour
 
             PlayerPrefs.SetFloat("Sound",0);
         }
+
+        Userdata.Instance._isCallSound(0);
     }
 
     public void _GetToggleVibration()
@@ -58,6 +60,8 @@ public class SoundManager : MonoBehaviour
         {
             PlayerPrefs.SetFloat("_isVibrationOn", 0);
         }
+
+        Userdata.Instance._isCallSound(0);
 
     }
 
@@ -90,6 +94,8 @@ public class SoundManager : MonoBehaviour
                 switchTH.GetComponent<SwitchTH>()._OnDemendSwitch();
             }
         }
+
+        Userdata.Instance._isCallSound(0);
 
     }
 

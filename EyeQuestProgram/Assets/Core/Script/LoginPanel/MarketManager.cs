@@ -195,6 +195,7 @@ public class MarketManager : MonoBehaviour
 
     public void _BuyItem()
     {
+        StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>().MarketPurchaseRate(_ItemId, GetComponent<InventorySystem>()._ItemStore[_ItemId]._price));
         _BuyPopUP.SetActive(false);
         Userdata.Instance._User.data.currency.gold -= GetComponent<InventorySystem>()._ItemStore[_ItemId]._price;
         StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._AddItem(_ItemId,GetComponent<InventorySystem>()._CurrentOnUI_Type));

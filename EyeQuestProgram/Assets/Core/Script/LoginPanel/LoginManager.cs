@@ -37,6 +37,8 @@ public class LoginManager : MonoBehaviour
             _LoginOK.SetActive(true);
             Application.LoadLevel(1);
         };
+
+        Userdata.Instance.GetComponent<ApiCaller>()._Starttimestamp = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
 
     public void OnDisable()
