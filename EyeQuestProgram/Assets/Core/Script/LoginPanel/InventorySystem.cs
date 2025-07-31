@@ -124,7 +124,7 @@ public class InventorySystem : MonoBehaviour
     public GameObject _CurrentHat;
     public GameObject _CurrentBody;
     public GameObject _CurrentWeapon;
-
+    public Kiwiwareable _Kiwi;
     public void _WareItem()
     {
         switch (_CurrentSelectitemType)
@@ -146,7 +146,7 @@ public class InventorySystem : MonoBehaviour
     }
     public void _UpdateCurrentWare()
     {
-
+        _Kiwi._UpdateWable();
         Debug.Log("GET CURRENT WARE : " + Userdata.Instance._User.data.current_ware.current_hat + "," + Userdata.Instance._User.data.current_ware.current_body + "," + Userdata.Instance._User.data.current_ware.current_weapon);
         if (Userdata.Instance._User.data.current_ware.current_hat != 0)
         {

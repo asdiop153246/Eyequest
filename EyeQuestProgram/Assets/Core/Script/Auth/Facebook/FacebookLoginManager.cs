@@ -52,9 +52,9 @@ public class FacebookLoginManager : MonoBehaviour
                 FirebaseUser newUser = task.Result;
                 Debug.Log(newUser.Email);
                 Debug.Log(newUser.UserId);
-                Debug.Log(newUser.TokenAsync(true));
-                _LoginLog.text = "Firebase Facebook Sign-In Success! Welcome " + newUser.DisplayName + " / " + newUser.Email + " / " + newUser.UserId + " / "+ newUser.TokenAsync(true);
-
+                Debug.Log(newUser.TokenAsync(true).ToString());
+                _LoginLog.text = "Firebase Facebook Sign-In Success! Welcome " + newUser.DisplayName + " / " + newUser.Email + " / " + newUser.UserId + " / "+ newUser.TokenAsync(true).ToString();
+                //StartCoroutine(GetComponent<LoginManager>()._FirebaseAuth(newUser.Email, newUser.UserId, newUser.DisplayName,""));
                 Debug.Log("Firebase Facebook Sign-In Success! Welcome " + newUser.DisplayName);
             });
         }

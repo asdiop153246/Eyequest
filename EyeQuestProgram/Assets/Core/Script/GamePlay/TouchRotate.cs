@@ -7,6 +7,7 @@ public class TouchRotate : MonoBehaviour
     public float rotationSpeed = 0.2f;
     private Vector2 lastMousePos;
     public FirstAction _Core;
+
     void Update()
     {
         // Mouse input (Editor or Desktop)

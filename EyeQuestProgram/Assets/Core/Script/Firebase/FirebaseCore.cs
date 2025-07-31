@@ -62,7 +62,7 @@ public class FirebaseCore : MonoBehaviour
 
         string json = JsonUtility.ToJson(_temp);
         Debug.Log(json);
-        var request = new UnityWebRequest(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._Url + "/notify/register-token", "POST");
+        var request = new UnityWebRequest(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._Url + "/api/notify/register-token", "POST");
         request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);

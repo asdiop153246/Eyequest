@@ -68,8 +68,8 @@ public class GoogleSignInManager : MonoBehaviour
             Debug.Log(newUser.Email);
             Debug.Log(newUser.UserId);
             Debug.Log(newUser.TokenAsync(true));
-
-            _LoginLog.text = "Firebase Sign-In Success! Welcome " + newUser.DisplayName + " / " + newUser.Email + " / " + newUser.UserId + " / " + newUser.TokenAsync(true);
+            //StartCoroutine(GetComponent<LoginManager>()._FirebaseAuth(newUser.Email, newUser.UserId, newUser.DisplayName, ""));
+            _LoginLog.text = "Firebase Sign-In Success! Welcome " + newUser.DisplayName + " / " + newUser.Email + " / " + newUser.UserId + " / " + newUser.TokenAsync(true).ToString();
 
         });
     }

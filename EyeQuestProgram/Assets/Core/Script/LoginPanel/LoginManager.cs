@@ -177,8 +177,44 @@ public class LoginManager : MonoBehaviour
         request.SetRequestHeader("Accept", "application/json");
         request.SetRequestHeader("Content-Type", "application/json");
         _RequestTxt.text = "SENT API";
+        //request.certificateHandler = new BypassCertificate();
+
         yield return request.SendWebRequest();
-        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("❌ Request Failed");
+            Debug.LogError("Error: " + request.error);
+
+            // ตรวจสอบเพิ่มเติม
+            if (request.error.Contains("Cannot resolve host"))
+            {
+                Debug.LogError("สาเหตุ: DNS ไม่สามารถหาที่อยู่เซิร์ฟเวอร์ได้ (URL ผิดหรือเน็ตมีปัญหา)");
+            }
+            else if (request.error.Contains("certificate") || request.error.Contains("SSL"))
+            {
+                Debug.LogError("สาเหตุ: SSL Certificate ไม่ถูกต้องหรือหมดอายุ");
+            }
+            else if (request.error.Contains("timed out"))
+            {
+                Debug.LogError("สาเหตุ: การเชื่อมต่อหมดเวลา (Timeout)");
+            }
+            else if (request.error.Contains("refused") || request.error.Contains("unreachable"))
+            {
+                Debug.LogError("สาเหตุ: Server ไม่ตอบสนอง หรือบล็อคการเชื่อมต่อ");
+            }
+            else
+            {
+                Debug.LogError("สาเหตุทั่วไป: ตรวจสอบเน็ตหรือ URL อีกครั้ง");
+            }
+        }
+        else
+        {
+            Debug.Log("✅ Success: " + request.downloadHandler.text);
+        }
+
+        Debug.Log("request responseText:" + request.downloadHandler.text +" / "+ request.responseCode.ToString() + " / "+ request.result);
         _downloadHandlerTxt.text = "request responseText:" + request.downloadHandler.text;
         _RequestCodeTxt.text = request.responseCode.ToString()+" / "+ request.result;
 
@@ -209,6 +245,112 @@ public class LoginManager : MonoBehaviour
                 StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._GetWorldData());
                 
             }
+        }
+    }
+    public class _FirebaseClass
+    {
+        public string email;
+        public string firebase_uid;
+        public string name;
+        public string firebase_token;
+    }
+
+    public void _FakeLoginFirebase()
+    {
+        StartCoroutine(_FirebaseAuth("panatthakorn.isd@gmail.com", "C23jcbCrVrRZGL50vOIbrL7muTe2", "Snuggly Bear Parlor ",""));
+    }
+
+    public IEnumerator _FirebaseAuth(string _UserEmail, string _Firebase_uid, string _Name, string _Firebase_token)
+    {
+        _WaitingPanel.SetActive(true);
+
+        _FirebaseClass data = new _FirebaseClass();
+        data.email = _UserEmail;
+        data.firebase_uid = _Firebase_uid;
+        data.name = _Name;
+        data.firebase_token = "";
+
+        string json = JsonUtility.ToJson(data);
+        Debug.Log(json);
+        var request = new UnityWebRequest(_URL+ "/api/firebase-auth", "POST");
+        Debug.Log(_URL+"/api/firebase-auth");
+        //request.SetRequestHeader("Authorization", Userdata.instance._Userdata.data.account.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+        //request.certificateHandler = new BypassCertificate();
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("❌ Request Failed");
+            Debug.LogError("Error: " + request.error);
+
+            // ตรวจสอบเพิ่มเติม
+            if (request.error.Contains("Cannot resolve host"))
+            {
+                Debug.LogError("สาเหตุ: DNS ไม่สามารถหาที่อยู่เซิร์ฟเวอร์ได้ (URL ผิดหรือเน็ตมีปัญหา)");
+            }
+            else if (request.error.Contains("certificate") || request.error.Contains("SSL"))
+            {
+                Debug.LogError("สาเหตุ: SSL Certificate ไม่ถูกต้องหรือหมดอายุ");
+            }
+            else if (request.error.Contains("timed out"))
+            {
+                Debug.LogError("สาเหตุ: การเชื่อมต่อหมดเวลา (Timeout)");
+            }
+            else if (request.error.Contains("refused") || request.error.Contains("unreachable"))
+            {
+                Debug.LogError("สาเหตุ: Server ไม่ตอบสนอง หรือบล็อคการเชื่อมต่อ");
+            }
+            else
+            {
+                Debug.LogError("สาเหตุทั่วไป: ตรวจสอบเน็ตหรือ URL อีกครั้ง");
+            }
+        }
+        else
+        {
+            Debug.Log("✅ Success: " + request.downloadHandler.text);
+        }
+
+        _WaitingPanel.SetActive(false);
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            _LoginFailed_Txt.text = request.downloadHandler.text + request.responseCode.ToString();
+            _LoginFailed.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            _LoginFailed.SetActive(false);
+            //ShowErrorWithCode(request.responseCode.ToString());
+            //OnCallBack_Login_CheckEmail_Failed?.Invoke();
+        }
+        else
+        {
+            Userdata.Instance._User = JsonUtility.FromJson<Userdata.LoginResponse>(request.downloadHandler.text);
+            if (Userdata.Instance._User.data.access_token == null)
+            {
+                _LoginFailed.SetActive(true);
+                yield return new WaitForSeconds(2f);
+                _LoginFailed.SetActive(false);
+            }
+            else
+            {
+
+                _WaitingPanel.SetActive(true);
+                StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._GetWorldData());
+
+            }
+        }
+    }
+
+    class BypassCertificate : CertificateHandler
+    {
+        protected override bool ValidateCertificate(byte[] certificateData)
+        {
+            return true; // ข้าม SSL Validation
         }
     }
 
