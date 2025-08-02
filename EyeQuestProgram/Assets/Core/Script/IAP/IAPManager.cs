@@ -2,6 +2,8 @@
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
 using UnityEngine.UI;
+using Unity.Services.Core;
+using System;
 
 public class IAPManager : MonoBehaviour, IStoreListener
 {
@@ -17,11 +19,20 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public static string PRODUCT_COINS_5 = "conqueror_pack";
     public static string PRODUCT_COINS_6 = "legendary_voyage_pack";
 
-    void Start()
+    async void Start()
     {
         if (storeController == null)
         {
-            InitializePurchasing();
+            try
+            {
+                await UnityServices.InitializeAsync();
+
+                InitializePurchasing();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("UGS Initialization Error: " + ex.Message);
+            }
         }
     }
 

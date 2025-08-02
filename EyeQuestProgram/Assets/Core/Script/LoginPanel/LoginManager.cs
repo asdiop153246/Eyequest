@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 //using UnityEditor.PackageManager.Requests;
 
 public class LoginManager : MonoBehaviour
@@ -257,21 +258,30 @@ public class LoginManager : MonoBehaviour
 
     public void _FakeLoginFirebase()
     {
-        StartCoroutine(_FirebaseAuth("panatthakorn.isd@gmail.com", "C23jcbCrVrRZGL50vOIbrL7muTe2", "Snuggly Bear Parlor ",""));
+        StartCoroutine(FirebaseAuth("panatthakorn.isd@gmail.com", "C23jcbCrVrRZGL50vOIbrL7muTe2", "Snuggly Bear Parlor ","1234"));
     }
 
-    public IEnumerator _FirebaseAuth(string _UserEmail, string _Firebase_uid, string _Name, string _Firebase_token)
+    public void _CallFireBaseLogin(string _UserEmail, string _Firebase_uid, string _Name, string _Firebase_token)
+    {
+        //_LoginLog.text = "Firebase Sign-In Success! Welcome " + user.DisplayName + " / " + user.Email + " / " + user.UserId + " / " + user.IdToken;
+        Debug.Log("CALL THIS SHIT : " + _UserEmail + " / " + _Firebase_uid + " / " + _Name + " / " + _Firebase_token);
+        StartCoroutine(FirebaseAuth(_UserEmail,_Firebase_uid, _Name, _Firebase_token));
+    }
+
+    public IEnumerator FirebaseAuth(string _UserEmail, string _Firebase_uid, string _Name, string _Firebase_token)
     {
         _WaitingPanel.SetActive(true);
 
         _FirebaseClass data = new _FirebaseClass();
-        data.email = _UserEmail;
-        data.firebase_uid = _Firebase_uid;
-        data.name = _Name;
-        data.firebase_token = _Firebase_token;
+        data.email = _UserEmail.Trim(); ;
+        data.firebase_uid = _Firebase_uid.Trim(); ;
+        data.name = _Name.Trim(); ;
+        data.firebase_token = _Firebase_token.Trim(); ;
 
-        string json = JsonUtility.ToJson(data);
+        string json = JsonConvert.SerializeObject(data);
         Debug.Log(json);
+        yield return new WaitForSeconds(1);
+
         var request = new UnityWebRequest(_URL+ "/api/firebase-auth", "POST");
         Debug.Log(_URL+"/api/firebase-auth");
         //request.SetRequestHeader("Authorization", Userdata.instance._Userdata.data.account.access_token);
@@ -280,13 +290,12 @@ public class LoginManager : MonoBehaviour
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Accept", "application/json");
         request.SetRequestHeader("Content-Type", "application/json");
-        //request.certificateHandler = new BypassCertificate();
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError ||
             request.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.LogError("❌ Request Failed");
+            Debug.LogError("Request Failed");
             Debug.LogError("Error: " + request.error);
 
             // ตรวจสอบเพิ่มเติม
@@ -313,8 +322,15 @@ public class LoginManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("✅ Success: " + request.downloadHandler.text);
+            Debug.Log(" Success: " + request.downloadHandler.text);
         }
+
+        Debug.Log("===== DEBUG FIREBASE AUTH =====");
+        Debug.Log("Request URL: " + _URL + "/api/firebase-auth");
+        Debug.Log("Payload JSON: " + json);
+        Debug.Log("Response Code: " + request.responseCode);
+        Debug.Log("Response Text: " + request.downloadHandler.text);
+        Debug.Log("===== END DEBUG =====");
 
         _WaitingPanel.SetActive(false);
 
@@ -340,23 +356,13 @@ public class LoginManager : MonoBehaviour
             {
 
                 _WaitingPanel.SetActive(true);
+                yield return new WaitForSeconds(2f);
+                _WaitingPanel.SetActive(false);
+                _LoginOK.SetActive(true);
                 StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._GetWorldData());
 
             }
         }
-    }
-
-    class BypassCertificate : CertificateHandler
-    {
-        protected override bool ValidateCertificate(byte[] certificateData)
-        {
-            return true; // ข้าม SSL Validation
-        }
-    }
-
-    public void _NextSence()
-    {
-
     }
 
     public void _FastLogin()
@@ -551,7 +557,8 @@ public class LoginManager : MonoBehaviour
         _ForgotPassword data = new _ForgotPassword();
         data.email = _Temp_UserEmail;
 
-        string json = JsonUtility.ToJson(data);
+        //string json = JsonUtility.ToJson(data);
+        string json = JsonConvert.SerializeObject(data);
         Debug.Log(json);
         var request = new UnityWebRequest(_URL + "/api/forgot-password", "POST");
         //request.SetRequestHeader("Authorization", Userdata.instance._Userdata.data.account.access_token);

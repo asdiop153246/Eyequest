@@ -14088,7 +14088,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1195272681}
   m_OnClick:
     m_PersistentCalls:
@@ -18518,6 +18518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f09dccb2183fa4eb39fae611582c95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _WaitingPanel: {fileID: 462918371}
   _LoginLog: {fileID: 314499304}
 --- !u!114 &1535456761
 MonoBehaviour:
@@ -18532,6 +18533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _LoginLog: {fileID: 314499304}
+  _WaitingPanel: {fileID: 462918371}
 --- !u!1 &1536471002
 GameObject:
   m_ObjectHideFlags: 0
