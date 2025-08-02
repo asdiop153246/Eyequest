@@ -268,7 +268,7 @@ public class LoginManager : MonoBehaviour
         data.email = _UserEmail;
         data.firebase_uid = _Firebase_uid;
         data.name = _Name;
-        data.firebase_token = "";
+        data.firebase_token = _Firebase_token;
 
         string json = JsonUtility.ToJson(data);
         Debug.Log(json);

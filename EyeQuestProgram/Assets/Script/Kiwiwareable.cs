@@ -8,9 +8,17 @@ public class Kiwiwareable : MonoBehaviour
     public List<GameObject> _Body;
     public List<GameObject> _Weapon;
 
+    public int _HatId;
+    public int _BodyId;
+    public int _WeaponId;
+
     public void OnEnable()
     {
         _UpdateWable();
+
+        _HatId = Userdata.Instance._User.data.current_ware.current_hat;
+        _BodyId = Userdata.Instance._User.data.current_ware.current_body;
+        _WeaponId = Userdata.Instance._User.data.current_ware.current_weapon;
     }
 
     public void _UpdateWable()
@@ -47,6 +55,9 @@ public class Kiwiwareable : MonoBehaviour
             case 13:
                 _Hat[4].SetActive(true);
                 break;
+            default:
+                _Hat[0].SetActive(true);
+                break;
         }
 
         switch (Userdata.Instance._User.data.current_ware.current_body)
@@ -66,6 +77,9 @@ public class Kiwiwareable : MonoBehaviour
             case 14:
                 _Body[4].SetActive(true);
                 break;
+            default:
+                _Body[0].SetActive(true);
+                break;
         }
 
         switch (Userdata.Instance._User.data.current_ware.current_weapon)
@@ -84,6 +98,9 @@ public class Kiwiwareable : MonoBehaviour
                 break;
             case 15:
                 _Weapon[4].SetActive(true);
+                break;
+            default:
+                _Weapon[0].SetActive(true);
                 break;
         }
 

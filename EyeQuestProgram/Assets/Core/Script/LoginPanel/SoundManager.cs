@@ -179,9 +179,38 @@ public class SoundManager : MonoBehaviour
 
     }
 
+    public void _TermLink()
+    {
+        Application.OpenURL("https://eyequila-my.sharepoint.com/:w:/p/ratchanon/EdktYPKJQihOo1pLEzPXQHgBCwseiT-K10jBeQdA84tIKg?e=uScbHu");
+    }
+
+    public void _OpenURL()
+    {
+        if (Userdata.Instance._isTh)
+        {
+            Application.OpenURL("https://eyequest.eyequila.com/th/beta-report");
+        }
+        else
+        {
+            Application.OpenURL("https://eyequest.eyequila.com/en/beta-report");
+        }
+    }
+
+    public void _Logout()
+    {
+        Google.GoogleSignIn.DefaultInstance.SignOut();
+        Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut();
+        Application.LoadLevel(0);
+    }
+
     public void _CallSound(int _Values)
     {
         Userdata.Instance._isCallSound(_Values);
+    }
+
+    public void _LogOut()
+    {
+       
     }
 
 }

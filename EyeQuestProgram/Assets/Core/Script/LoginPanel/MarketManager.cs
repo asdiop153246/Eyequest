@@ -189,8 +189,18 @@ public class MarketManager : MonoBehaviour
         _ItemId = _CurrentItemId;
         _BuyPopUP.SetActive(true);
         _ItemIcon.sprite = GetComponent<InventorySystem>()._ItemStore[_CurrentItemId]._StoreIcon;
-        _ItemName.text = GetComponent<InventorySystem>()._ItemStore[_CurrentItemId]._ItemName;
-        _ItemDes.text = GetComponent<InventorySystem>()._ItemStore[_CurrentItemId]._ItemDes;
+
+        if (Userdata.Instance._isTh)
+        {
+            _ItemName.text = GetComponent<InventorySystem>()._ItemStore[_CurrentItemId]._ItemNameTH;
+            _ItemDes.text = GetComponent<InventorySystem>()._ItemStore[_CurrentItemId]._ItemDesTH;
+        }
+        else
+        {
+            _ItemName.text = GetComponent<InventorySystem>()._ItemStore[_CurrentItemId]._ItemNameEng;
+            _ItemDes.text = GetComponent<InventorySystem>()._ItemStore[_CurrentItemId]._ItemDesEng;
+        }
+        
     }
 
     public void _BuyItem()
