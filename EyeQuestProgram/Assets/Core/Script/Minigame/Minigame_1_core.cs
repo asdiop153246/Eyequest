@@ -23,8 +23,10 @@ public class Minigame_1_core : MonoBehaviour
 
     public List<GameObject> _EyeUI;
     public List<GameObject> _EyeUI_2;
+
     public void _GameStarter()
     {
+        StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>().MiniGameSession(System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),"Game1"));
         StartCoroutine(_ReadaySetGo());
     }
 

@@ -19,8 +19,10 @@ public class InventorySystem : MonoBehaviour
     [System.Serializable]
     public class _ItemData
     {
-        public string _ItemName;
-        public string _ItemDes;
+        public string _ItemNameTH;
+        public string _ItemNameEng;
+        public string _ItemDesTH;
+        public string _ItemDesEng;
         public Sprite _ItemIcon;
         public Sprite _StoreIcon;
         public _itemType _Type;
@@ -68,30 +70,46 @@ public class InventorySystem : MonoBehaviour
 
     public List<GameObject> _AllSlot;
 
+    public GameObject _Parentslot;
+    public GameObject _EqSlot;
+
     public void _UpdateItemList_Only()
     {
-        foreach (GameObject itemUI in _AllSlot)
-        { 
-            itemUI.GetComponent<Button>().interactable = false;
-            itemUI.transform.GetChild(0).gameObject.SetActive(false);
+        for (int i = _Parentslot.transform.childCount - 1; i >= 0; i--)
+        {
+            Destroy(_Parentslot.transform.GetChild(i).gameObject);
         }
 
         for (int i = 0; i < Userdata.Instance._InventroyStore.Count; i++)
         {
-            _AllSlot[i].transform.GetChild(0).gameObject.SetActive(true);
-
-            if (_ItemStore[Userdata.Instance._InventroyStore[i]]._ItemIcon != null)
-            {
-                _AllSlot[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = _ItemStore[Userdata.Instance._InventroyStore[i]]._ItemIcon;
-                Debug.Log(Userdata.Instance._InventroyStore[i]);
-            }
-
-            _AllSlot[i].GetComponent<Button>().interactable = true;
-
-
+            GameObject _Temp = Instantiate(_EqSlot, _Parentslot.transform);
+            _Temp.GetComponent<EuqSlot>()._SlotId = i;
+            _Temp.GetComponent<EuqSlot>()._Core = GetComponent<InventorySystem>();
+            _Temp.transform.GetChild(0).GetComponent<Image>().sprite = _ItemStore[Userdata.Instance._InventroyStore[i]]._ItemIcon;
+            _Temp.transform.GetChild(0).gameObject.SetActive(true);
         }
 
-        _MainPanel.SetActive(false);
+            /*foreach (GameObject itemUI in _AllSlot)
+            { 
+                itemUI.GetComponent<Button>().interactable = false;
+                itemUI.transform.GetChild(0).gameObject.SetActive(false);
+            }
+
+            for (int i = 0; i < Userdata.Instance._InventroyStore.Count; i++)
+            {
+                _AllSlot[i].transform.GetChild(0).gameObject.SetActive(true);
+
+                if (_ItemStore[Userdata.Instance._InventroyStore[i]]._ItemIcon != null)
+                {
+                    _AllSlot[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = _ItemStore[Userdata.Instance._InventroyStore[i]]._ItemIcon;
+                    Debug.Log(Userdata.Instance._InventroyStore[i]);
+                }
+
+                _AllSlot[i].GetComponent<Button>().interactable = true;
+
+            }*/
+
+            _MainPanel.SetActive(false);
         _InventoryPanel.SetActive(true);
     }
 
@@ -105,9 +123,17 @@ public class InventorySystem : MonoBehaviour
 
     public void _ShowPopUp(int _Slot)
     {
-
-        _ItemPop_Name.text = _ItemStore[Userdata.Instance._InventroyStore[_Slot]]._ItemName;
-        _ItemPop_Des.text = _ItemStore[Userdata.Instance._InventroyStore[_Slot]]._ItemDes;
+        if (Userdata.Instance._isTh)
+        {
+            _ItemPop_Name.text = _ItemStore[Userdata.Instance._InventroyStore[_Slot]]._ItemNameTH;
+            _ItemPop_Des.text = _ItemStore[Userdata.Instance._InventroyStore[_Slot]]._ItemDesTH;
+        }
+        else
+        {
+            _ItemPop_Name.text = _ItemStore[Userdata.Instance._InventroyStore[_Slot]]._ItemNameEng;
+            _ItemPop_Des.text = _ItemStore[Userdata.Instance._InventroyStore[_Slot]]._ItemDesTH;
+        }
+        
         _ItemPopIcon.sprite = _ItemStore[Userdata.Instance._InventroyStore[_Slot]]._ItemIcon;
         _CurrentSelectItemId = Userdata.Instance._InventroyStore[_Slot];
         _CurrentSelectitemType = (int)_ItemStore[Userdata.Instance._InventroyStore[_Slot]]._Type;
@@ -124,7 +150,7 @@ public class InventorySystem : MonoBehaviour
     public GameObject _CurrentHat;
     public GameObject _CurrentBody;
     public GameObject _CurrentWeapon;
-
+    public Kiwiwareable _Kiwi;
     public void _WareItem()
     {
         switch (_CurrentSelectitemType)
@@ -146,7 +172,7 @@ public class InventorySystem : MonoBehaviour
     }
     public void _UpdateCurrentWare()
     {
-
+        _Kiwi._UpdateWable();
         Debug.Log("GET CURRENT WARE : " + Userdata.Instance._User.data.current_ware.current_hat + "," + Userdata.Instance._User.data.current_ware.current_body + "," + Userdata.Instance._User.data.current_ware.current_weapon);
         if (Userdata.Instance._User.data.current_ware.current_hat != 0)
         {
@@ -203,21 +229,50 @@ public class InventorySystem : MonoBehaviour
         switch (_id)
         {
             case 1: // Hat
-                _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_hat]._ItemName;
-                _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_hat]._ItemDes;
+                if (Userdata.Instance._isTh)
+                {
+                    _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_hat]._ItemNameTH;
+                    _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_hat]._ItemDesTH;
+                }
+                else
+                {
+                    _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_hat]._ItemNameEng;
+                    _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_hat]._ItemDesEng;
+                }
+                
                 _RemovePopUpIcon.sprite = _ItemStore[Userdata.Instance._User.data.current_ware.current_hat]._ItemIcon;
                 _CurrentRemoveItemId = Userdata.Instance._User.data.current_ware.current_hat;
                 //_CurrentSelectitemType = (int)_ItemStore[Userdata.Instance._InventroyStore[_Slot]]._Type;
                 break;
             case 2: // Body
-                _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_body]._ItemName;
-                _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_body]._ItemDes;
+                if (Userdata.Instance._isTh)
+                {
+                    _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_body]._ItemNameTH;
+                    _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_body]._ItemDesTH;
+                }
+                else
+                {
+                    _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_body]._ItemNameEng;
+                    _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_body]._ItemDesEng;
+                }
+
                 _RemovePopUpIcon.sprite = _ItemStore[Userdata.Instance._User.data.current_ware.current_body]._ItemIcon;
                 _CurrentRemoveItemId = Userdata.Instance._User.data.current_ware.current_body;
                 break;
             case 3: // Weapon
-                _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_weapon]._ItemName;
-                _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_weapon]._ItemDes;
+
+                if (Userdata.Instance._isTh)
+                {
+                    _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_weapon]._ItemNameTH;
+                    _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_weapon]._ItemDesTH;
+                }
+                else
+                {
+                    _RemovePopUp_Name.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_weapon]._ItemNameEng;
+                    _RemovePopUp_Des.text = _ItemStore[Userdata.Instance._User.data.current_ware.current_weapon]._ItemDesEng;
+                }
+
+               
                 _RemovePopUpIcon.sprite = _ItemStore[Userdata.Instance._User.data.current_ware.current_weapon]._ItemIcon;
                 _CurrentRemoveItemId = Userdata.Instance._User.data.current_ware.current_weapon;
                 break;

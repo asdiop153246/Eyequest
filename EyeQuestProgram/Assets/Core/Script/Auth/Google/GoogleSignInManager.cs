@@ -3,6 +3,7 @@ using Firebase;
 using Firebase.Auth;
 using Google;
 using System.Threading.Tasks;
+using Firebase.Extensions;
 
 public class GoogleSignInManager : MonoBehaviour
 {
@@ -21,15 +22,16 @@ public class GoogleSignInManager : MonoBehaviour
         };
     }
 
+    public GameObject _WaitingPanel;
+
     public void OnGoogleSignIn()
     {
         GoogleSignIn.Configuration = configuration;
-        GoogleSignIn.Configuration.UseGameSignIn = false;
-        GoogleSignIn.Configuration.RequestIdToken = true;
-        GoogleSignIn.Configuration.RequestEmail = true;
-
+     
         var signIn = GoogleSignIn.DefaultInstance.SignIn();
-        signIn.ContinueWith(OnAuthenticationFinished);
+        signIn.ContinueWithOnMainThread(OnAuthenticationFinished);  // ✅
+
+        _WaitingPanel.SetActive(true);
     }
 
     public TMPro.TextMeshProUGUI _LoginLog;
@@ -49,12 +51,12 @@ public class GoogleSignInManager : MonoBehaviour
             return;
         }
 
-        // ได้ token จาก Google
         GoogleSignInUser user = task.Result;
-        Debug.Log("Google Sign-In Success! " + user.Email);
+        _LoginLog.text = "Google Sign-In Success! Welcome " + user.DisplayName;
 
         Credential credential = GoogleAuthProvider.GetCredential(user.IdToken, null);
-        auth.SignInWithCredentialAsync(credential).ContinueWith(authTask =>
+
+        auth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(authTask =>  // ✅
         {
             if (authTask.IsFaulted || authTask.IsCanceled)
             {
@@ -64,13 +66,9 @@ public class GoogleSignInManager : MonoBehaviour
             }
 
             FirebaseUser newUser = authTask.Result;
-            Debug.Log("Firebase Sign-In Success! Welcome " + newUser.DisplayName);
-            Debug.Log(newUser.Email);
-            Debug.Log(newUser.UserId);
-            Debug.Log(newUser.TokenAsync(true));
+            _LoginLog.text = "Firebase Sign-In Success! Welcome " + newUser.DisplayName + " / " + newUser.Email;
 
-            _LoginLog.text = "Firebase Sign-In Success! Welcome " + newUser.DisplayName + " / " + newUser.Email + " / " + newUser.UserId + " / " + newUser.TokenAsync(true);
-
+            GetComponent<LoginManager>()._CallFireBaseLogin(newUser.Email, newUser.UserId, newUser.DisplayName, user.IdToken);
         });
     }
 }

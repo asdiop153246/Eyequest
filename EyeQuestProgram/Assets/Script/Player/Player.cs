@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     public Image healthBar; // Assign in Inspector
     public TextMeshProUGUI healthText; // Assign in Inspector
     public PlayerStats stats = new PlayerStats();
-    private Animator animator;
+    public Animator animator;
     [Header("Game Manager")]
     private GameManager gameManager;
     public GameObject _turnEffect;
@@ -82,8 +82,6 @@ public class Player : MonoBehaviour
         skills.Add(new Skill("Blinkshot", 0));
         skills.Add(new Skill("Shield", 0f));
 
-
-        animator = GetComponent<Animator>();
         gameManager = FindObjectOfType<GameManager>();
         if (_webcamObject != null)
         {
@@ -414,15 +412,18 @@ public class Player : MonoBehaviour
     }
     public void TakeDamage(float damage, BulletType type)
     {
+        StartCoroutine(ShowGetHitEffect(type));
+
         if (stats.isImmune) return;
 
         GetComponent<AudioSource>().PlayOneShot(_Clips[3]);
 
         stats.currentHealth = Mathf.Max(0f, stats.currentHealth - damage);
         GetComponent<Animator>().SetTrigger("_gethit");
-        StartCoroutine(ShowGetHitEffect(type));
+        
         if (stats.currentHealth <= 0)
         {
+            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._RetryRate(Userdata.Instance._CurrentWorld, Userdata.Instance._CurrentStage));
             Die();
         }
 

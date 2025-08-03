@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 //using UnityEditor.PackageManager.Requests;
 
 public class LoginManager : MonoBehaviour
@@ -37,6 +38,8 @@ public class LoginManager : MonoBehaviour
             _LoginOK.SetActive(true);
             Application.LoadLevel(1);
         };
+
+        Userdata.Instance.GetComponent<ApiCaller>()._Starttimestamp = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
 
     public void OnDisable()
@@ -175,8 +178,44 @@ public class LoginManager : MonoBehaviour
         request.SetRequestHeader("Accept", "application/json");
         request.SetRequestHeader("Content-Type", "application/json");
         _RequestTxt.text = "SENT API";
+        //request.certificateHandler = new BypassCertificate();
+
         yield return request.SendWebRequest();
-        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("❌ Request Failed");
+            Debug.LogError("Error: " + request.error);
+
+            // ตรวจสอบเพิ่มเติม
+            if (request.error.Contains("Cannot resolve host"))
+            {
+                Debug.LogError("สาเหตุ: DNS ไม่สามารถหาที่อยู่เซิร์ฟเวอร์ได้ (URL ผิดหรือเน็ตมีปัญหา)");
+            }
+            else if (request.error.Contains("certificate") || request.error.Contains("SSL"))
+            {
+                Debug.LogError("สาเหตุ: SSL Certificate ไม่ถูกต้องหรือหมดอายุ");
+            }
+            else if (request.error.Contains("timed out"))
+            {
+                Debug.LogError("สาเหตุ: การเชื่อมต่อหมดเวลา (Timeout)");
+            }
+            else if (request.error.Contains("refused") || request.error.Contains("unreachable"))
+            {
+                Debug.LogError("สาเหตุ: Server ไม่ตอบสนอง หรือบล็อคการเชื่อมต่อ");
+            }
+            else
+            {
+                Debug.LogError("สาเหตุทั่วไป: ตรวจสอบเน็ตหรือ URL อีกครั้ง");
+            }
+        }
+        else
+        {
+            Debug.Log("✅ Success: " + request.downloadHandler.text);
+        }
+
+        Debug.Log("request responseText:" + request.downloadHandler.text +" / "+ request.responseCode.ToString() + " / "+ request.result);
         _downloadHandlerTxt.text = "request responseText:" + request.downloadHandler.text;
         _RequestCodeTxt.text = request.responseCode.ToString()+" / "+ request.result;
 
@@ -209,10 +248,121 @@ public class LoginManager : MonoBehaviour
             }
         }
     }
-
-    public void _NextSence()
+    public class _FirebaseClass
     {
+        public string email;
+        public string firebase_uid;
+        public string name;
+        public string firebase_token;
+    }
 
+    public void _FakeLoginFirebase()
+    {
+        StartCoroutine(FirebaseAuth("panatthakorn.isd@gmail.com", "C23jcbCrVrRZGL50vOIbrL7muTe2", "Snuggly Bear Parlor ","1234"));
+    }
+
+    public void _CallFireBaseLogin(string _UserEmail, string _Firebase_uid, string _Name, string _Firebase_token)
+    {
+        //_LoginLog.text = "Firebase Sign-In Success! Welcome " + user.DisplayName + " / " + user.Email + " / " + user.UserId + " / " + user.IdToken;
+        Debug.Log("CALL THIS SHIT : " + _UserEmail + " / " + _Firebase_uid + " / " + _Name + " / " + _Firebase_token);
+        StartCoroutine(FirebaseAuth(_UserEmail,_Firebase_uid, _Name, _Firebase_token));
+    }
+
+    public IEnumerator FirebaseAuth(string _UserEmail, string _Firebase_uid, string _Name, string _Firebase_token)
+    {
+        _WaitingPanel.SetActive(true);
+
+        _FirebaseClass data = new _FirebaseClass();
+        data.email = _UserEmail.Trim(); ;
+        data.firebase_uid = _Firebase_uid.Trim(); ;
+        data.name = _Name.Trim(); ;
+        data.firebase_token = _Firebase_token.Trim(); ;
+
+        string json = JsonConvert.SerializeObject(data);
+        Debug.Log(json);
+        yield return new WaitForSeconds(1);
+
+        var request = new UnityWebRequest(_URL+ "/api/firebase-auth", "POST");
+        Debug.Log(_URL+"/api/firebase-auth");
+        //request.SetRequestHeader("Authorization", Userdata.instance._Userdata.data.account.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.ConnectionError ||
+            request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError("Request Failed");
+            Debug.LogError("Error: " + request.error);
+
+            // ตรวจสอบเพิ่มเติม
+            if (request.error.Contains("Cannot resolve host"))
+            {
+                Debug.LogError("สาเหตุ: DNS ไม่สามารถหาที่อยู่เซิร์ฟเวอร์ได้ (URL ผิดหรือเน็ตมีปัญหา)");
+            }
+            else if (request.error.Contains("certificate") || request.error.Contains("SSL"))
+            {
+                Debug.LogError("สาเหตุ: SSL Certificate ไม่ถูกต้องหรือหมดอายุ");
+            }
+            else if (request.error.Contains("timed out"))
+            {
+                Debug.LogError("สาเหตุ: การเชื่อมต่อหมดเวลา (Timeout)");
+            }
+            else if (request.error.Contains("refused") || request.error.Contains("unreachable"))
+            {
+                Debug.LogError("สาเหตุ: Server ไม่ตอบสนอง หรือบล็อคการเชื่อมต่อ");
+            }
+            else
+            {
+                Debug.LogError("สาเหตุทั่วไป: ตรวจสอบเน็ตหรือ URL อีกครั้ง");
+            }
+        }
+        else
+        {
+            Debug.Log(" Success: " + request.downloadHandler.text);
+        }
+
+        Debug.Log("===== DEBUG FIREBASE AUTH =====");
+        Debug.Log("Request URL: " + _URL + "/api/firebase-auth");
+        Debug.Log("Payload JSON: " + json);
+        Debug.Log("Response Code: " + request.responseCode);
+        Debug.Log("Response Text: " + request.downloadHandler.text);
+        Debug.Log("===== END DEBUG =====");
+
+        _WaitingPanel.SetActive(false);
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            _LoginFailed_Txt.text = request.downloadHandler.text + request.responseCode.ToString();
+            _LoginFailed.SetActive(true);
+            yield return new WaitForSeconds(2f);
+            _LoginFailed.SetActive(false);
+            //ShowErrorWithCode(request.responseCode.ToString());
+            //OnCallBack_Login_CheckEmail_Failed?.Invoke();
+        }
+        else
+        {
+            Userdata.Instance._User = JsonUtility.FromJson<Userdata.LoginResponse>(request.downloadHandler.text);
+            if (Userdata.Instance._User.data.access_token == null)
+            {
+                _LoginFailed.SetActive(true);
+                yield return new WaitForSeconds(2f);
+                _LoginFailed.SetActive(false);
+            }
+            else
+            {
+
+                _WaitingPanel.SetActive(true);
+                yield return new WaitForSeconds(2f);
+                _WaitingPanel.SetActive(false);
+                _LoginOK.SetActive(true);
+                StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._GetWorldData());
+
+            }
+        }
     }
 
     public void _FastLogin()
@@ -324,13 +474,7 @@ public class LoginManager : MonoBehaviour
             else
             {
                 Userdata.Instance._User = JsonUtility.FromJson<Userdata.LoginResponse>(request.downloadHandler.text);
-                _LoginOK.SetActive(true);
-                yield return new WaitForSeconds(2f);
-                _LoginOK.SetActive(false);
-                _RegisterPanel.SetActive(false);
-                _EnterPasswordPanel.SetActive(true);
-                _HeaderEmail.text = Userdata.Instance._User.data.user.email;
-                _Temp_UserEmail = Userdata.Instance._User.data.user.email;
+                StartCoroutine(_CheckPassword(Userdata.Instance._User.data.user.email, _RegisterData.password));
                 //_LoginPanel.SetActive(false);
                 //_EnterPasswordPanel.SetActive(true);
             }
@@ -407,7 +551,8 @@ public class LoginManager : MonoBehaviour
         _ForgotPassword data = new _ForgotPassword();
         data.email = _Temp_UserEmail;
 
-        string json = JsonUtility.ToJson(data);
+        //string json = JsonUtility.ToJson(data);
+        string json = JsonConvert.SerializeObject(data);
         Debug.Log(json);
         var request = new UnityWebRequest(_URL + "/api/forgot-password", "POST");
         //request.SetRequestHeader("Authorization", Userdata.instance._Userdata.data.account.access_token);

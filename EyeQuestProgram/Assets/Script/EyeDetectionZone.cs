@@ -37,7 +37,8 @@ public class EyeDetectionZone : MonoBehaviour
             {
                 //Debug.Log("Detect the Specific Eye");
                 this.gameObject.SetActive(false);
-                _SFX._PlaySFX(0);
+                Userdata.Instance._isCallSound(0);
+                Userdata.Instance._Haptic();
                 isEyeInside = false;
                 eyeStayTimer = 0f;
                 onEyeDetected.Invoke();

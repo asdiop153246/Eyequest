@@ -272,6 +272,7 @@ public class GameManager : MonoBehaviour
 
     public void _DisableAlreadySelectionSkill()
     {
+        Userdata.Instance._isCallSound(0);
         _isAlreadySelectionSkill = false;
     }
 
@@ -639,6 +640,7 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator _EndGame()
     {
+        StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._LevelCompletionRate(_userdata._CurrentWorld, _userdata._CurrentStage));
         _EndgamePanel.SetActive(true);
         _CurrentScore = CalculateScore();
         _CurrentStar = CalculateEndGameRewards();
@@ -648,6 +650,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_UpdateLeaderBoard());
         yield return new WaitForSeconds(0.2f);
         Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(_CurrentScore, _CurrentStar);
+        
     }
 
     public TMPro.TextMeshProUGUI _ScoreUI;

@@ -8,7 +8,6 @@ public class DateOfBirthSelector : MonoBehaviour
     public TMP_Dropdown dayDropdown;
     public TMP_Dropdown monthDropdown;
     public TMP_Dropdown yearDropdown;
-
     private void Start()
     {
         PopulateYearDropdown();
@@ -16,8 +15,8 @@ public class DateOfBirthSelector : MonoBehaviour
         PopulateDayDropdown(); // เริ่มต้นด้วย 31 วัน
 
         // อัปเดตจำนวนวันตามเดือน/ปีที่เลือก
-        monthDropdown.onValueChanged.AddListener(delegate { PopulateDayDropdown(); });
-        yearDropdown.onValueChanged.AddListener(delegate { PopulateDayDropdown(); });
+        monthDropdown.onValueChanged.AddListener(delegate { PopulateDayDropdown(true); });
+        yearDropdown.onValueChanged.AddListener(delegate { PopulateDayDropdown(true); });
     }
 
     void PopulateYearDropdown()
@@ -47,8 +46,13 @@ public class DateOfBirthSelector : MonoBehaviour
         monthDropdown.AddOptions(months);
     }
 
-    void PopulateDayDropdown()
+    void PopulateDayDropdown(bool keepSelection = false)
     {
+        int previousDayIndex = dayDropdown.value; // เก็บ index เดิม
+        string previousDayText = previousDayIndex < dayDropdown.options.Count
+            ? dayDropdown.options[previousDayIndex].text
+            : "01";
+
         dayDropdown.ClearOptions();
 
         int year = int.Parse(yearDropdown.options[yearDropdown.value].text);
@@ -64,7 +68,22 @@ public class DateOfBirthSelector : MonoBehaviour
 
         dayDropdown.AddOptions(days);
 
-        //GetComponent<LoginManager>()._RegisterData.
+        if (keepSelection)
+        {
+            // ตรวจสอบว่าวันที่เดิมยังมีอยู่ไหม
+            int previousDay;
+            if (int.TryParse(previousDayText, out previousDay))
+            {
+                if (previousDay <= daysInMonth)
+                {
+                    dayDropdown.value = previousDay - 1; // set เป็นวันเดิม
+                }
+                else
+                {
+                    dayDropdown.value = daysInMonth - 1; // set เป็นวันสุดท้าย
+                }
+            }
+        }
     }
 
     public string GetSelectedDate()

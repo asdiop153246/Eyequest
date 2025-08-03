@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using Firebase;
 using Firebase.Extensions;
@@ -8,43 +7,64 @@ using UnityEngine.Networking;
 
 public class FirebaseCore : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private bool firebaseReady = false;
+
+    void Awake()
     {
-        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
-            var dependencyStatus = task.Result;
-            if (dependencyStatus == Firebase.DependencyStatus.Available)
-            {
-                // Create and hold a reference to your FirebaseApp,
-                // where app is a Firebase.FirebaseApp property of your application class.
-                Firebase.FirebaseApp app = Firebase.FirebaseApp.DefaultInstance;
-
-                // Set a flag here to indicate whether Firebase is ready to use by your app.
-            }
-            else
-            {
-                UnityEngine.Debug.LogError(System.String.Format(
-                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
-                // Firebase Unity SDK is not safe to use here.
-            }
-        });
-
-        Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
-        Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+        DontDestroyOnLoad(this.gameObject);
+        StartCoroutine(InitFirebaseSafe());
     }
 
-    public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
+    private IEnumerator InitFirebaseSafe()
     {
-        UnityEngine.Debug.Log("Received Registration Token: " + token.Token);
-        StartCoroutine(_SentAPI(token.Token));
+        var checkTask = FirebaseApp.CheckAndFixDependenciesAsync();
+        yield return new WaitUntil(() => checkTask.IsCompleted);
+
+        if (checkTask.Result == DependencyStatus.Available)
+        {
+            FirebaseApp app = FirebaseApp.DefaultInstance;
+
+            // 🔁 หน่วงเวลาเล็กน้อยก่อนเรียก Messaging
+            yield return new WaitForSeconds(0.1f);
+
+            yield return StartCoroutine(InitMessagingSafely());
+        }
+        else
+        {
+            Debug.LogError($"🚫 Firebase dependencies error: {checkTask.Result}");
+        }
     }
 
-    public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+    private IEnumerator InitMessagingSafely()
     {
-        UnityEngine.Debug.Log("Received a new message from: " + e.Message.From);
+        yield return null; // หน่วงอีก 1 frame เพื่อให้แน่ใจว่า Messaging ready
+
+        try
+        {
+            FirebaseMessaging.TokenReceived += OnTokenReceived;
+            FirebaseMessaging.MessageReceived += OnMessageReceived;
+            firebaseReady = true;
+            Debug.Log("✅ Firebase Messaging Registered");
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("🔥 Messaging Init Failed: " + ex.ToString());
+        }
     }
 
-    public class _Token
+    public void OnTokenReceived(object sender, TokenReceivedEventArgs token)
+    {
+        Debug.Log("Received Registration Token: " + token.Token);
+        StartCoroutine(SendTokenToServer(token.Token));
+    }
+
+    public void OnMessageReceived(object sender, MessageReceivedEventArgs e)
+    {
+        Debug.Log("📩 Message received from: " + e.Message.From);
+    }
+
+    [System.Serializable]
+    public class TokenPayload
     {
         public string token;
         public string device_type;
@@ -52,38 +72,35 @@ public class FirebaseCore : MonoBehaviour
         public string app_version;
     }
 
-
-    public IEnumerator _SentAPI(string _Token)
+    public IEnumerator SendTokenToServer(string token)
     {
-        _Token _temp = new _Token();
-        _temp.token = _Token;
-        _temp.device_type = SystemInfo.operatingSystem.ToString();
-        _temp.device_id = SystemInfo.deviceUniqueIdentifier.ToString();
+        TokenPayload payload = new TokenPayload
+        {
+            token = token,
+            device_type = SystemInfo.operatingSystem,
+            device_id = SystemInfo.deviceUniqueIdentifier,
+            app_version = Application.version
+        };
 
-        string json = JsonUtility.ToJson(_temp);
-        Debug.Log(json);
-        var request = new UnityWebRequest(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._Url + "/notify/register-token", "POST");
+        string json = JsonUtility.ToJson(payload);
+        string url = Userdata.Instance.GetComponent<ApiCaller>()._Url + "/api/notify/register-token";
+
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
+        request.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(json));
+        request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Accept", "application/json");
         request.SetRequestHeader("Content-Type", "application/json");
 
         yield return request.SendWebRequest();
-        Debug.Log("request responseText:" + request.downloadHandler.text);
-
-        //_WaitingPanel.SetActive(false);
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-
-            //OnCall_GetInventory_Failed?.Invoke();
+            Debug.LogError($"❌ Token send failed: {request.error}\n{request.downloadHandler.text}");
         }
         else
         {
-            //Userdata.Instance._User = JsonUtility.FromJson<Userdata.LoginResponse>(request.downloadHandler.text);
-            //StartCoroutine(GetRequest(_Type));
+            Debug.Log($"✅ Token sent successfully: {request.downloadHandler.text}");
         }
     }
 }
