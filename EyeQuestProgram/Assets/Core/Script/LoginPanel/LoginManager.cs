@@ -474,13 +474,7 @@ public class LoginManager : MonoBehaviour
             else
             {
                 Userdata.Instance._User = JsonUtility.FromJson<Userdata.LoginResponse>(request.downloadHandler.text);
-                _LoginOK.SetActive(true);
-                yield return new WaitForSeconds(2f);
-                _LoginOK.SetActive(false);
-                _RegisterPanel.SetActive(false);
-                _EnterPasswordPanel.SetActive(true);
-                _HeaderEmail.text = Userdata.Instance._User.data.user.email;
-                _Temp_UserEmail = Userdata.Instance._User.data.user.email;
+                StartCoroutine(_CheckPassword(Userdata.Instance._User.data.user.email, _RegisterData.password));
                 //_LoginPanel.SetActive(false);
                 //_EnterPasswordPanel.SetActive(true);
             }
