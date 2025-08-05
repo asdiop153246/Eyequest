@@ -46,6 +46,9 @@ public class GameManager : MonoBehaviour
     [Header("Reward Settings")]
     public GameObject[] Stars;
     public Userdata _userdata;
+
+    [Header("Skill settings")]
+    public GameObject[] Skill;
     void Start()
     {
         
@@ -112,9 +115,31 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void CancelSkillandDisableUI()
+    {
+        foreach (GameObject skill in Skill)
+        {
+            // Disable all children first
+            foreach (Transform child in skill.transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+            
+            // Enable only the first child if it exists
+            if (skill.transform.childCount > 0)
+            {
+                Transform firstChild = skill.transform.GetChild(0);
+                firstChild.gameObject.SetActive(true);
+            }
+            
+            // Finally disable the parent (skill)
+            skill.SetActive(false);
+        }
+    }
+
     public void _GamePlay()
     {
-        
+
 
         if (_userdata == null)
         {
@@ -122,7 +147,7 @@ public class GameManager : MonoBehaviour
 
             if (Userdata.Instance._isTh)
             {
-                
+
 
                 switch (worldIndex)
                 {
@@ -151,9 +176,9 @@ public class GameManager : MonoBehaviour
                         _WorldLevel.text = "The Lab - " + (stageIndex + 1);
                         break;
                 }
-                
+
             }
-           
+
 
             _PotionIcon[0].SetActive(false);
             _PotionIcon[1].SetActive(false);
@@ -274,6 +299,40 @@ public class GameManager : MonoBehaviour
     {
         Userdata.Instance._isCallSound(0);
         _isAlreadySelectionSkill = false;
+    }
+
+    // Function to reset skill sequence - disable all children, enable first child, then disable parent
+    public void ResetSkillSequence(GameObject parentObject)
+    {
+        if (parentObject == null) return;
+
+        // Disable all children first
+        for (int i = 0; i < parentObject.transform.childCount; i++)
+        {
+            Transform child = parentObject.transform.GetChild(i);
+            child.gameObject.SetActive(false);
+        }
+
+        // Enable only the first child if it exists
+        if (parentObject.transform.childCount > 0)
+        {
+            Transform firstChild = parentObject.transform.GetChild(0);
+            firstChild.gameObject.SetActive(true);
+        }
+
+        // Finally disable the parent
+        parentObject.SetActive(false);
+        
+        Debug.Log($"Reset skill sequence for: {parentObject.name}");
+    }
+
+    // Overload to reset multiple skill sequences at once
+    public void ResetAllSkillSequences(List<GameObject> skillParents)
+    {
+        foreach (GameObject skillParent in skillParents)
+        {
+            ResetSkillSequence(skillParent);
+        }
     }
 
 
@@ -935,11 +994,11 @@ public float starDelay = 0.7f; // time between each star popping out
         if (target == null)
             return;
 
-
         selectedTarget = target;
 
         Debug.Log($"Selected target: {target.name}");
         isReadyToAttack = true; // Set flag to indicate player is ready to attack
+        
         foreach (GameObject monster in spawnedMonsters)
         {
             if (monster != null && monster != selectedTarget)
@@ -954,10 +1013,8 @@ public float starDelay = 0.7f; // time between each star popping out
             }
         }
 
-        foreach (GameObject x in _HightLightSkill)
-        {
-            x.SetActive(false);
-        }
+        // Reset all previous skill sequences before showing new ones
+        ResetAllSkillSequences(_HightLightSkill);
 
         foreach (GameObject x in _HightLightSkill_Icon)
         {

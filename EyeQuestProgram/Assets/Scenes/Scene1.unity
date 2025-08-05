@@ -37584,6 +37584,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1484418857}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CancelSkillandDisableUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &212486371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59084,7 +59096,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &351290257
 RectTransform:
   m_ObjectHideFlags: 0
@@ -131940,10 +131952,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 886684883}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1484418857}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CancelSkillandDisableUI
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -137573,6 +137585,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1484418857}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CancelSkillandDisableUI
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -165409,6 +165433,18 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1484418857}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CancelSkillandDisableUI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1484418857}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: _DisableAlreadySelectionSkill
         m_Mode: 1
         m_Arguments:
@@ -181223,10 +181259,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 886684883}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1484418857}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CancelSkillandDisableUI
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -223252,6 +223288,16 @@ MonoBehaviour:
   - {fileID: 2011509982}
   - {fileID: 753990524}
   _userdata: {fileID: 0}
+  Skill:
+  - {fileID: 4954815250372840721}
+  - {fileID: 4697142171490144893}
+  - {fileID: 383046645451339787}
+  - {fileID: 3856211440397273450}
+  - {fileID: 4697142171490144892}
+  - {fileID: 5720862949277224031}
+  - {fileID: 4697142171490144891}
+  - {fileID: 787337991591455041}
+  - {fileID: 4697142171490144890}
   _World:
   - {fileID: 988160841}
   - {fileID: 1874712002}
@@ -229606,6 +229652,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1484418857}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: _DisableAlreadySelectionSkill
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1484418857}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CancelSkillandDisableUI
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -290532,10 +290590,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 886684883}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1484418857}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: CancelSkillandDisableUI
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -497101,6 +497159,26 @@ MonoBehaviour:
   _TH: "\u0E43\u0E1A\u0E2B\u0E19\u0E49\u0E32\u0E02\u0E2D\u0E07\u0E04\u0E38\u0E13\u0E44\u0E21\u0E48\u0E2D\u0E22\u0E39\u0E48\u0E01\u0E36\u0E48\u0E07\u0E01\u0E25\u0E32\u0E07
     \u0E01\u0E23\u0E38\u0E13\u0E32\u0E08\u0E31\u0E14\u0E43\u0E1A\u0E2B\u0E19\u0E49\u0E32\u0E43\u0E2B\u0E49\u0E15\u0E23\u0E07\u0E01\u0E31\u0E1A\u0E01\u0E23\u0E2D\u0E1A"
   _Img: []
+--- !u!1 &4697142171490144890 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6424093178027503005, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+  m_PrefabInstance: {fileID: 4697142171490144887}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4697142171490144891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8153602439310248169, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+  m_PrefabInstance: {fileID: 4697142171490144887}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4697142171490144892 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3105873637119073788, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+  m_PrefabInstance: {fileID: 4697142171490144887}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4697142171490144893 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4863271279684633215, guid: 81ea36762fa913b4cac0f869dbba8625, type: 3}
+  m_PrefabInstance: {fileID: 4697142171490144887}
+  m_PrefabAsset: {fileID: 0}
 --- !u!199 &4782060145024068067
 ParticleSystemRenderer:
   serializedVersion: 6
