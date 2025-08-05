@@ -18,18 +18,19 @@ public class Userdata : MonoBehaviour
     {
         public string status;
         public string message;
-        public Data data;
+        public LoginData data;
     }
 
     [System.Serializable]
-    public class Data
+    public class LoginData
     {
         public User user;
         public Profile profile;
+        public string access_token;
         public Currency currency;
         public Booster booster;
         public CurrentWare current_ware;
-        public string access_token;
+        public List<DailyReward> daily_rewards;
     }
 
     [System.Serializable]
@@ -41,6 +42,7 @@ public class Userdata : MonoBehaviour
         public string birthdate;
         public string created_at;
         public string updated_at;
+        public string last_login_at;
     }
 
     [System.Serializable]
@@ -48,12 +50,17 @@ public class Userdata : MonoBehaviour
     {
         public int id;
         public int user_id;
-        public string enterprise_id;
+        public int? enterprise_id;
+        public int? department_id;
+        public int? position_id;
         public string gender;
         public string eye_problem;
         public string birthdate;
         public string created_at;
         public string updated_at;
+        public object enterprise;
+        public object department;
+        public object position;
     }
 
     [System.Serializable]
@@ -79,6 +86,16 @@ public class Userdata : MonoBehaviour
         public int current_hat;
         public int current_body;
         public int current_weapon;
+    }
+
+    [System.Serializable]
+    public class DailyReward
+    {
+        public int id;
+        public int user_id;
+        public int reward_no;
+        public bool is_done;
+        public bool is_claimed;
     }
 
     private void Awake()

@@ -4,23 +4,7 @@ using UnityEngine;
 
 public class QuestCore : MonoBehaviour
 {
-    public List<QuestData> _CurrentQuestById;
-
-    [System.Serializable]
-    public class QuestData
-    {
-        public int _id;
-        public bool _isClaim;
-        public bool _isDone;
-    }
-
-    public void OnEnable()
-    {
-        foreach(QuestData x in _CurrentQuestById)
-        {
-            x._id = Random.Range(0, _QuestList.Count);
-        }
-    }
+    public List<Userdata.DailyReward> _CurrentQuestById;
 
     public List<QuestClass> _QuestList;
 
@@ -45,20 +29,31 @@ public class QuestCore : MonoBehaviour
         public int _Currency;
     }
 
+    public int _CurrectRewardId;
     public void _DoneQuestById(int _id)
     {
-        foreach (QuestData x in _CurrentQuestById)
+        foreach (Userdata.DailyReward x in _CurrentQuestById)
         {
-            if(_id == x._id)
+            if(_id == x.reward_no)
             {
-                if (!x._isClaim && !x._isDone)
+                if (!x.is_claimed && !x.is_done)
                 {
-                    x._isDone = true;
+                    x.is_done = true;
+                    _CurrectRewardId = x.id;
                 }
             }
            
         }
 
+        StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._DailyReward_isDone(_CurrectRewardId));
         // Update Quest API HERE
+    }
+
+    public void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            _DoneQuestById(5);
+        }
     }
 }

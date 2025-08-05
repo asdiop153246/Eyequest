@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +29,7 @@ public class QuestCaller : MonoBehaviour
 
     public void OnEnable()
     {
+
         _UpdateQuestTxT();
     }
 
@@ -39,47 +40,83 @@ public class QuestCaller : MonoBehaviour
         QuestCore questCore = Userdata.Instance.GetComponent<QuestCore>();
         for (int i = 0; i < questCore._CurrentQuestById.Count; i++)
         {
-            _QuestCore[i]._QuestName.text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._QuestName_ENG;
-            _QuestCore[i]._QuestDes.text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._QuestDescription_ENG;
-            _QuestCore[i]._QuestCondition.text = "- "+ Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._QuestCondition_ENG;
-            _QuestCore[i]._QuestReward.text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Currency + "";
+            if (Userdata.Instance._isTh)
+            {
+                _QuestCore[i]._QuestName.text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._QuestName_TH;
+                _QuestCore[i]._QuestDes.text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._QuestDescription_TH;
+                _QuestCore[i]._QuestCondition.text = "- " + Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._QuestCondition_TH;
 
-            if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Type == QuestCore._RewardType.Gold)
+            }
+            else
+            {
+                _QuestCore[i]._QuestName.text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._QuestName_ENG;
+                _QuestCore[i]._QuestDes.text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._QuestDescription_ENG;
+                _QuestCore[i]._QuestCondition.text = "- " + Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._QuestCondition_ENG;
+
+            }
+
+            _QuestCore[i]._QuestReward.text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Currency + "";
+
+            if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Type == QuestCore._RewardType.Gold)
             {
                 _QuestCore[i]._RewardImage.sprite = _Gold;
             }
-            else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Type == QuestCore._RewardType.Vision)
+            else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Type == QuestCore._RewardType.Vision)
             {
                 _QuestCore[i]._RewardImage.sprite = _Vision;
             }
-            else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Type == QuestCore._RewardType.Gem)
+            else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Type == QuestCore._RewardType.Gem)
             {
                 _QuestCore[i]._RewardImage.sprite = _Gem;
             }
 
-            if (!Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isDone && !Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isClaim)
+            if (!Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_done && !Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_claimed)
             {
                 _QuestCore[i]._ClaimBtm.GetComponent<Image>().sprite = _Go;
-                _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "GO";
+                if (Userdata.Instance._isTh)
+                {
+                    _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "ปะ";
+                }
+                else
+                {
+                    _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "GO";
+                }
+               
                 _QuestCore[i]._ClaimBtm.GetComponent<Button>().interactable = true;
                 _QuestCore[i]._ClaimBtm.GetComponent<QuestBtm>()._isDone = false;
             }
-            else if (Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isDone && !Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isClaim)
+            else if (Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_done && !Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_claimed)
             {
                 _QuestCore[i]._ClaimBtm.GetComponent<Image>().sprite = _isDone;
-                _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Claim";
+
+                if (Userdata.Instance._isTh)
+                {
+                    _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "รับ";
+                }
+                else
+                {
+                    _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Claim";
+                }
+
                 _QuestCore[i]._ClaimBtm.GetComponent<Button>().interactable = true;
                 _QuestCore[i]._ClaimBtm.GetComponent<QuestBtm>()._isDone = true;
                 _ClaimAll.interactable = true;
             }
-            else if (Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isDone && Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isClaim)
+            else if (Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_done && Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_claimed)
             {
                 _QuestCore[i]._ClaimBtm.GetComponent<Image>().sprite = _isClaim;
-                _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Done";
+                if (Userdata.Instance._isTh)
+                {
+                    _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "สำเร็จ";
+                }
+                else
+                {
+                    _QuestCore[i]._ClaimBtm.transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = "Done";
+                }
                 _QuestCore[i]._ClaimBtm.GetComponent<Button>().interactable = false;
             }
 
-            Debug.Log("QUEST : " + i + " / " + Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isDone + " / " + Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isClaim);
+            Debug.Log("QUEST : " + i + " / " + Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_done + " / " + Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_claimed);
         }
     }
 
@@ -101,34 +138,35 @@ public class QuestCaller : MonoBehaviour
             _GemReward.SetActive(false);
             _VisionReward.SetActive(false);
             // GET ITEM;
-            if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Type == QuestCore._RewardType.Gold)
+            if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Type == QuestCore._RewardType.Gold)
             {
-                _GoldReward.transform.GetChild(0).transform.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Currency + "";
+                _GoldReward.transform.GetChild(0).transform.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Currency + "";
                 _GoldReward.SetActive(true);
 
-                Userdata.Instance._User.data.currency.gold += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Currency;
+                Userdata.Instance._User.data.currency.gold += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Currency;
                 StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 0));
             }
-            else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Type == QuestCore._RewardType.Vision)
+            else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Type == QuestCore._RewardType.Vision)
             {
-                _VisionReward.transform.GetChild(0).transform.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Currency + "";
+                _VisionReward.transform.GetChild(0).transform.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Currency + "";
                 _VisionReward.SetActive(true);
-                Userdata.Instance._User.data.currency.vision_point += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Currency;
+                Userdata.Instance._User.data.currency.vision_point += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Currency;
                 StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 2));
             }
-            else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Type == QuestCore._RewardType.Gem)
+            else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Type == QuestCore._RewardType.Gem)
             {
-                _GemReward.transform.GetChild(0).transform.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Currency + "";
+                _GemReward.transform.GetChild(0).transform.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Currency + "";
                 _GemReward.SetActive(true);
-                Userdata.Instance._User.data.currency.gem += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._id]._Currency;
+                Userdata.Instance._User.data.currency.gem += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].reward_no]._Currency;
                 StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 1));
             }
 
-            Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._isDone = true;
-            Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot]._isClaim = true;
+            Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].is_done = true;
+            Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].is_claimed = true;
 
             _UpdateQuestTxT();
 
+            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._DailyReward_isClaimed(Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[_QuestSlot].id));
             // Update Quest API Here
 
         }
@@ -152,32 +190,34 @@ public class QuestCaller : MonoBehaviour
         QuestCore questCore = Userdata.Instance.GetComponent<QuestCore>();
         for (int i = 0; i < questCore._CurrentQuestById.Count; i++)
         {
-            if (Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isDone && !Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isClaim)
+            if (Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_done && !Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_claimed)
             {
-                if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Type == QuestCore._RewardType.Gold)
+                if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Type == QuestCore._RewardType.Gold)
                 {
-                    _Gold += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Currency;
+                    _Gold += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Currency;
                     _GoldReward.SetActive(true);
                     Userdata.Instance._User.data.currency.gold += _Gold;
                     StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 0));
                 }
-                else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Type == QuestCore._RewardType.Vision)
+                else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Type == QuestCore._RewardType.Vision)
                 {
-                    _Vision += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Currency;
+                    _Vision += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Currency;
                     _VisionReward.SetActive(true);
                     Userdata.Instance._User.data.currency.vision_point += _Vision;
                     StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 2));
                 }
-                else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Type == QuestCore._RewardType.Gem)
+                else if (Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Type == QuestCore._RewardType.Gem)
                 {
-                    _Gem += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._id]._Currency;
+                    _Gem += Userdata.Instance.GetComponent<QuestCore>()._QuestList[Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].reward_no]._Currency;
                     _GemReward.SetActive(true);
                     Userdata.Instance._User.data.currency.gem += _Gem;
                     StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(0, 1));
                 }
 
-                Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isDone = true;
-                Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i]._isClaim = true;
+                Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_done = true;
+                Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].is_claimed = true;
+
+                StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._DailyReward_isClaimed(Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById[i].id));
             }
 
             
@@ -188,7 +228,7 @@ public class QuestCaller : MonoBehaviour
         _GemReward.transform.GetChild(0).transform.gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = _Gem + "";
 
         _UpdateQuestTxT();
-
+       
         // Update Quest API Here
     }
 }

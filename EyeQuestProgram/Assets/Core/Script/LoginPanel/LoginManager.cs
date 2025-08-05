@@ -241,7 +241,7 @@ public class LoginManager : MonoBehaviour
             }
             else
             {
-
+                Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById = Userdata.Instance._User.data.daily_rewards;
                 _WaitingPanel.SetActive(true);
                 StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._GetWorldData());
                 
@@ -354,7 +354,7 @@ public class LoginManager : MonoBehaviour
             }
             else
             {
-
+                Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById = Userdata.Instance._User.data.daily_rewards;
                 _WaitingPanel.SetActive(true);
                 yield return new WaitForSeconds(2f);
                 _WaitingPanel.SetActive(false);

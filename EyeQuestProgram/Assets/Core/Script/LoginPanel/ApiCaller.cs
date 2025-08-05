@@ -1017,6 +1017,64 @@ public class ApiCaller : MonoBehaviour
 
     }
 
+    public class _UpdateStat_isDone
+    {
+        public int id;
+        public bool is_done;
+    }
+
+    public IEnumerator _DailyReward_isDone(int _id)
+    {
+
+        _UpdateStat_isDone _temp = new _UpdateStat_isDone();
+        _temp.id = _id;
+        _temp.is_done = true;
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/daily-rewards/update-status", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+    }
+
+    public class _UpdateStat_isClaimed
+    {
+        public int id;
+        public bool is_claimed;
+    }
+
+    public IEnumerator _DailyReward_isClaimed(int _id)
+    {
+
+        _UpdateStat_isClaimed _temp = new _UpdateStat_isClaimed();
+        _temp.id = _id;
+        _temp.is_claimed = true;
+
+        json = JsonUtility.ToJson(_temp);
+
+        Debug.Log(json);
+        var request = new UnityWebRequest(_Url + "/api/daily-rewards/update-claim", "POST");
+        request.SetRequestHeader("Authorization", "Bearer " + Userdata.Instance._User.data.access_token);
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+        Debug.Log("request responseText:" + request.downloadHandler.text);
+
+    }
+
 
 
     #endregion
