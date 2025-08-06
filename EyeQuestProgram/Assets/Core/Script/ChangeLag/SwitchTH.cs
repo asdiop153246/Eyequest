@@ -23,7 +23,7 @@ public class SwitchTH : MonoBehaviour
 
     public IEnumerator _DelaySwitch()
     {
-        yield return new WaitForSeconds(0.001f);
+        yield return new WaitForSeconds(0.000f);
 
         if (Userdata.Instance._isTh)
         {

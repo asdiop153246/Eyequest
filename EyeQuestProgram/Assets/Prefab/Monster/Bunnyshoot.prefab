@@ -508,6 +508,7 @@ MonoBehaviour:
   _HitEffect: {fileID: 4225374483206829120, guid: 2319d0fc8c49d4642a4da478b3c589af, type: 3}
   _Root: {fileID: 7298580393518201697}
   _DieEffect: {fileID: 3037282632951184280, guid: a06571c4db241b942963dc56424732b4, type: 3}
+  _CurrentMonsterName: Bunnyshoot
 --- !u!1 &3440000290736109640
 GameObject:
   m_ObjectHideFlags: 0

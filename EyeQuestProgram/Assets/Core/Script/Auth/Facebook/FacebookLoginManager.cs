@@ -73,6 +73,12 @@ public class FacebookLoginManager : MonoBehaviour
                 newUser.DisplayName,
                 accessToken
             );
+
+                PlayerPrefs.SetInt("isLogin_Type", 2);
+                PlayerPrefs.SetString("Username", newUser.Email);
+                PlayerPrefs.SetString("Password", newUser.UserId);
+                PlayerPrefs.SetString("DisplayName", newUser.DisplayName);
+                PlayerPrefs.SetString("accessToken", accessToken);
         });
     }
 }

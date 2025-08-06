@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Android;
 using Firebase;
 using Firebase.Extensions;
 using Firebase.Messaging;
@@ -12,10 +13,10 @@ public class FirebaseCore : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-        StartCoroutine(InitFirebaseSafe());
+        
     }
 
-    private IEnumerator InitFirebaseSafe()
+    public IEnumerator InitFirebaseSafe()
     {
         var checkTask = FirebaseApp.CheckAndFixDependenciesAsync();
         yield return new WaitUntil(() => checkTask.IsCompleted);
@@ -72,17 +73,25 @@ public class FirebaseCore : MonoBehaviour
         public string app_version;
     }
 
+    public void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            StartCoroutine(SendTokenToServer("do-F55ERTfG0JXU5zSUcdk:APA91bEvJxx18XbcvuSocI7eacdwvoANxWsE2tYDOuZGoDzdoyZi3tCUtVlK3P0lNuIiDvb6-gh-jbPhlejjRHnZjJYXv1F-z1lJOpmSuZX2wiagphOOmbM"));
+        }
+    }
+
     public IEnumerator SendTokenToServer(string token)
     {
-        TokenPayload payload = new TokenPayload
-        {
-            token = token,
-            device_type = SystemInfo.operatingSystem,
-            device_id = SystemInfo.deviceUniqueIdentifier,
-            app_version = Application.version
-        };
+        TokenPayload payload = new TokenPayload();
+        payload.token = token;
+        payload.device_type = "";
+        payload.device_id = "";
+        payload.app_version = "";
 
         string json = JsonUtility.ToJson(payload);
+
+        Debug.Log(json);
         string url = Userdata.Instance.GetComponent<ApiCaller>()._Url + "/api/notify/register-token";
 
         UnityWebRequest request = new UnityWebRequest(url, "POST");
@@ -101,6 +110,32 @@ public class FirebaseCore : MonoBehaviour
         else
         {
             Debug.Log($"✅ Token sent successfully: {request.downloadHandler.text}");
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        {
+            var activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            var sdkInt = new AndroidJavaClass("android.os.Build$VERSION").GetStatic<int>("SDK_INT");
+
+            if (sdkInt >= 33)
+            {
+                var contextCompat = new AndroidJavaClass("androidx.core.content.ContextCompat");
+                int result = contextCompat.CallStatic<int>("checkSelfPermission", activity, "android.permission.POST_NOTIFICATIONS");
+
+                if (result != 0) // PERMISSION_GRANTED = 0
+                {
+                    var activityCompat = new AndroidJavaClass("androidx.core.app.ActivityCompat");
+                    string[] permissions = new string[] { "android.permission.POST_NOTIFICATIONS" };
+                    activityCompat.CallStatic("requestPermissions", activity, permissions, 1001);
+                }
+            }
+        }
+#endif
+
+            if (!Permission.HasUserAuthorizedPermission(Permission.Camera))
+            {
+                Permission.RequestUserPermission(Permission.Camera);
+            }
         }
     }
 }

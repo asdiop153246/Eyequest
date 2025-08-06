@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
         _HpBar.SetActive(false);
         _TurnBar.SetActive(false);
 
+        _WorldLevel.gameObject.SetActive(false);
 
         if (_userdata != null)
         {
@@ -79,6 +80,7 @@ public class GameManager : MonoBehaviour
         else
         {
             _ChangeMapAndSkyBox(worldIndex-1);
+            
         }
 
     }
@@ -114,7 +116,8 @@ public class GameManager : MonoBehaviour
 
     public void _GamePlay()
     {
-        
+
+        _WorldLevel.gameObject.SetActive(true);
 
         if (_userdata == null)
         {
@@ -127,13 +130,15 @@ public class GameManager : MonoBehaviour
                 switch (worldIndex)
                 {
                     case 0:
-                        _WorldLevel.text = "ป่าพิศวง - " + (stageIndex + 1);
-                        break;
-                    case 1:
-                        _WorldLevel.text = "เมืองล่มสลาย - " + (stageIndex + 1);
+
+                            _WorldLevel.text = "ป่าพิศวง - " + (stageIndex+1);
+                        
                         break;
                     case 2:
-                        _WorldLevel.text = "ห้องทดลอง - " + (stageIndex + 1);
+                            _WorldLevel.text = "เมืองล่มสลาย - " + (stageIndex+1);
+                        break;
+                    case 1:
+                            _WorldLevel.text = "ห้องทดลอง - " + (stageIndex+1);
                         break;
                 }
             }
@@ -142,13 +147,13 @@ public class GameManager : MonoBehaviour
                 switch (worldIndex)
                 {
                     case 0:
-                        _WorldLevel.text = "The Forest - " + (stageIndex + 1);
-                        break;
-                    case 1:
-                        _WorldLevel.text = "The Fallen City - " + (stageIndex + 1);
+                            _WorldLevel.text = "The Forest - " + (stageIndex+1);
                         break;
                     case 2:
-                        _WorldLevel.text = "The Lab - " + (stageIndex + 1);
+                            _WorldLevel.text = "The Fallen City - " + (stageIndex + 1);
+                        break;
+                    case 1:
+                            _WorldLevel.text = "The Lab - " + (stageIndex + 1);
                         break;
                 }
                 
@@ -178,13 +183,16 @@ public class GameManager : MonoBehaviour
                 switch (worldIndex)
                 {
                     case 0:
-                        _WorldLevel.text = "ป่าพิศวง - " + (stageIndex + 1);
-                        break;
-                    case 1:
-                        _WorldLevel.text = "เมืองล่มสลาย - " + (stageIndex + 1);
+ 
+                            _WorldLevel.text = "ป่าพิศวง - " + (stageIndex+1);
+
                         break;
                     case 2:
-                        _WorldLevel.text = "ห้องทดลอง - " + (stageIndex + 1);
+
+                            _WorldLevel.text = "เมืองล่มสลาย - " + (stageIndex+1);
+                        break;
+                    case 1:
+                            _WorldLevel.text = "ห้องทดลอง - " + (stageIndex+1);
                         break;
                 }
             }
@@ -193,13 +201,13 @@ public class GameManager : MonoBehaviour
                 switch (worldIndex)
                 {
                     case 0:
-                        _WorldLevel.text = "The Forest - " + (stageIndex + 1);
-                        break;
-                    case 1:
-                        _WorldLevel.text = "The Fallen City - " + (stageIndex + 1);
+                            _WorldLevel.text = "The Forest - " + (stageIndex+1);
                         break;
                     case 2:
-                        _WorldLevel.text = "The Lab - " + (stageIndex + 1);
+                            _WorldLevel.text = "The Fallen City - " + (stageIndex+1);
+                        break;
+                    case 1:
+                            _WorldLevel.text = "The Lab - " + (stageIndex+1);
                         break;
                 }
 
@@ -259,6 +267,7 @@ public class GameManager : MonoBehaviour
             {
                 worldIndex = 1;
             }
+
             Debug.Log($"World Index: {worldIndex}, Stage Index: {stageIndex}");
         }
         Player player = players[0].GetComponent<Player>();
@@ -333,6 +342,7 @@ public class GameManager : MonoBehaviour
     {
         _HpBar.SetActive(false);
         _TurnBar.SetActive(false);
+       
         _WarpProtal.SetActive(true);
         yield return new WaitForSeconds(1f);
         PrepareText.transform.parent.gameObject.SetActive(true);
@@ -353,30 +363,31 @@ public class GameManager : MonoBehaviour
             switch (_userdata._CurrentWorld)
             {
                 case 0:
-                    PrepareText.text = "ป่าพิศวง - " + (stageIndex);
-                    break;
-                case 1:
-                    PrepareText.text = "เมืองล่มสลาย - " + (stageIndex);
+                       PrepareText.text = "ป่าพิศวง - " + (_userdata._CurrentStage+1);
                     break;
                 case 2:
-                    PrepareText.text = "ห้องทดลอง - " + (stageIndex);
+                       PrepareText.text = "เมืองล่มสลาย - " + (_userdata._CurrentStage + 1);
+                    break;
+                case 1:
+                        PrepareText.text = "ห้องทดลอง - " + (_userdata._CurrentStage + 1);
                     break;
             }
         }
         else
         {
+
             switch (_userdata._CurrentWorld)
             {
                 case 0:
-                    PrepareText.text = "The Forest - " + (stageIndex);
-                    break;
-                case 1:
-                    PrepareText.text = "The Fallen City - " + (stageIndex);
+                    PrepareText.text = "The Forest - " + (_userdata._CurrentStage + 1);
                     break;
                 case 2:
-                    PrepareText.text = "The Lab - " + (stageIndex);
+                    PrepareText.text = "The Fallen City - " + (_userdata._CurrentStage + 1);
                     break;
-            }
+                case 1:
+                    PrepareText.text = "The Lab - " + (_userdata._CurrentStage + 1);
+                    break;
+            } 
 
         }
 
@@ -404,6 +415,7 @@ public class GameManager : MonoBehaviour
         _WarpProtal.SetActive(false);
         PrepareText.transform.parent.gameObject.SetActive(true);
         PrepareText.gameObject.SetActive(true);
+
         if (Userdata.Instance._isTh)
         {
             PrepareText.text = "เตรียมพร้อมลุยกันเถอะ!";
@@ -412,6 +424,7 @@ public class GameManager : MonoBehaviour
         {
             PrepareText.text = "Prepare for Battle!";
         }
+
         yield return new WaitForSeconds(1f);
         PrepareText.gameObject.SetActive(false);
         yield return new WaitForSeconds(0.1f);
@@ -446,7 +459,7 @@ public class GameManager : MonoBehaviour
     }
     void CalculateStatsModifier()
     {
-        statsModifier = (worldIndex * 1.4f) + (stageIndex * 0.08f);
+        statsModifier = (worldIndex * 5f) + (stageIndex * 10f);
         Debug.Log($"Stats Modifier: {statsModifier}");
     }
 
@@ -570,6 +583,7 @@ public class GameManager : MonoBehaviour
     void StartTurn()
     {
 
+        
         // Remove null references just in case
         spawnedMonsters.RemoveAll(m => m == null);
 

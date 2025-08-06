@@ -442,6 +442,7 @@ MonoBehaviour:
   _HitEffect: {fileID: 4225374483206829120, guid: 2319d0fc8c49d4642a4da478b3c589af, type: 3}
   _Root: {fileID: 1302883728164361235}
   _DieEffect: {fileID: 3037282632951184280, guid: a06571c4db241b942963dc56424732b4, type: 3}
+  _CurrentMonsterName: DragonWitch
 --- !u!1 &2870969302525814096
 GameObject:
   m_ObjectHideFlags: 0

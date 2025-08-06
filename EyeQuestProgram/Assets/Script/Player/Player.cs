@@ -286,6 +286,7 @@ public class Player : MonoBehaviour
         }
 
         StartCoroutine(_DelayCooldown());
+
     }
 
     IEnumerator _DelayCooldown()
@@ -297,6 +298,41 @@ public class Player : MonoBehaviour
     {
         GetComponent<AudioSource>().PlayOneShot(_Clips[2]);
         yield return new WaitForSeconds(delay);
+
+        switch (skillIndex)
+       {
+           case 0:
+               Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(8);
+               Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(5);
+               Debug.Log("Infinity");
+               break;
+
+           case 2:
+               Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(3);
+                Debug.Log("Vertical");
+                break;
+           case 3:
+               Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(6);
+                Debug.Log("Horizontal");
+                break;
+           case 4:
+               Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(7);
+                Debug.Log("XStrike");
+                break;
+           case 5:
+               Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(2);
+                Debug.Log("Cyclone");
+                break;
+           case 6:
+               Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(1);
+                Debug.Log("Blinkshot");
+                break;
+           case 7:
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(0);
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(9);
+                Debug.Log("Shield");
+                break;
+       }
 
         // Adjust spawn position based on skill index
         Vector3 adjustedPosition = _spawnPosition;
@@ -419,7 +455,7 @@ public class Player : MonoBehaviour
         GetComponent<AudioSource>().PlayOneShot(_Clips[3]);
 
         stats.currentHealth = Mathf.Max(0f, stats.currentHealth - damage);
-        GetComponent<Animator>().SetTrigger("_gethit");
+        animator.GetComponent<Animator>().SetTrigger("_gethit");
         
         if (stats.currentHealth <= 0)
         {

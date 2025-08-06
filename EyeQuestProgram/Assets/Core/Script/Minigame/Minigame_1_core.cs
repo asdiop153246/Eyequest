@@ -114,6 +114,7 @@ public class Minigame_1_core : MonoBehaviour
         {
             case "Infinity":
                 Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(4);
+                Debug.Log("CHECK A");
                 break;
 
             case "Vertical":

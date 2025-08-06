@@ -26,7 +26,6 @@ public class IAPManager : MonoBehaviour, IStoreListener
             try
             {
                 await UnityServices.InitializeAsync();
-
                 InitializePurchasing();
             }
             catch (Exception ex)
@@ -38,63 +37,37 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     public void InitializePurchasing()
     {
+        var module = StandardPurchasingModule.Instance();
+
         if (_isFakeStore)
         {
-            var module = StandardPurchasingModule.Instance();
-
-            module.useFakeStoreUIMode = FakeStoreUIMode.StandardUser; // ให้ popup เลือก ซื้อ / ยกเลิก
-
-            var builder = ConfigurationBuilder.Instance(module);
-
-            builder.AddProduct(PRODUCT_COINS_1, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_2, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_3, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_4, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_5, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_6, ProductType.Consumable);
-
-            UnityPurchasing.Initialize(this, builder);
+            module.useFakeStoreUIMode = FakeStoreUIMode.StandardUser;
         }
-        else
-        {
-            var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
-            builder.AddProduct(PRODUCT_COINS_1, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_2, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_3, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_4, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_5, ProductType.Consumable);
-            builder.AddProduct(PRODUCT_COINS_6, ProductType.Consumable);
+        var builder = ConfigurationBuilder.Instance(module);
 
-            UnityPurchasing.Initialize(this, builder);
-        }
-        
+        builder.AddProduct(PRODUCT_COINS_1, ProductType.Consumable);
+        builder.AddProduct(PRODUCT_COINS_2, ProductType.Consumable);
+        builder.AddProduct(PRODUCT_COINS_3, ProductType.Consumable);
+        builder.AddProduct(PRODUCT_COINS_4, ProductType.Consumable);
+        builder.AddProduct(PRODUCT_COINS_5, ProductType.Consumable);
+        builder.AddProduct(PRODUCT_COINS_6, ProductType.Consumable);
+
+        UnityPurchasing.Initialize(this, builder);
     }
 
     public void BuyCoins(int _id)
     {
-        switch (_id)
+        string[] productIds = {
+            PRODUCT_COINS_1, PRODUCT_COINS_2, PRODUCT_COINS_3,
+            PRODUCT_COINS_4, PRODUCT_COINS_5, PRODUCT_COINS_6
+        };
+
+        if (_id >= 0 && _id < productIds.Length)
         {
-            case 0:
-                BuyProductID(PRODUCT_COINS_1);
-                break;
-            case 1:
-                BuyProductID(PRODUCT_COINS_2);
-                break;
-            case 2:
-                BuyProductID(PRODUCT_COINS_3);
-                break;
-            case 3:
-                BuyProductID(PRODUCT_COINS_4);
-                break;
-            case 4:
-                BuyProductID(PRODUCT_COINS_5);
-                break;
-            case 5:
-                BuyProductID(PRODUCT_COINS_6);
-                break;
+            BuyProductID(productIds[_id]);
         }
-        
+
     }
 
     void BuyProductID(string productId)
@@ -119,109 +92,50 @@ public class IAPManager : MonoBehaviour, IStoreListener
         storeExtensionProvider = extensions;
         Debug.Log("IAP Initialized");
 
-        Product product = storeController.products.WithID(PRODUCT_COINS_1);
-        if (product != null && product.hasReceipt == false)
-        {
-            //_productTitleText[0].GetComponent<TMPro.TextMeshProUGUI>().text = product.metadata.localizedTitle;
-            //_productDesText[0].GetComponent<TMPro.TextMeshProUGUI>().text = product.metadata.localizedDescription;
-            _productpriceText[0].GetComponent<TMPro.TextMeshProUGUI>().text = product.metadata.localizedPriceString;
-        }
+        UpdatePriceUI();
+    }
 
-        Product product_1 = storeController.products.WithID(PRODUCT_COINS_2);
-        if (product_1 != null && product_1.hasReceipt == false)
-        {
-            //_productTitleText[1].GetComponent<TMPro.TextMeshProUGUI>().text = product_1.metadata.localizedTitle;
-            //_productDesText[1].GetComponent<TMPro.TextMeshProUGUI>().text = product_1.metadata.localizedDescription;
-            _productpriceText[1].GetComponent<TMPro.TextMeshProUGUI>().text = product_1.metadata.localizedPriceString;
-        }
+    void UpdatePriceUI()
+    {
+        string[] productIds = {
+            PRODUCT_COINS_1, PRODUCT_COINS_2, PRODUCT_COINS_3,
+            PRODUCT_COINS_4, PRODUCT_COINS_5, PRODUCT_COINS_6
+        };
 
-        Product product_2 = storeController.products.WithID(PRODUCT_COINS_3);
-        if (product_2 != null && product_2.hasReceipt == false)
+        for (int i = 0; i < productIds.Length; i++)
         {
-            //_productTitleText[2].GetComponent<TMPro.TextMeshProUGUI>().text = product_2.metadata.localizedTitle;
-           // _productDesText[2].GetComponent<TMPro.TextMeshProUGUI>().text = product_2.metadata.localizedDescription;
-            _productpriceText[2].GetComponent<TMPro.TextMeshProUGUI>().text = product_2.metadata.localizedPriceString;
-        }
-
-        Product product_3 = storeController.products.WithID(PRODUCT_COINS_4);
-        if (product_3 != null && product_3.hasReceipt == false)
-        {
-            //_productTitleText[3].GetComponent<TMPro.TextMeshProUGUI>().text = product_3.metadata.localizedTitle;
-            //_productDesText[3].GetComponent<TMPro.TextMeshProUGUI>().text = product_3.metadata.localizedDescription;
-            _productpriceText[3].GetComponent<TMPro.TextMeshProUGUI>().text = product_3.metadata.localizedPriceString;
-        }
-
-        Product product_4 = storeController.products.WithID(PRODUCT_COINS_5);
-        if (product_4 != null && product_4.hasReceipt == false)
-        {
-           // _productTitleText[4].GetComponent<TMPro.TextMeshProUGUI>().text = product_4.metadata.localizedTitle;
-           // _productDesText[4].GetComponent<TMPro.TextMeshProUGUI>().text = product_4.metadata.localizedDescription;
-            _productpriceText[4].GetComponent<TMPro.TextMeshProUGUI>().text = product_4.metadata.localizedPriceString;
-        }
-
-        Product product_5 = storeController.products.WithID(PRODUCT_COINS_6);
-        if (product_5 != null && product_5.hasReceipt == false)
-        {
-            //_productTitleText[5].GetComponent<TMPro.TextMeshProUGUI>().text = product_5.metadata.localizedTitle;
-            //_productDesText[5].GetComponent<TMPro.TextMeshProUGUI>().text = product_5.metadata.localizedDescription;
-            _productpriceText[5].GetComponent<TMPro.TextMeshProUGUI>().text = product_5.metadata.localizedPriceString;
+            Product product = storeController.products.WithID(productIds[i]);
+            if (product != null && !product.hasReceipt && _productpriceText.Length > i)
+            {
+                _productpriceText[i].GetComponent<TMPro.TextMeshProUGUI>().text = product.metadata.localizedPriceString;
+            }
         }
     }
 
     public void OnInitializeFailed(InitializationFailureReason error)
     {
-        Debug.LogError("IAP Initialization Failed: " + error);
+        Debug.LogError("IAP Initialization Failed: " + error.ToString());
+    }
+
+    public void OnInitializeFailed(InitializationFailureReason error, string message)
+    {
+        Debug.LogError($"IAP Initialization Failed: {error} - {message}");
     }
 
     public TMPro.TextMeshProUGUI _DiamondTxt;
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
-        if (args.purchasedProduct.definition.id == PRODUCT_COINS_1)
-        {
-            Debug.Log("Coins Purchased! : "+ PRODUCT_COINS_1);
+        string id = args.purchasedProduct.definition.id;
 
-            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(25, 1));
-            //Userdata.Instance._User.data.currency.gem += 100;
-            // เพิ่มเหรียญให้ผู้เล่น
-        }
+        if (id == PRODUCT_COINS_1) StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(25, 1));
+        else if (id == PRODUCT_COINS_2) StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(75, 1));
+        else if (id == PRODUCT_COINS_3) StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(150, 1));
+        else if (id == PRODUCT_COINS_4) StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(320, 1));
+        else if (id == PRODUCT_COINS_5) StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(600, 1));
+        else if (id == PRODUCT_COINS_6) StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(1000, 1));
 
-        if (args.purchasedProduct.definition.id == PRODUCT_COINS_2)
-        {
-            Debug.Log("Coins Purchased! : " + PRODUCT_COINS_2);
-            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(75, 1));
-            // เพิ่มเหรียญให้ผู้เล่น
-        }
-
-        if (args.purchasedProduct.definition.id == PRODUCT_COINS_3)
-        {
-            Debug.Log("Coins Purchased! : " + PRODUCT_COINS_3);
-            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(150, 1));
-            // เพิ่มเหรียญให้ผู้เล่น
-        }
-
-        if (args.purchasedProduct.definition.id == PRODUCT_COINS_4)
-        {
-            Debug.Log("Coins Purchased! : " + PRODUCT_COINS_4);
-            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(320, 1));
-            // เพิ่มเหรียญให้ผู้เล่น
-        }
-
-        if (args.purchasedProduct.definition.id == PRODUCT_COINS_5)
-        {
-            Debug.Log("Coins Purchased! : " + PRODUCT_COINS_5);
-            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(600, 1));
-            // เพิ่มเหรียญให้ผู้เล่น
-        }
-
-        if (args.purchasedProduct.definition.id == PRODUCT_COINS_6)
-        {
-            Debug.Log("Coins Purchased! : " + PRODUCT_COINS_6);
-            StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._AddCurreny(1000, 1));
-            // เพิ่มเหรียญให้ผู้เล่น
-        }
-
-        //_DiamondTxt.text = Userdata.Instance._User.data.currency.gem + "";
+        Debug.Log("Coins Purchased! : " + id);
 
         return PurchaseProcessingResult.Complete;
     }
@@ -229,11 +143,6 @@ public class IAPManager : MonoBehaviour, IStoreListener
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
         Debug.LogWarning($"Purchase failed: {product.definition.id}, Reason: {failureReason}");
-    }
-
-    public void OnInitializeFailed(InitializationFailureReason error, string message)
-    {
-        throw new System.NotImplementedException();
     }
 
     public int _CurrentSelectGoldPack;

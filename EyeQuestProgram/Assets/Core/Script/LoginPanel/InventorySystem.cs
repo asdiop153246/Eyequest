@@ -35,12 +35,16 @@ public class InventorySystem : MonoBehaviour
 
     public void OnEnable()
     {
+        _LoadingPanel.SetActive(true);
+
         Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_GetInventory_OK += () =>
         {
             _ItemPopUp.SetActive(false);
             _RemovePopUpPanel.SetActive(false);
             _UpdateCurrentWare();
             _UpdateItemList_Only();
+
+            _LoadingPanel.SetActive(false);
         };
 
         /*Userdata.Instance.gameObject.GetComponent<ApiCaller>().OnCall_UpdateCurrentWare_OK += () =>
@@ -151,24 +155,45 @@ public class InventorySystem : MonoBehaviour
     public GameObject _CurrentBody;
     public GameObject _CurrentWeapon;
     public Kiwiwareable _Kiwi;
+
     public void _WareItem()
     {
+        StartCoroutine(_WareItemStarter());
+    }
+
+    public GameObject _LoadingPanel;
+
+
+    IEnumerator _WareItemStarter()
+    {
+        _LoadingPanel.SetActive(true);
         switch (_CurrentSelectitemType)
         {
             case 3:
+                
+                StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._RemoveItem(Userdata.Instance._User.data.current_ware.current_weapon, _CurrentSelectitemType, _CurrentOnUI_Type));
+                yield return new WaitForSeconds(1f);
                 Userdata.Instance._User.data.current_ware.current_weapon = _CurrentSelectItemId;
                 StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._WareItem(_CurrentSelectItemId, _CurrentOnUI_Type));
                 break;
             case 2:
+               
+                StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._RemoveItem(Userdata.Instance._User.data.current_ware.current_body, _CurrentSelectitemType, _CurrentOnUI_Type));
+                yield return new WaitForSeconds(1f);
                 Userdata.Instance._User.data.current_ware.current_body = _CurrentSelectItemId;
                 StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._WareItem(_CurrentSelectItemId, _CurrentOnUI_Type));
                 break;
             case 1:
+                
+                StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._RemoveItem(Userdata.Instance._User.data.current_ware.current_hat, _CurrentSelectitemType, _CurrentOnUI_Type));
+                yield return new WaitForSeconds(1f);
                 Userdata.Instance._User.data.current_ware.current_hat = _CurrentSelectItemId;
                 StartCoroutine(Userdata.Instance.gameObject.GetComponent<ApiCaller>()._WareItem(_CurrentSelectItemId, _CurrentOnUI_Type));
                 break;
 
         }
+
+       
     }
     public void _UpdateCurrentWare()
     {

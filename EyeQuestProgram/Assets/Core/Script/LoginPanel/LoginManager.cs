@@ -16,6 +16,8 @@ public class LoginManager : MonoBehaviour
     #region Login
 
     public GameObject _LoginPanel;
+    public GameObject _Main;
+    public GameObject _ForgetPanel;
 
     public TMPro.TMP_InputField _EmailPanel;
     public TMPro.TMP_InputField _ForgotPassword_Email_Panel;
@@ -40,7 +42,26 @@ public class LoginManager : MonoBehaviour
         };
 
         Userdata.Instance.GetComponent<ApiCaller>()._Starttimestamp = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        
+        switch (PlayerPrefs.GetInt("isLogin_Type",0))
+        {
+            case 0:
+                // NOT LOGIN YET
+                break;
+            case 1: // Normal Login
+                StartCoroutine(_CheckPassword(PlayerPrefs.GetString("Username"), PlayerPrefs.GetString("Password")));
+                break;
+            case 2: // Facebook Login
+                _CallFireBaseLogin(PlayerPrefs.GetString("Username").ToString(), PlayerPrefs.GetString("Password").ToString(), PlayerPrefs.GetString("DisplayName").ToString(), PlayerPrefs.GetString("accessToken").ToString());
+                break;
+            case 3: // Google Login
+                _CallFireBaseLogin(PlayerPrefs.GetString("Username").ToString(), PlayerPrefs.GetString("Password").ToString(), PlayerPrefs.GetString("DisplayName").ToString(), PlayerPrefs.GetString("accessToken").ToString());
+                break;
+        }
+
     }
+
+
 
     public void OnDisable()
     {
@@ -241,8 +262,13 @@ public class LoginManager : MonoBehaviour
             }
             else
             {
+                PlayerPrefs.SetInt("isLogin_Type", 1);
+                PlayerPrefs.SetString("Username", _UserEmail);
+                PlayerPrefs.SetString("Password", _UserPassword);
+
                 Userdata.Instance.GetComponent<QuestCore>()._CurrentQuestById = Userdata.Instance._User.data.daily_rewards;
                 _WaitingPanel.SetActive(true);
+                StartCoroutine(Userdata.Instance.GetComponent<FirebaseCore>().InitFirebaseSafe());
                 StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._GetWorldData());
                 
             }
@@ -274,9 +300,9 @@ public class LoginManager : MonoBehaviour
 
         _FirebaseClass data = new _FirebaseClass();
         data.email = _UserEmail.Trim(); ;
-        data.firebase_uid = _Firebase_uid.Trim(); ;
+        data.firebase_uid = _Firebase_uid.Trim();
         data.name = _Name.Trim(); ;
-        data.firebase_token = _Firebase_token.Trim(); ;
+        data.firebase_token = _Firebase_token.Trim();
 
         string json = JsonConvert.SerializeObject(data);
         Debug.Log(json);
@@ -359,6 +385,7 @@ public class LoginManager : MonoBehaviour
                 yield return new WaitForSeconds(2f);
                 _WaitingPanel.SetActive(false);
                 _LoginOK.SetActive(true);
+                StartCoroutine(Userdata.Instance.GetComponent<FirebaseCore>().InitFirebaseSafe());
                 StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._GetWorldData());
 
             }
@@ -573,12 +600,19 @@ public class LoginManager : MonoBehaviour
             _LoginFailed.SetActive(true);
             yield return new WaitForSeconds(2f);
             _LoginFailed.SetActive(false);
+
         }
         else
         {
             _LoginOK.SetActive(true);
             yield return new WaitForSeconds(2f);
             _LoginOK.SetActive(false);
+
+            //Application.LoadLevel(0);
+
+            _ForgetPanel.SetActive(false);
+            _LoginPanel.SetActive(true);
+            _Main.SetActive(false);
         }
     }
     #endregion

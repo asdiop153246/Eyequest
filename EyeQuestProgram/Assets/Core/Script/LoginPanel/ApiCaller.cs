@@ -294,7 +294,9 @@ public class ApiCaller : MonoBehaviour
             }
             else
             {
+                //StartCoroutine(_DiscardItem(_CurrentItemId, _Type));
                 StartCoroutine(_DiscardItem(_CurrentItemId, _Type));
+                //StartCoroutine(_RemoveItem(_CurrentItemId, _Type));
             }
     }
 

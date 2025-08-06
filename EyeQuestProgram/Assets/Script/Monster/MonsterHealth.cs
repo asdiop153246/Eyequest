@@ -82,7 +82,7 @@ public class MonsterHealth : MonoBehaviour
     }
 
     public GameObject _DieEffect;
-    
+    public string _CurrentMonsterName;
     IEnumerator _Die()
     {
         
@@ -97,7 +97,36 @@ public class MonsterHealth : MonoBehaviour
         Destroy(x, 2f);
         yield return new WaitForSeconds(0f);
 
-
+        switch (_CurrentMonsterName)
+        {
+            case "Amanita":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(10);
+                break;
+            case "Bumblebee":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(14);
+                break;
+            case "Bunnyshoot":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(4);
+                break;
+            case "DragonWitch":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(15);
+                break;
+            case "FisherBear":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(13);
+                break;
+            case "InsectBoy":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(12);
+                break;
+            case "Liana":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(11);
+                break;
+            case "Psycholofish":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(17);
+                break;
+            case "Squidbomber":
+                Userdata.Instance.gameObject.GetComponent<QuestCore>()._DoneQuestById(16);
+                break;
+        }
 
         Destroy(transform.parent.gameObject);
     }

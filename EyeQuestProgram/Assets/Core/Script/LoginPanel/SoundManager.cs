@@ -198,8 +198,12 @@ public class SoundManager : MonoBehaviour
 
     public void _Logout()
     {
+#if !UNITY_EDITOR
         Google.GoogleSignIn.DefaultInstance.SignOut();
         Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut();
+#endif
+        PlayerPrefs.DeleteAll();
+
         Application.LoadLevel(0);
     }
 
@@ -211,6 +215,23 @@ public class SoundManager : MonoBehaviour
     public void _LogOut()
     {
        
+    }
+
+    public void _Pause()
+    {
+        
+        StartCoroutine(_DelayPause());
+    }
+
+    IEnumerator _DelayPause()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Time.timeScale = 0;
+    }
+
+    public void _UnPause()
+    {
+        Time.timeScale = 1;
     }
 
 }

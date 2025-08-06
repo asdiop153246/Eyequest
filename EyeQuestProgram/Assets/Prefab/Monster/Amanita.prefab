@@ -6971,6 +6971,7 @@ MonoBehaviour:
   _HitEffect: {fileID: 4225374483206829120, guid: 2319d0fc8c49d4642a4da478b3c589af, type: 3}
   _Root: {fileID: 2416093080013126903}
   _DieEffect: {fileID: 3037282632951184280, guid: a06571c4db241b942963dc56424732b4, type: 3}
+  _CurrentMonsterName: Amanita
 --- !u!1 &9148782561483107140
 GameObject:
   m_ObjectHideFlags: 0

@@ -55,6 +55,18 @@ public class Kiwiwareable : MonoBehaviour
             case 13:
                 _Hat[4].SetActive(true);
                 break;
+            case 16:
+                _Hat[5].SetActive(true);
+                break;
+            case 19:
+                _Hat[6].SetActive(true);
+                break;
+            case 22:
+                _Hat[7].SetActive(true);
+                break;
+            case 25:
+                _Hat[8].SetActive(true);
+                break;
             default:
                 _Hat[0].SetActive(true);
                 break;
@@ -77,6 +89,18 @@ public class Kiwiwareable : MonoBehaviour
             case 14:
                 _Body[4].SetActive(true);
                 break;
+            case 17:
+                _Body[5].SetActive(true);
+                break;
+            case 20:
+                _Body[6].SetActive(true);
+                break;
+            case 23:
+                _Body[7].SetActive(true);
+                break;
+            case 26:
+                _Body[8].SetActive(true);
+                break;
             default:
                 _Body[0].SetActive(true);
                 break;
@@ -98,6 +122,18 @@ public class Kiwiwareable : MonoBehaviour
                 break;
             case 15:
                 _Weapon[4].SetActive(true);
+                break;
+            case 18:
+                _Weapon[5].SetActive(true);
+                break;
+            case 21:
+                _Weapon[6].SetActive(true);
+                break;
+            case 24:
+                _Weapon[7].SetActive(true);
+                break;
+            case 27:
+                _Weapon[8].SetActive(true);
                 break;
             default:
                 _Weapon[0].SetActive(true);

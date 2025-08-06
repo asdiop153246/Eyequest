@@ -69,6 +69,12 @@ public class GoogleSignInManager : MonoBehaviour
             _LoginLog.text = "Firebase Sign-In Success! Welcome " + newUser.DisplayName + " / " + newUser.Email;
 
             GetComponent<LoginManager>()._CallFireBaseLogin(newUser.Email, newUser.UserId, newUser.DisplayName, user.IdToken);
+
+            PlayerPrefs.SetInt("isLogin_Type", 3);
+            PlayerPrefs.SetString("Username", newUser.Email);
+            PlayerPrefs.SetString("Password", newUser.UserId);
+            PlayerPrefs.SetString("DisplayName", newUser.DisplayName);
+            PlayerPrefs.SetString("accessToken", user.IdToken);
         });
     }
 }
