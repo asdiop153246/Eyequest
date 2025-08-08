@@ -6,8 +6,18 @@ using UnityEngine.UI;
 public class SwitchTH : MonoBehaviour
 {
     public bool _isChangeImage;
+   //public bool _isChange
+    
     public void OnEnable()
     {
+        StartCoroutine(_DelaySwitch());
+    }
+
+    public void Awake()
+    {
+        if (GetComponent<Image>())
+            GetComponent<Image>().enabled = false;
+
         StartCoroutine(_DelaySwitch());
     }
 
@@ -23,7 +33,7 @@ public class SwitchTH : MonoBehaviour
 
     public IEnumerator _DelaySwitch()
     {
-        yield return new WaitForSeconds(0.000f);
+        
 
         if (Userdata.Instance._isTh)
         {
@@ -49,5 +59,10 @@ public class SwitchTH : MonoBehaviour
                 GetComponent<Image>().sprite = _Img[1];
             }
         }
+
+        if (GetComponent<Image>())
+            GetComponent<Image>().enabled = true;
+
+        yield return new WaitForSeconds(0);
     }
 }
