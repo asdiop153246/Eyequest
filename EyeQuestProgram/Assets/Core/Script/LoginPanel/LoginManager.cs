@@ -442,11 +442,33 @@ public class LoginManager : MonoBehaviour
     public void _Input_Password()
     {
         _RegisterData.password = _Register_Create_Password.text;
+        _CheckPassword();
     }
 
     public void _Input_password_confirmation()
     {
         _RegisterData.password_confirmation = _Register_Confirm_Password.text;
+
+        _CheckPassword();
+    }
+
+    public Button _NextBtm;
+    public void _CheckPassword()
+    {
+
+        if (!IsValidPassword(_RegisterData.password, out string errorMessage))
+        {
+            _RedTxt.gameObject.SetActive(true);
+            _RedTxt.text = errorMessage;
+
+            _NextBtm.interactable = false;
+        }
+        else
+        {
+            _RedTxt.gameObject.SetActive(false);
+            _NextBtm.interactable = true;
+        }
+
     }
 
     public void _Input_Age()
@@ -466,14 +488,7 @@ public class LoginManager : MonoBehaviour
         _RedTxt.gameObject.SetActive(false);
         _WaitingPanel.SetActive(true);
         _RegisterData.type = "personal";
-        if (!IsValidPassword(_RegisterData.password, out string errorMessage))
-        {
-            _WaitingPanel.SetActive(false);
-            _RedTxt.gameObject.SetActive(true);
-            _RedTxt.text = errorMessage;
-        }
-        else
-        {
+        
             string json = JsonUtility.ToJson(_RegisterData);
             Debug.Log(json);
             var request = new UnityWebRequest(_URL + "/api/register", "POST");
@@ -505,30 +520,94 @@ public class LoginManager : MonoBehaviour
                 //_LoginPanel.SetActive(false);
                 //_EnterPasswordPanel.SetActive(true);
             }
-        }
-        
-
         
     }
 
-    public static bool IsValidPassword(string password, out string errorMessage)
+    public bool IsValidPassword(string password, out string errorMessage)
     {
         List<string> errors = new List<string>();
 
+        if (_RegisterData.password != _RegisterData.password_confirmation)
+        {
+            if (Userdata.Instance._isTh)
+            {
+                errors.Add(" - รหัสผ่านไม่เหมือนกัน\n");
+            }
+            else
+            {
+                errors.Add(" - Password doesn't match\n");
+            }
+        }
+
         if (password.Length < 8)
-            errors.Add("• ต้องมีความยาวอย่างน้อย 8 ตัวอักษร");
+        {
+            if (Userdata.Instance._isTh)
+            {
+                errors.Add("- ต้องมีความยาวอย่างน้อย 8 ตัวอักษร\n");
+            }
+            else
+            {
+                errors.Add("- Must be at least 8 characters long\n");
+            }
+            
+        }
+            
 
         if (!Regex.IsMatch(password, "[A-Z]"))
-            errors.Add("• ต้องมีตัวอักษรพิมพ์ใหญ่ (A–Z)");
+        {
+            if (Userdata.Instance._isTh)
+            {
+                errors.Add("- ต้องมีตัวอักษรพิมพ์ใหญ่ (A–Z)\n");
+            }
+            else
+            {
+                errors.Add("- Must contain an uppercase letter (A–Z)\n");
+            }
+           
+        }
+
 
         if (!Regex.IsMatch(password, "[a-z]"))
-            errors.Add("• ต้องมีตัวอักษรพิมพ์เล็ก (a–z)");
+        {
+            if (Userdata.Instance._isTh)
+            {
+                errors.Add("- ต้องมีตัวอักษรพิมพ์เล็ก (a–z)\n");
+            }
+            else
+            {
+                errors.Add("- Must contain a lowercase letter (a–z)\n");
+            }
+            
+        }
+            
 
         if (!Regex.IsMatch(password, "[0-9]"))
-            errors.Add("• ต้องมีตัวเลข (0–9)");
+        {
+            if (Userdata.Instance._isTh)
+            {
+                errors.Add("- ต้องมีตัวเลข (0–9)\n");
+            }
+            else
+            {
+                errors.Add("- Must contain a number (0–9)\n");
+            }
+           
+        }
+            
 
         if (!Regex.IsMatch(password, "[^a-zA-Z0-9]"))
-            errors.Add("• ต้องมีอักขระพิเศษ (เช่น !@#$%^&)");
+        {
+            if (Userdata.Instance._isTh)
+            {
+                errors.Add("- ต้องมีอักขระพิเศษ (เช่น !@#$%^&)\n");
+            }
+            else
+            {
+                errors.Add("- Must contain a special character (e.g., !@#$%^)\n");
+            }
+            
+        }
+            
 
         if (errors.Count == 0)
         {
@@ -542,15 +621,7 @@ public class LoginManager : MonoBehaviour
 
     void Start()
     {
-        string password = "abc123";
-        if (IsValidPassword(password, out string errorMessage))
-        {
-            Debug.Log("รหัสผ่านถูกต้อง");
-        }
-        else
-        {
-            Debug.Log(errorMessage);
-        }
+        _CheckPassword();
     }
 
     #endregion

@@ -223,7 +223,8 @@ public class EnemyAI : MonoBehaviour
   
         float finalMultiplier = baseModifier;
         _enemyTier = tier;
-        switch (tier)
+
+       /* switch (tier)
         {
             case GameManager.EnemyTier.Miniboss:
                 finalMultiplier = 8;
@@ -231,7 +232,7 @@ public class EnemyAI : MonoBehaviour
             case GameManager.EnemyTier.Boss:
                 finalMultiplier = 16;
                 break;
-        }
+        }*/
 
         if (statProfile != null && statProfile.IsValid())
         {

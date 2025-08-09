@@ -290,6 +290,7 @@ public class GameManager : MonoBehaviour
         _isAlreadySelectionSkill = false;
     }
 
+    public RectTransform[] _SkillIcon;
 
     public GameObject _HightLightCam;
     void Update()
@@ -299,13 +300,18 @@ public class GameManager : MonoBehaviour
             if (selectedTarget == null || currentTurnIndex != 0 || _Player.GetComponent<Player>().isAction == true)
             {
                 _skillUI.SetActive(false);
-
                 _HightLightCam.SetActive(false);
+
+                foreach (RectTransform x in _SkillIcon)
+                {
+                    x.transform.localEulerAngles = new Vector3(0, 0, 0);
+                    x.transform.localScale = new Vector3(1, 1, 1);
+                }
             }
             else
             {
+                
                 _skillUI.SetActive(true);
-
                 _HightLightCam.SetActive(true);
             }
 
@@ -464,7 +470,7 @@ public class GameManager : MonoBehaviour
     }
     void CalculateStatsModifier()
     {
-        statsModifier = (worldIndex * 5f) + (stageIndex * 10f);
+        statsModifier = (worldIndex * 2f) + (stageIndex * 3f);
         Debug.Log($"Stats Modifier: {statsModifier}");
     }
 
@@ -526,8 +532,8 @@ public class GameManager : MonoBehaviour
 
                 ai.ApplyTierModifier(tierToApply, statsModifier);
 
-                if (tierToApply != EnemyTier.Normal)
-                    monster.name = $"{prefab.name} ({tierToApply})";
+                //if (tierToApply != EnemyTier.Normal)
+                   // monster.name = $"{prefab.name} ({tierToApply})";
             }
 
             spawnedMonsters.Add(monster);
@@ -675,6 +681,23 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator _LoseGame()
     {
+        _isAlreadySelectionSkill = false;
+        _skillUI.SetActive(false);
+        _HightLightCam.SetActive(false);
+
+        _isGameStart = false;
+
+        foreach (GameObject monster in spawnedMonsters)
+        {
+            if (monster != null && monster != selectedTarget)
+            {
+                monster.GetComponent<EnemyAI>()._Highlight.SetActive(false); // Hide highlight for other monsters
+                monster.GetComponent<EPOOutline.Outlinable>().enabled = false;
+            }
+        }
+
+        yield return new WaitForSeconds(1);
+        StartCoroutine(_UpdateLeaderBoard_Lose());
         yield return new WaitForSeconds(1);
         _LosegamePanel.SetActive(true);
     }
@@ -910,6 +933,130 @@ public float starDelay = 0.7f; // time between each star popping out
         //Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
 
     }
+
+    public List<GameObject> _UserName_Lose;
+    public List<GameObject> _Score_Lose;
+
+    IEnumerator _UpdateLeaderBoard_Lose()
+    {
+        _UserName_Lose[0].SetActive(true);
+        _Score_Lose[0].SetActive(true);
+
+        _UserName_Lose[1].SetActive(true);
+        _Score_Lose[1].SetActive(true);
+
+        _UserName_Lose[2].SetActive(true);
+        _Score_Lose[2].SetActive(true);
+
+        var leaderboard = Userdata.Instance._WorldData.world[Userdata.Instance._CurrentWorld].level[Userdata.Instance._CurrentStage].Leaderboard;
+
+        // เตรียม List ชั่วคราว
+        List<string> tempNames = new List<string>();
+        List<int> tempScores = new List<int>();
+
+        bool foundSameName = false;
+
+        for (int i = 0; i < leaderboard.Count; i++)
+        {
+            string name = leaderboard[i].playerName;
+            int score = leaderboard[i].playerScore;
+
+            // ถ้าชื่อซ้ำ
+            if (name == Userdata.Instance._User.data.user.name)
+            {
+                foundSameName = true;
+
+                // ถ้าคะแนนใหม่มากกว่า → ใช้คะแนนใหม่
+                if (_CurrentScore > score)
+                {
+                    tempNames.Add(Userdata.Instance._User.data.user.name);
+                    tempScores.Add(_CurrentScore);
+                }
+                else
+                {
+                    tempNames.Add(name);
+                    tempScores.Add(score);
+                }
+            }
+            else
+            {
+                // ชื่อไม่ซ้ำ → เก็บไว้เหมือนเดิม
+                tempNames.Add(name);
+                tempScores.Add(score);
+            }
+        }
+
+        // ถ้ายังไม่เคยมีชื่อผู้เล่นนี้เลย → แทรกเข้าให้เหมาะสม
+        if (!foundSameName)
+        {
+            int insertIndex = -1;
+            for (int i = 0; i < tempScores.Count; i++)
+            {
+                if (_CurrentScore > tempScores[i])
+                {
+                    insertIndex = i;
+                    break;
+                }
+            }
+
+            if (insertIndex == -1)
+            {
+                tempNames.Add(Userdata.Instance._User.data.user.name);
+                tempScores.Add(_CurrentScore);
+            }
+            else
+            {
+                tempNames.Insert(insertIndex, Userdata.Instance._User.data.user.name);
+                tempScores.Insert(insertIndex, _CurrentScore);
+            }
+        }
+
+        // จำกัดให้เหลือแค่ 3 อันดับ
+        while (tempNames.Count > 3)
+        {
+            tempNames.RemoveAt(tempNames.Count - 1);
+            tempScores.RemoveAt(tempScores.Count - 1);
+        }
+
+        // เขียนกลับไปยัง Leaderboard
+        for (int i = 0; i < tempNames.Count; i++)
+        {
+            if (i >= leaderboard.Count)
+            {
+                leaderboard.Add(new Userdata.LeaderboardEntry()
+                {
+                    playerName = tempNames[i],
+                    playerScore = tempScores[i]
+                });
+            }
+            else
+            {
+                leaderboard[i].playerName = tempNames[i];
+                leaderboard[i].playerScore = tempScores[i];
+            }
+        }
+
+        // แสดงผลบน UI
+        for (int i = 0; i < 3; i++)
+        {
+            _UserName_Lose[i].SetActive(false);
+            _Score_Lose[i].SetActive(false);
+
+            if (i < tempNames.Count)
+            {
+                _UserName_Lose[i].SetActive(true);
+                _Score_Lose[i].SetActive(true);
+
+                _UserName_Lose[i].GetComponent<TMPro.TextMeshProUGUI>().text = tempNames[i];
+                _Score_Lose[i].GetComponent<TMPro.TextMeshProUGUI>().text = tempScores[i].ToString();
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        //Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
+
+    }
     public void RemoveMonster(GameObject monster)
     {
         if (spawnedMonsters.Contains(monster))
@@ -957,7 +1104,15 @@ public float starDelay = 0.7f; // time between each star popping out
     public List<GameObject> _HightLightSkill_Icon;
     public void SelectTarget(GameObject target)
     {
+
         if (!_isGameStart) return;
+
+        foreach (RectTransform x in _SkillIcon)
+        {
+            x.transform.localEulerAngles = new Vector3(0, 0, 0);
+            x.transform.localScale = new Vector3(1, 1, 1);
+        }
+
         if (target == null)
             return;
 

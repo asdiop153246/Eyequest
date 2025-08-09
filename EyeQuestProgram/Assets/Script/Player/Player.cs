@@ -480,12 +480,20 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(2f);
         _HitEffect[(int)type].SetActive(false);
     }
+
+    public GameObject _DieEffect;
+    public GameObject _GreenOcr;
+    public GameObject _Root;
+
     void Die()
     {
         Debug.Log($"{gameObject.name} has died.");
         // Handle player death logic here, e.g., disable controls, play animation, etc.
         gameManager.loseGame();
+        GameObject x = Instantiate(_DieEffect, _Root.transform.position, Quaternion.identity);
+        GameObject y = Instantiate(_GreenOcr, _Root.transform.position, Quaternion.identity);
         gameObject.SetActive(false); // Disable the player GameObject
+        
     }
     public void EndAttack()
     {
