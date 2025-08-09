@@ -42,7 +42,12 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI _WorldLevel;
 
-    public GameObject _EndgamePanel;
+    public GameObject _VictorygamePanel;
+    public GameObject _LosegamePanel;
+
+    [Header("Skill settings")]
+    public GameObject[] Skill;
+
     [Header("Reward Settings")]
     public GameObject[] Stars;
     public Userdata _userdata;
@@ -315,7 +320,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
 
-            _EndgamePanel.SetActive(true);
+            _VictorygamePanel.SetActive(true);
             StartCoroutine(_CalulateReward());
             StartCoroutine(_UpdateLeaderBoard());
             Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(CalculateScore(), 3);
@@ -651,11 +656,14 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("Turn Text UI is not assigned.");
         }
     }
-
+    public void loseGame()
+    {
+        StartCoroutine(_LoseGame());
+    }
     public IEnumerator _EndGame()
     {
         StartCoroutine(Userdata.Instance.GetComponent<ApiCaller>()._LevelCompletionRate(_userdata._CurrentWorld, _userdata._CurrentStage));
-        _EndgamePanel.SetActive(true);
+        _VictorygamePanel.SetActive(true);
         _CurrentScore = CalculateScore();
         _CurrentStar = CalculateEndGameRewards();
         yield return new WaitForSeconds(0.2f);
@@ -664,7 +672,11 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_UpdateLeaderBoard());
         yield return new WaitForSeconds(0.2f);
         Userdata.Instance.gameObject.GetComponent<UnlockWorldLevel>()._UpdateLevel(_CurrentScore, _CurrentStar);
-        
+    }
+    public IEnumerator _LoseGame()
+    {
+        yield return new WaitForSeconds(1);
+        _LosegamePanel.SetActive(true);
     }
 
     public TMPro.TextMeshProUGUI _ScoreUI;
@@ -981,7 +993,28 @@ public float starDelay = 0.7f; // time between each star popping out
         StartCoroutine(_Skill());
         // Optional: Show "Attack" button after selection
     }
-
+    public void CancelSkillandDisableUI()
+    {
+        foreach (GameObject skill in Skill)
+        {
+            // Disable all children first
+            foreach (Transform child in skill.transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+            
+            // Enable only the first child if it exists
+            if (skill.transform.childCount > 0)
+            {
+                Transform firstChild = skill.transform.GetChild(0);
+                firstChild.gameObject.SetActive(true);
+            }
+            
+            // Finally disable the parent (skill)
+            skill.SetActive(false);
+        }
+    }
+    
     IEnumerator _Skill()
     {
         yield return new WaitForSeconds(0.5f);
@@ -1011,41 +1044,6 @@ public float starDelay = 0.7f; // time between each star popping out
     {
         Userdata.Instance._isWinning = true;
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
-
-        /*
-        stageIndex++;
-
-        Userdata.Instance._CurrentStage = Userdata.Instance._CurrentStage + 1;
-        // Optional: Reset worldIndex if you want to loop or increase it based on stage
-        // if (stageIndex > 9)
-        // {
-        //     worldIndex++;
-        //     stageIndex = 1;
-        // }
-
-        // Reset turn index and flags
-        currentTurnIndex = 0;
-        isReadyToAttack = false;
-
-        // Destroy all monsters in scene
-        foreach (GameObject monster in GameObject.FindGameObjectsWithTag("Monster"))
-        {
-            Destroy(monster);
-        }
-        spawnedMonsters.Clear();
-
-        foreach (var player in players)
-        {
-            if (player != null)
-            {
-                player.GetComponent<Player>().ResetForNewStage();
-            }
-        }
-        _EndgamePanel.SetActive(false);
-        Player _player = players[0].GetComponent<Player>();
-        _player.ApplyStats();
-        CalculateStatsModifier();
-        StartCoroutine(DelaybeforeStartGame());*/
     }
     public void ReturntoMenu()
     {
@@ -1074,22 +1072,6 @@ public float starDelay = 0.7f; // time between each star popping out
         }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
-    }
-    
-
-        void CheckAndRequestCameraPermission()
-    {
-        if (Permission.HasUserAuthorizedPermission(Permission.Camera))
-        {
-            Debug.Log("Camera permission already granted.");
-            OnCameraPermissionGranted();
-        }
-        else
-        {
-            Debug.Log("Camera permission NOT granted. Requesting now...");
-            Permission.RequestUserPermission(Permission.Camera);
-            // We will wait for user's response, so listen for callback
-        }
     }
 
     // This method is called automatically by Unity when user responds to permission request

@@ -477,14 +477,14 @@ public class Player : MonoBehaviour
         }*/
         Debug.Log("Hit Id :" + (int)type);
         _HitEffect[(int)type].SetActive(true);
-        yield return new WaitForSeconds(2f); // Show effect for 0.5 seconds
+        yield return new WaitForSeconds(2f);
         _HitEffect[(int)type].SetActive(false);
     }
     void Die()
     {
         Debug.Log($"{gameObject.name} has died.");
         // Handle player death logic here, e.g., disable controls, play animation, etc.
-
+        gameManager.loseGame();
         gameObject.SetActive(false); // Disable the player GameObject
     }
     public void EndAttack()
