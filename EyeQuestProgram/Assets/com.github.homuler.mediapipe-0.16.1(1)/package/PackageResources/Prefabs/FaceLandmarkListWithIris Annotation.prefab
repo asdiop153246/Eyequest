@@ -357,6 +357,9 @@ MonoBehaviour:
   _Toppoint: {fileID: 0}
   _Bottompoint: {fileID: 0}
   _blinkText: {fileID: 0}
+  CenterPoint: {fileID: 0}
+  pointID: {fileID: 107977921527429798}
+  detectionPosition: {fileID: 0}
   _blinkCount: 0
 --- !u!1001 &8572875197927310663
 PrefabInstance:
