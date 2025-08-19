@@ -10,6 +10,7 @@ public class BlinkDetectionScript : MonoBehaviour
     public GetPointID pointID;
     public GameObject detectionPosition;
     private Player _player;
+    public GameManager _gameManager;
     public int _blinkCount;
     private float blinkTimer = 0f;
     private float holdBlinkThreshold = 2f;
@@ -45,7 +46,14 @@ public class BlinkDetectionScript : MonoBehaviour
         this.enableBoundaries = enabled;
         Debug.Log($"Boundaries configured: Min{minBounds}, Max{maxBounds}, Distance{distance}, Enabled{enabled}");
     }
-    
+    void OnDisable()
+    {
+        _gameManager = FindObjectOfType<GameManager>();
+        if (_gameManager != null)
+        {
+            _gameManager.CancelSkillandDisableUI();
+        }
+    }
     // Mobile-specific positioning method
     private Vector3 GetMobileOptimizedPosition(Vector3 centerPointPos)
     {
