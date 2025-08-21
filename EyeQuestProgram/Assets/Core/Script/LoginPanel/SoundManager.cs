@@ -199,8 +199,8 @@ public class SoundManager : MonoBehaviour
     public void _Logout()
     {
 #if !UNITY_EDITOR
-        Google.GoogleSignIn.DefaultInstance.SignOut();
-        Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut();
+        //Google.GoogleSignIn.DefaultInstance.SignOut();
+        //Firebase.Auth.FirebaseAuth.DefaultInstance.SignOut();
 #endif
         PlayerPrefs.DeleteAll();
 

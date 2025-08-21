@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
-using Firebase;
+//using Firebase;
 using Firebase.Auth;
-using Google;
+//using Google;
 using System.Threading.Tasks;
 using Firebase.Extensions;
 
 public class GoogleSignInManager : MonoBehaviour
 {
-    private FirebaseAuth auth;
+    /*private FirebaseAuth auth;
     private GoogleSignInConfiguration configuration;
 
     void Start()
@@ -76,5 +76,5 @@ public class GoogleSignInManager : MonoBehaviour
             PlayerPrefs.SetString("DisplayName", newUser.DisplayName);
             PlayerPrefs.SetString("accessToken", user.IdToken);
         });
-    }
+    }*/
 }

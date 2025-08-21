@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using Firebase.Auth;
-using Facebook.Unity;
+//using Facebook.Unity;
 using System.Collections.Generic;
 using Firebase.Extensions; // ✅ สำคัญ
 using TMPro;
 
 public class FacebookLoginManager : MonoBehaviour
 {
-    private FirebaseAuth auth;
+    /*private FirebaseAuth auth;
 
     public TextMeshProUGUI _LoginLog;
 
@@ -80,5 +80,5 @@ public class FacebookLoginManager : MonoBehaviour
                 PlayerPrefs.SetString("DisplayName", newUser.DisplayName);
                 PlayerPrefs.SetString("accessToken", accessToken);
         });
-    }
+    }*/
 }

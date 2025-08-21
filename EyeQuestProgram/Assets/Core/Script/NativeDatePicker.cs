@@ -21,11 +21,11 @@ public class NativeDatePicker : MonoBehaviour
     }
 #elif UNITY_IOS
     [DllImport("__Internal")]
-    private static extern void ShowDatePicker(string gameObjectName, string callbackMethod);
+    private static extern void _ShowDatePicker(string gameObjectName, string callbackMethod);
 
     public static void Show(string gameObjectName, string callbackMethod)
     {
-        ShowDatePicker(gameObjectName, callbackMethod);
+        _ShowDatePicker(gameObjectName, callbackMethod);
     }
 #endif
 

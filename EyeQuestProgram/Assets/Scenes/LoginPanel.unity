@@ -12930,7 +12930,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You can select more than one topic.
+  m_text: "\u0E2A\u0E32\u0E21\u0E32\u0E23\u0E16\u0E40\u0E25\u0E37\u0E34\u0E2D\u0E01\u0E44\u0E14\u0E49\u0E21\u0E32\u0E01\u0E01\u0E27\u0E48\u0E32
+    1 \u0E2B\u0E31\u0E27\u0E02\u0E49\u0E2D"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a00fe676790bcd14797f7773c928f0c4, type: 2}
   m_sharedMaterial: {fileID: -524275406526820325, guid: a00fe676790bcd14797f7773c928f0c4, type: 2}
@@ -13133,8 +13134,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isChangeImage: 0
-  _ENG: Crossed eyes
-  _TH: "\u0E15\u0E32\u0E40\u0E02\u0E2D\u0E2D\u0E01"
+  _ENG: Nothing
+  _TH: "\u0E44\u0E21\u0E48\u0E21\u0E35\u0E1B\u0E31\u0E0D\u0E2B\u0E32"
   _Img: []
 --- !u!114 &917238051
 MonoBehaviour:
@@ -20243,7 +20244,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1377736881
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22096,8 +22097,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f09dccb2183fa4eb39fae611582c95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _WaitingPanel: {fileID: 462918371}
-  _LoginLog: {fileID: 314499304}
 --- !u!114 &1535456761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22110,8 +22109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2dedb9b5d4b505458bc3bfd473e634d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _LoginLog: {fileID: 314499304}
-  _WaitingPanel: {fileID: 462918371}
 --- !u!1 &1545256457
 GameObject:
   m_ObjectHideFlags: 0
@@ -30150,7 +30147,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Confirm
+  m_text: "\u0E22\u0E37\u0E19\u0E22\u0E31\u0E19"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f9f457440b9b20244bae3e5765a333ac, type: 2}
   m_sharedMaterial: {fileID: -524275406526820325, guid: f9f457440b9b20244bae3e5765a333ac, type: 2}
